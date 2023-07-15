@@ -7,20 +7,7 @@ import UserContext from './UserContext';
 const reducer = (state: User, action: Action) => {
     switch (action.type) {
         case 'SET_USER':
-            const { email,
-                emailVerified,
-                id,
-                image,
-                name,
-            } = action.payload
-            return {
-                ...state,
-                email: email,
-                emailVerified: true,
-                id: id,
-                image: image,
-                name: name,
-            }
+            return state = action.payload
         case 'REMOVE_USER':
             return initialState
         default:

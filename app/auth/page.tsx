@@ -8,7 +8,7 @@ import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 import AuthSocialButton from '@/components/Button/AuthSocialButton';
 import { Typography } from '../Material';
-import { LoginFireBase, RegisterFireBase } from './functions';
+import { LoginFireBase, RegisterFireBase } from '../../services/firebase/auth';
 import UserContext from '@/context/UserContext';
 import { UserContextIn } from '@/interfaces/User';
 
@@ -45,9 +45,9 @@ const AuthForm = () => {
     setIsLoading(true)
 
     if (variant === 'REGISTER') {
-      RegisterFireBase({ email: data.email, password: data.password })
+      RegisterFireBase({ email: data.email, password: data.password, name: data.name })
         .then((user) => {
-          if (user) {
+          if (!user) {
             toast.error("Invalid Credential")
           }
           // set user
