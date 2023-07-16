@@ -1,17 +1,87 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MessageCard from '../Card/MessageCard'
 import { MessageFooter } from './MessageFooter'
+import { UserContextIn } from '@/interfaces/User'
+import { Conversation } from '@/interfaces/Conversation'
 
-const MessageBody = () => {
+interface MessageBodyProps {
+  conversation: Conversation | null
+}
+const MessageBody: React.FC<MessageBodyProps> = ({
+  conversation
+}) => {
+
+
+  // console.log(conversation)
   return (
     <div>
-      <div className='h-[85vh] overflow-y-scroll'>
-        <MessageCard />
-        <p className='w-full text-center font-medium text-sm'>Fri 22:48</p>
-        <MessageCard />
-      </div>
-      {/* footer */}
-      <MessageFooter label={'Message....'} id={'inputChat'} />
+      {/* <div className='h-[85vh] overflow-y-scroll'>
+        {conversation?.messages.map((message, index) => (
+          <MessageCard key={index} />
+        ))}
+      </div> */}
+
+      <p className='w-full text-center font-medium text-sm'>Fri 22:48</p>
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
+      <MessageCard />
     </div>
   )
 }

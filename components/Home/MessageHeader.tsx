@@ -9,11 +9,15 @@ import {
   Typography,
 } from "@/app/Material"
 import { useRouter } from 'next/navigation'
-
 import { BsCameraVideo, BsTelephone } from 'react-icons/bs'
 import { RxInfoCircled } from 'react-icons/rx'
+import { Conversation } from '@/interfaces/Conversation'
 
-const MessageHeader = () => {
+interface MessageHeader {
+  conversation: Conversation | null
+}
+
+const MessageHeader: React.FC<MessageHeader> = ({ conversation }) => {
   const router = useRouter()
 
   return (

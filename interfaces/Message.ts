@@ -1,15 +1,25 @@
-import { Conversation } from "./Conversation"
-import { User } from "./User"
+
+export interface reply {
+    message: string | null
+    img: string | null
+    video: string | null
+    messageId: string | null
+    authorId: string
+}
+
+export interface img {
+    src: string[]
+    caption: string
+}
 
 export interface Message {
     id: string
-    body: string
-    image: string
-    createdAt: Date
+    message: string | ""
+    img: img | [] | false |any
+    reply: reply | false
     seenIds: string[]
-    seen: User[]
+    createdAt: Date | any
+    updateAt: Date | any
     conversationId: string
-    conversation: Conversation
-    senderId: string
-    sender: User
-} 
+    messageUserId: string
+}

@@ -10,6 +10,11 @@ const reducer = (state: User, action: Action) => {
             return state = action.payload
         case 'REMOVE_USER':
             return initialState
+        case 'SET_CONVERSATION':
+            return {
+                ...state,
+                conversation: action.payload
+            }
         default:
             return state
     }

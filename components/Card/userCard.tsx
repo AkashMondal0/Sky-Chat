@@ -1,4 +1,5 @@
-import React from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react'
 import {
     List,
     ListItem,
@@ -7,23 +8,41 @@ import {
     Card,
     Typography,
 } from "@/app/Material"
-import { useRouter } from 'next/navigation'
+import { GetUserData } from '@/services/firebase/UserDoc'
+import { User, initialState } from '@/interfaces/User'
 
-const UserCard = () => {
-    const router = useRouter()
+interface UserCardProps {
+    userId: string
+}
+
+const UserCard: React.FC<UserCardProps> = ({
+    userId
+}) => {
+    const [UserCardState, setUserCardState] = useState<User>(initialState)
+    const start = async () => {
+        try {
+            const getUser = await GetUserData(userId) as User
+            setUserCardState(getUser)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        start()
+        console.log("UserCard")
+    }, [userId])
+
     return (
         <div>
             <ListItem
-            className='cursor-pointer my-1'
-             onClick={() => {
-                router.push(`?chat=${"weyewofwufwoeu"}`)
-            }}>
+                className='cursor-pointer my-1'>
                 <ListItemPrefix>
-                    <Avatar variant="circular" alt="candice" src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSQrLx_x-b7xQaqKDqbkTHFfxhnlJPYSOksuJdOGpf3n6GlmXXtzifqrQbjb8G3VoGpbr6y8u_BbhyCuP0" />
+                    <Avatar variant="circular" alt="candice" src={"https://assets.mycast.io/actor_images/actor-olivia-sanabia-279726_large.jpg?1633292709"} />
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">
-                        Tania Andrew
+                        {UserCardState?.name || "Loading..."}
                     </Typography>
                     <Typography variant="small" color="gray" className="font-normal">
                         Software Engineer

@@ -1,6 +1,5 @@
-import { Account } from "./Account"
+
 import { Conversation } from "./Conversation"
-import { Message } from "./Message"
 
 export interface User {
     id: string
@@ -10,16 +9,29 @@ export interface User {
     image: string
     createdAt: Date | undefined
     updateAt: Date | undefined
-
-    conversationsIds: string[]
-    conversation: Conversation[]
-
-    seenMessagesIds: string[]
-    seenMessages: Message[]
-    accounts: Account[]
-    messages: Message[]
+    conversation: Conversation | null
+    Contacts: Contacts[]
 }
 
+
+export const initialState: User = {
+    id: '',
+    name: '',
+    email: '',
+    emailVerified: false,
+    image: '',
+    createdAt: undefined,
+    updateAt: undefined,
+    conversation: null,
+    Contacts: []
+}
+
+export interface Contacts {
+    friend: string
+    conversation: string
+    lastMessage?: string
+    lastMessageTime?: any
+}
 
 export interface UserCredential {
     name?: User["name"];
@@ -43,20 +55,4 @@ export interface Action {
 export interface UserContextIn {
     state: User;
     dispatch: React.Dispatch<Action>;
-}
-
-export const initialState: User = {
-    id: '',
-    name: '',
-    email: '',
-    emailVerified: false,
-    image: '',
-    createdAt: undefined,
-    updateAt: undefined,
-    conversationsIds: [],
-    conversation: [],
-    seenMessagesIds: [],
-    seenMessages: [],
-    accounts: [],
-    messages: []
 }

@@ -1,58 +1,90 @@
-import React from 'react'
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
+/* eslint-disable @next/next/no-img-element */
+import React, { useState } from 'react'
 import { GrEmoji } from 'react-icons/gr';
 import { HiOutlinePhotograph } from 'react-icons/hi';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BsMic } from 'react-icons/bs';
+import { Message } from '@/interfaces/Message';
+import uuid from 'uuid-random'
+import { CreateMessage } from '@/services/firebase/message';
 interface InputProps {
-    label: string;
-    id: string;
-    type?: string;
-    require?: boolean;
-    // register: UseFormRegister<FieldValues>;
-    // errors: FieldErrors
-    disabled?: boolean
+    conversationId: string
+    messageUserId: string
 }
 
 export const MessageFooter: React.FC<InputProps> = ({
-    label,
-    id,
-    type,
-    // register,
-    require,
-    // errors,
-    disabled
+    conversationId,
+    messageUserId
 }) => {
-    const [isFocus, setIsFocus] = React.useState<boolean>(false);
+    const [input, setInput] = useState<Message>({
+        id: uuid(),
+        message: '',
+        img: [],
+        reply: false,
+        seenIds: [],
+        messageUserId: messageUserId,
+        createdAt: undefined,
+        updateAt: undefined,
+        conversationId: conversationId
+    })
+    const handleSend = async () => {
+        await CreateMessage({ ...input, conversationId: conversationId })
+    }
     return (
         <React.Fragment>
-            <div className='px-4 h-16 flex items-center sticky bottom-0 bg-white'>
-                <GrEmoji size={30} className='absolute left-6' />
-                <div className='absolute right-8'>
-                    {isFocus ? <button className='font-semibold text-blue-500 hover:text-black cursor-pointer'>Send</button> :
-                        <div className='flex gap-3'>
-                            <BsMic size={28}/>
-                            <HiOutlinePhotograph size={28}/>
-                            <AiOutlineHeart size={28}/>
-                        </div>
-                    }
+            <div className='fixed bottom-0 bg-white width-available p-3 pt-1 '>
+                <div className='rounded-3xl border-[1px]'>
+
+                    {/* todo */}
+                    <div className='w-full'>
+                        {/* {input.img.map((item: any, index: any) => <img
+                            key={index}
+                            alt="not found"
+                            width={"250px"}
+                            src={URL.createObjectURL(item)}
+                        />)} */}
+                    </div>
+
+                    <div className='flex items-center px-4'>
+                        {/* left side items */}
+                        <GrEmoji size={30} className='mr-2' />
+                        {/* center item */}
+                        <input
+                            onChange={(e) => { setInput({ ...input, message: e.target.value }) }}
+                            id={'Message'}
+                            type={"text"}
+                            value={input.message}
+                            autoComplete={'off'}
+                            placeholder='Message...'
+                            className='w-full border-gray-300 rounded-full outline-none focus:none p-2 ' />
+
+                        {/* right side items */}
+
+                        {input.message?.length > 0 ? <button
+                            className='font-semibold text-blue-500 hover:text-black cursor-pointer'
+                            onClick={handleSend}>Send</button> :
+                            <div className='flex gap-3'>
+                                <BsMic size={25} />
+                                <label htmlFor='myImage'
+                                    className='cursor-pointer'>
+                                    <HiOutlinePhotograph size={25} />
+                                </label>
+                                <AiOutlineHeart size={25} />
+                            </div>}
+                    </div>
                 </div>
-                <input
-                    onFocus={() => { setIsFocus(true) }}
-                    onBlur={() => { setIsFocus(false) }}
-                    id={id}
-                    type={type}
-                    autoComplete={id}
-                    disabled={disabled}
-                    placeholder={label}
-                    className='w-full p-2 px-12 border-[1px]
-                border-gray-300 rounded-full outline-none focus:none
-                '
-                // {...register(id, { required: true })}
-                />
-                {/* {errors[id] && <span className='text-red-500'>This field is required</span>} */}
             </div>
 
+            <input
+                multiple
+                className='hidden'
+                type="file"
+                name="myImage"
+                id="myImage"
+                onChange={(event) => {
+                    setInput({ ...input, img: event.target.files })
+                }}
+            />
         </React.Fragment>
     )
 }

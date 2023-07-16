@@ -3,24 +3,35 @@ import MyUserList from './myUserList'
 import RequestUserList from './requestUserList'
 import SearchUserList from './searchUserList'
 import SideContainer from './SideContainer'
-
+import { User, UserContextIn } from '@/interfaces/User'
 export type steps = "myUserList" | "requestUserList" | "searchUserList"
 
-const SideBar = () => {
+interface SideBar {
+  UserState: UserContextIn
+}
+
+const SideBar: React.FC<SideBar> = ({
+  UserState
+}) => {
   const [steps, setSteps] = React.useState<steps>("myUserList")
+
   const onTabChange = (value: steps) => {
     setSteps(value)
   }
 
-  if (steps === "requestUserList") {
-    return (<SideContainer><RequestUserList onTabChange={onTabChange} /></SideContainer>)
-  }
-
-  if (steps === "searchUserList") {
-    return (<SideContainer><SearchUserList onTabChange={onTabChange} /></SideContainer>)
-  }
-
-  return (<SideContainer><MyUserList onTabChange={onTabChange} /></SideContainer>)
+  return (
+    <SideContainer>
+      <div className={`${steps !== "searchUserList" && "hidden"}`}>
+        <SearchUserList onTabChange={onTabChange} UserState={UserState} />
+      </div>
+      <div className={`${steps !== "requestUserList" && "hidden"}`}>
+        <RequestUserList onTabChange={onTabChange} />
+      </div>
+      <div className={`${steps !== "myUserList" && "hidden"}`}>
+        <MyUserList onTabChange={onTabChange} UserState={UserState} />
+      </div>
+    </SideContainer>
+  )
 }
 
 export default SideBar
