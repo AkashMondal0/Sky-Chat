@@ -3,6 +3,7 @@ import { updateDoc, doc, arrayUnion, serverTimestamp } from "firebase/firestore"
 import { db } from "./config";
 
 const CreateMessage = async (message: Message) => {
+    // console.log(message)  // be careful with this conversation id
     try {
         await updateDoc(doc(db, "conversations", message.conversationId), {
             messages: arrayUnion({

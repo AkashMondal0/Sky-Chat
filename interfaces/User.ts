@@ -1,5 +1,6 @@
 
-import { Conversation } from "./Conversation"
+import { initialUser } from "@/context/User/UserReducer"
+import { Conversation, initialConversation } from "./Conversation"
 
 export interface User {
     id: string
@@ -9,22 +10,10 @@ export interface User {
     image: string
     createdAt: Date | undefined
     updateAt: Date | undefined
-    conversation: Conversation | null
     Contacts: Contacts[]
+    localDataFriends: friend[]
 }
 
-
-export const initialState: User = {
-    id: '',
-    name: '',
-    email: '',
-    emailVerified: false,
-    image: '',
-    createdAt: undefined,
-    updateAt: undefined,
-    conversation: null,
-    Contacts: []
-}
 
 export interface Contacts {
     friend: string
@@ -55,4 +44,20 @@ export interface Action {
 export interface UserContextIn {
     state: User;
     dispatch: React.Dispatch<Action>;
+}
+
+export interface friend {
+    friend: User
+    lastMessage: string
+    lastMessageTime: any
+    conversation: Conversation
+    conversationID: string
+}
+
+export const initialFriend: friend = {
+    friend: initialUser,
+    lastMessage: "",
+    lastMessageTime: undefined,
+    conversation: initialConversation,
+    conversationID: "",
 }

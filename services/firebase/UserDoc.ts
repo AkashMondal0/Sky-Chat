@@ -12,8 +12,7 @@ const CreateUserData = async (data: User) => {
             image: data.image,
             createdAt: serverTimestamp(),
             updateAt: serverTimestamp(),
-            conversationsIds: [],
-            Contacts: []
+            Contacts: [],
         });
     } catch (error) {
         console.log(error)

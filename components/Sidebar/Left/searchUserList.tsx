@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { steps } from '.'
 import { BiArrowBack } from 'react-icons/bi'
 import { List, Typography } from '@/app/Material'
-import UserCard from '../Card/userCard'
+import UserCard from '../../Card/userCard'
 import { User, UserContextIn } from '@/interfaces/User'
 import { ConversationRequest } from '@/interfaces/Conversation'
 

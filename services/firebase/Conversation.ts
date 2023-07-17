@@ -1,17 +1,20 @@
+import uuid from 'uuid-random';
 import { ConversationRequest } from "@/interfaces/Conversation";
-import { collection, doc, getDoc, updateDoc, serverTimestamp, addDoc, arrayUnion } from "firebase/firestore";
+import { collection, doc, getDoc, updateDoc, serverTimestamp, addDoc, arrayUnion, setDoc } from "firebase/firestore";
 import { GetUserData } from "./UserDoc";
 import { db } from "./config";
 import { User } from "@/interfaces/User";
 
 
 const CreateConversation = async (data: ConversationRequest) => {
+    const newID = uuid()
     try {
         const userFind = await GetUserData(data.authorId) as User
         const friend = userFind.Contacts.find((item) => item.friend === data.userId)
 
         if (!friend) {
-            const CreateData = await addDoc(collection(db, "conversations"), {
+            await setDoc(doc(db, "conversations", newID), {
+                id: newID,
                 createdAt: serverTimestamp(),
                 updateAt: serverTimestamp(),
                 lastMessageAt: serverTimestamp(),
@@ -26,14 +29,14 @@ const CreateConversation = async (data: ConversationRequest) => {
             await updateDoc(doc(db, "users", data.authorId), {
                 Contacts: arrayUnion({
                     friend: data.userId,
-                    conversation: CreateData.id
+                    conversation: newID
                 })
             });
 
             await updateDoc(doc(db, "users", data.userId), {
                 Contacts: arrayUnion({
                     friend: data.authorId,
-                    conversation: CreateData.id
+                    conversation: newID
                 })
             });
             return { message: "User add ", code: 200 }

@@ -19,10 +19,10 @@ export interface ConversationRequest {
     isGroup: Conversation["isGroup"],
     lastMessage: Conversation["lastMessage"],
     authorId: User["id"],
-    userId:string
+    userId: string
 }
 
-export const initialConversation:Conversation = {
+export const initialConversation: Conversation = {
     id: "",
     createdAt: undefined,
     updateAt: undefined,
@@ -33,4 +33,8 @@ export const initialConversation:Conversation = {
     isGroup: false,
     messages: [],
     userIds: []
+}
+
+export const conversationLocalData = {
+    
 }

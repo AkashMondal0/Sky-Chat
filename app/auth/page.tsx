@@ -9,7 +9,7 @@ import Button from '@/components/Button/Button';
 import AuthSocialButton from '@/components/Button/AuthSocialButton';
 import { Typography } from '../Material';
 import { LoginFireBase, RegisterFireBase } from '../../services/firebase/auth';
-import UserContext from '@/context/UserContext';
+import UserContext from '@/context/User/UserContext';
 import { UserContextIn } from '@/interfaces/User';
 
 type Variant = 'LOGIN' | 'REGISTER'

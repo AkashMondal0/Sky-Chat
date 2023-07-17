@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
     List,
     ListItem,
@@ -8,33 +8,21 @@ import {
     Card,
     Typography,
 } from "@/app/Material"
-import { GetUserData } from '@/services/firebase/UserDoc'
-import { User, initialState } from '@/interfaces/User'
+import { friend } from '@/interfaces/User'
+import { useRouter } from 'next/navigation'
 
 interface UserCardProps {
-    userId: string
+    localDataFriends: friend
 }
 
 const UserCard: React.FC<UserCardProps> = ({
-    userId
+    localDataFriends
 }) => {
-    const [UserCardState, setUserCardState] = useState<User>(initialState)
-    const start = async () => {
-        try {
-            const getUser = await GetUserData(userId) as User
-            setUserCardState(getUser)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useEffect(() => {
-        start()
-        console.log("UserCard")
-    }, [userId])
+    const router = useRouter()
+    const { friend, conversation } = localDataFriends
 
     return (
-        <div>
+        <div onClick={() => { router.push(`/?chat=${friend.id}`) }}>
             <ListItem
                 className='cursor-pointer my-1'>
                 <ListItemPrefix>
@@ -42,7 +30,7 @@ const UserCard: React.FC<UserCardProps> = ({
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">
-                        {UserCardState?.name || "Loading..."}
+                        {friend?.name || "Loading..."}
                     </Typography>
                     <Typography variant="small" color="gray" className="font-normal">
                         Software Engineer

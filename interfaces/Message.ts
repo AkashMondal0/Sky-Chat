@@ -23,3 +23,15 @@ export interface Message {
     conversationId: string
     messageUserId: string
 }
+
+export const initialMessage: Message = {
+    id: "",
+    message: "",
+    img: [],
+    reply: false,
+    seenIds: [],
+    createdAt: undefined,
+    updateAt: undefined,
+    conversationId: "",
+    messageUserId: ""
+}
