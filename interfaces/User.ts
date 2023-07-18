@@ -12,6 +12,8 @@ export interface User {
     updateAt: Date | undefined
     Contacts: Contacts[]
     localDataFriends: friend[]
+    activeUser?: boolean
+    lastTimeOnline?: any
 }
 
 

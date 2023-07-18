@@ -21,10 +21,10 @@ const LeftSideBar: React.FC<LeftSideBar> = ({
 
   return (
     <SideContainer>
-      {/* <div className={`${steps !== "searchUserList" && "hidden"}`}>
+      <div className={`${steps !== "searchUserList" && "hidden"}`}>
         <SearchUserList onTabChange={onTabChange} UserState={UserState} />
       </div>
-      <div className={`${steps !== "requestUserList" && "hidden"}`}>
+      {/* <div className={`${steps !== "requestUserList" && "hidden"}`}>
         <RequestUserList onTabChange={onTabChange} />
       </div> */}
       <div className={`${steps !== "myUserList" && "hidden"}`}>

@@ -12,6 +12,7 @@ import { LiaFacebookMessenger } from 'react-icons/lia'
 import { UserContextIn } from '@/interfaces/User'
 import RightSideBar from '../Sidebar/Right'
 import useRightSideBar from '@/hooks/useRightSideBar'
+import { UpdateUserStatus } from '@/services/firebase/UserDoc'
 
 
 const Home = () => {
@@ -19,14 +20,15 @@ const Home = () => {
   const UserState = useContext<UserContextIn>(UserContext)
   const [conversation, setConversation] = useState<Conversation>(initialConversation)
   const rightSideBar = useRightSideBar()
+  const { localDataFriends, id, activeUser } = UserState.state
 
   useEffect(() => {
-    const { localDataFriends } = UserState.state
+
     const findConversationId = localDataFriends.find((item) => {
       if (item.friend.id === friendIdParams) {
         return item
       }
-    })?.conversationID as string
+    })?.conversation.id as string
 
     if (friendIdParams) {
       const unSubscribe = onSnapshot(
@@ -39,7 +41,23 @@ const Home = () => {
       return () => unSubscribe()
     }
     // console.log(findConversationId)
-  }, [friendIdParams])
+  }, [UserState.state, friendIdParams])
+
+  useEffect(() => {
+    console.log("start 2")
+    UpdateUserStatus(id, true)
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", function (e) {
+      UpdateUserStatus(id, false)
+    })
+    return () => {
+      window.removeEventListener('beforeunload', () => {
+        console.log("remove")
+      })
+    };
+  })
 
   return (
     <div className="flex md:w-1/1">

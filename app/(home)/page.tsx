@@ -11,6 +11,7 @@ import Home from "@/components/Home"
 import { doc, onSnapshot } from "firebase/firestore"
 import { db } from "@/services/firebase/config"
 import { setData } from "./home"
+
 type loading = true | false
 
 
@@ -30,7 +31,7 @@ export default function Index() {
           (doc) => {
             setData(doc.data() as User)
               .then((data) => {
-                const state = {
+                const state: User = {
                   ...doc.data() as User,
                   localDataFriends: data
                 }
@@ -52,10 +53,10 @@ export default function Index() {
     }
   }, [router])
 
-  
+
   return (
-    <React.Fragment>
+    <div>
       {loading ? "Loading...." : <Home />}
-    </React.Fragment>
+    </div>
   )
 }

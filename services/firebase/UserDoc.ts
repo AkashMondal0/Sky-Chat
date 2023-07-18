@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, setDoc,serverTimestamp } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "./config";
 import { User } from "@/interfaces/User";
 
@@ -13,6 +13,20 @@ const CreateUserData = async (data: User) => {
             createdAt: serverTimestamp(),
             updateAt: serverTimestamp(),
             Contacts: [],
+            activeUser: true,
+            lastTimeOnline: serverTimestamp()
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const UpdateUserStatus = async (UserId: string, activeUser: boolean) => {
+    // console.log(UserId, activeUser)
+    try {
+        await updateDoc(doc(db, "users", UserId), {
+            activeUser: activeUser,
+            lastTimeOnline: serverTimestamp()
         });
     } catch (error) {
         console.log(error)
@@ -43,4 +57,5 @@ export {
     CreateUserData,
     GetUserData,
     GetUsers,
+    UpdateUserStatus
 }

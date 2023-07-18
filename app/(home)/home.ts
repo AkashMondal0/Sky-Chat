@@ -1,7 +1,7 @@
 import { Conversation } from "@/interfaces/Conversation"
 import { User, friend } from "@/interfaces/User"
 import { GetConversationData } from "@/services/firebase/Conversation"
-import { GetUserData } from "@/services/firebase/UserDoc"
+import { GetUserData, UpdateUserStatus } from "@/services/firebase/UserDoc"
 
 const setData = async (data: User) => {
     const { Contacts, ...rest } = data
@@ -17,7 +17,6 @@ const setData = async (data: User) => {
         }
         friendsArray.push(friends)
     }
-
     return friendsArray
 }
 

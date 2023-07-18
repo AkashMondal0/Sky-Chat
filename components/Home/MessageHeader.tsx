@@ -45,6 +45,8 @@ const MessageHeader: React.FC<MessageHeader> = ({ conversation, UserState }) => 
         }}>
         <ListItemPrefix>
           <Avatar
+            withBorder={friend.friend.activeUser}
+            color='green'
             size="md"
             variant="circular"
             alt="candice"

@@ -1,7 +1,7 @@
 import { Conversation } from '@/interfaces/Conversation'
 import { Action, User, friend } from '@/interfaces/User'
 import { GetConversationData } from '@/services/firebase/Conversation'
-import { GetUserData } from '@/services/firebase/UserDoc'
+import { GetUserData, UpdateUserStatus } from '@/services/firebase/UserDoc'
 
 export const initialUser: User = {
     id: '',

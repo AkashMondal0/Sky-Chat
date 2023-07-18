@@ -13,13 +13,14 @@ const MyUserList: React.FC<MyUserList> = ({
     onTabChange,
     UserState
 }) => {
-    const { name, localDataFriends } = UserState.state
+    const { name, localDataFriends, activeUser } = UserState.state
 
     return (
         <>
             <div className='h-[90px] sticky top-0 z-50 px-4 py-2 bg-white'>
                 <div className='justify-between items-center flex pt-1'>
                     <Typography variant="h4">{name}</Typography>
+                    {activeUser && <div>Online</div>}
                     <LuEdit size={26} className='cursor-pointer' onClick={() => { onTabChange("searchUserList") }} />
                 </div>
                 <div className='flex justify-between pt-4'>
