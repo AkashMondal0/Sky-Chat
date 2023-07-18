@@ -3,11 +3,11 @@ import { Card, List, Typography } from '@/app/Material'
 import UserCard from '../../Card/userCard'
 import { LuEdit } from 'react-icons/lu'
 import { steps } from '.'
-import { UserContextIn } from '@/interfaces/User'
+import { UserContextIn, UserState } from '@/interfaces/User'
 
 interface MyUserList {
     onTabChange: (value: steps) => void
-    UserState: UserContextIn
+    UserState: UserState
 }
 const MyUserList: React.FC<MyUserList> = ({
     onTabChange,

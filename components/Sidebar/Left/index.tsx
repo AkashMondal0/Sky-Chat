@@ -1,13 +1,11 @@
 import React from 'react'
 import MyUserList from './myUserList'
-import RequestUserList from './requestUserList'
 import SearchUserList from './searchUserList'
-import SideContainer from '../SideContainer'
-import { UserContextIn } from '@/interfaces/User'
+import {  UserState } from '@/interfaces/User'
 export type steps = "myUserList" | "requestUserList" | "searchUserList"
 
 interface LeftSideBar {
-  UserState: UserContextIn
+  UserState: UserState
 }
 
 const LeftSideBar: React.FC<LeftSideBar> = ({
@@ -20,7 +18,7 @@ const LeftSideBar: React.FC<LeftSideBar> = ({
   }
 
   return (
-    <SideContainer>
+    <div className='w-full'>
       <div className={`${steps !== "searchUserList" && "hidden"}`}>
         <SearchUserList onTabChange={onTabChange} UserState={UserState} />
       </div>
@@ -30,7 +28,7 @@ const LeftSideBar: React.FC<LeftSideBar> = ({
       <div className={`${steps !== "myUserList" && "hidden"}`}>
         <MyUserList onTabChange={onTabChange} UserState={UserState} />
       </div>
-    </SideContainer>
+    </div>
   )
 }
 

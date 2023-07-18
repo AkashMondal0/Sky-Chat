@@ -2,28 +2,29 @@
 'use client'
 import React from "react"
 import { useRouter } from "next/navigation"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import routesName from "@/routes"
-import UserContext from "@/context/User/UserContext"
-import { User, UserContextIn } from "@/interfaces/User"
+import { User} from "@/interfaces/User"
 import { GetToken } from "@/functions/localData"
-import Home from "@/components/Home"
+import Home from "@/components/inBox"
 import { doc, onSnapshot } from "firebase/firestore"
 import { db } from "@/services/firebase/config"
 import { setData } from "./home"
+import useUser from "@/hooks/states/useUser"
 
 type loading = true | false
 
 
 export default function Index() {
   const [loading, setLoading] = useState<loading>(true)
-  const User = useContext<UserContextIn>(UserContext)
+  const userState = useUser()
   const router = useRouter()
+
 
   useEffect(() => {
     const token = GetToken()
     if (token) {
-      console.log("start")
+      console.log("start") // TODO: remove console.log
       try {
         const unSubscribe = onSnapshot(
           doc(db, "users", token),
@@ -35,7 +36,7 @@ export default function Index() {
                   ...doc.data() as User,
                   localDataFriends: data
                 }
-                User.dispatch({ type: "SET_USER", payload: state })
+                userState.setUser(state)
               })
               .catch((e) => { console.log(e) })
               .finally(() => {

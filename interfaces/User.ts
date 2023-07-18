@@ -1,7 +1,15 @@
-
-import { initialUser } from "@/context/User/UserReducer"
 import { Conversation, initialConversation } from "./Conversation"
-
+export const initialUser: User = {
+    id: '',
+    name: '',
+    email: '',
+    emailVerified: false,
+    image: '',
+    createdAt: undefined,
+    updateAt: undefined,
+    Contacts: [],
+    localDataFriends: []
+}
 export interface User {
     id: string
     name: string
@@ -62,4 +70,9 @@ export const initialFriend: friend = {
     lastMessageTime: undefined,
     conversation: initialConversation,
     conversationID: "",
+}
+
+export interface UserState {
+    state: User
+    setUser: (User: User) => void
 }

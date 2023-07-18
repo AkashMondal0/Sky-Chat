@@ -1,7 +1,8 @@
+"use client"    
 import { Conversation } from "@/interfaces/Conversation"
 import { User, friend } from "@/interfaces/User"
 import { GetConversationData } from "@/services/firebase/Conversation"
-import { GetUserData, UpdateUserStatus } from "@/services/firebase/UserDoc"
+import { GetUserData } from "@/services/firebase/UserDoc"
 
 const setData = async (data: User) => {
     const { Contacts, ...rest } = data

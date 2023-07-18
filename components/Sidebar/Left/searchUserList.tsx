@@ -3,14 +3,14 @@ import { steps } from '.'
 import { BiArrowBack } from 'react-icons/bi'
 import { Avatar, List, ListItem, ListItemPrefix, Typography } from '@/app/Material'
 import UserCard from '../../Card/userCard'
-import { User, UserContextIn } from '@/interfaces/User'
+import { User, UserContextIn, UserState } from '@/interfaces/User'
 import { ConversationRequest } from '@/interfaces/Conversation'
 import { GetUsers } from '@/services/firebase/UserDoc'
 import { CreateConversation } from '@/services/firebase/Conversation'
 
 interface SearchUserList {
   onTabChange: (value: steps) => void
-  UserState: UserContextIn
+  UserState: UserState
 }
 const SearchUserList: React.FC<SearchUserList> = ({
   onTabChange,

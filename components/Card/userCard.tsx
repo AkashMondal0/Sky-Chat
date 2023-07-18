@@ -1,4 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+"use client";
+
 import React from 'react'
 import {
     List,
@@ -19,14 +21,15 @@ const UserCard: React.FC<UserCardProps> = ({
     localDataFriends
 }) => {
     const router = useRouter()
-    const { friend, conversation } = localDataFriends
+    const { friend } = localDataFriends
 
     return (
         <div onClick={() => { router.push(`/?chat=${friend.id}`) }}>
             <ListItem
                 className='cursor-pointer my-1'>
                 <ListItemPrefix>
-                    <Avatar variant="circular" alt="candice" src={"https://assets.mycast.io/actor_images/actor-olivia-sanabia-279726_large.jpg?1633292709"} />
+                    <Avatar color='green' withBorder={friend.activeUser}
+                    variant="circular" alt="candice" src={friend.image} />
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">

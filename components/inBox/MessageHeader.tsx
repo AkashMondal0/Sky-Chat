@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
   List,
   ListItem,
@@ -8,30 +8,24 @@ import {
   Card,
   Typography,
 } from "@/app/Material"
-import { useRouter, useSearchParams } from 'next/navigation'
 import { BsCameraVideo, BsTelephone } from 'react-icons/bs'
 import { RxInfoCircled } from 'react-icons/rx'
 import { Conversation } from '@/interfaces/Conversation'
-import { UserContextIn, friend, initialFriend } from '@/interfaces/User'
+import { UserState, initialFriend } from '@/interfaces/User'
 import useRightSideBar from '@/hooks/useRightSideBar'
+import useFriend from '@/hooks/states/useFriend'
+import { BiArrowBack } from 'react-icons/bi'
+import { useRouter } from 'next/navigation'
 
 interface MessageHeader {
   conversation: Conversation
-  UserState: UserContextIn
+  UserState: UserState
 }
 
 const MessageHeader: React.FC<MessageHeader> = ({ conversation, UserState }) => {
-  const router = useRouter()
-  const friendIdParams = useSearchParams().get("chat")
-  const [friend, setFriend] = useState<friend>(initialFriend)
+  const friend = useFriend()
   const RightSideBar = useRightSideBar()
-  useEffect(() => {
-    if (friendIdParams) {
-      const { localDataFriends } = UserState.state
-      const friend = localDataFriends?.find((friend) => friend?.friend?.id === friendIdParams)
-      setFriend(friend as friend)
-    }
-  }, [UserState.state, friendIdParams])
+  const router = useRouter()
 
   return (
     <div className='h-[60px] w-1/1 
@@ -39,25 +33,26 @@ const MessageHeader: React.FC<MessageHeader> = ({ conversation, UserState }) => 
     bg-white
     flex justify-between sticky top-0 py-3'>
 
-      <div className='flex items-center p-2 cursor-pointer'
-        onClick={() => {
-          router.push(`?chat=${"weyewofwufwoeu"}`)
-        }}>
+      <div className='flex items-center p-2 cursor-pointer'>
+        <BiArrowBack className='mr-2 md:hidden' size={28} onClick={() => {
+          router.push("/")
+          friend.setUser(initialFriend)
+        }} />
         <ListItemPrefix>
           <Avatar
-            withBorder={friend.friend.activeUser}
+            withBorder={friend.state.friend.activeUser}
             color='green'
             size="md"
             variant="circular"
             alt="candice"
-            src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSQrLx_x-b7xQaqKDqbkTHFfxhnlJPYSOksuJdOGpf3n6GlmXXtzifqrQbjb8G3VoGpbr6y8u_BbhyCuP0" />
+            src={friend.state.friend.image} />
         </ListItemPrefix>
         <div>
           <Typography variant="h6" color="blue-gray">
-            {friend.friend.name}
+            {friend.state.friend.name}
           </Typography>
           <Typography variant="small" color="gray" className="font-normal">
-            {friend.friend.email}
+            {friend.state.friend.email}
           </Typography>
         </div>
       </div>

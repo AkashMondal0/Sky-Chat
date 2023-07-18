@@ -1,15 +1,22 @@
 import { Message } from "@/interfaces/Message";
 import { updateDoc, doc, arrayUnion, serverTimestamp } from "firebase/firestore";
 import { db } from "./config";
+import { UploadPhoto } from "./uploadFile";
 
 const CreateMessage = async (message: Message) => {
-    // console.log(message)  // be careful with this conversation id
+    var imgArray: string[] = []
     try {
+        if (message.img.length > 0) {
+            for (let i = 0; i < message.img.length; i++) {
+                const url = await UploadPhoto(message.img[i], message.messageUserId)
+                imgArray.push(url as string)
+            }
+        }
         await updateDoc(doc(db, "conversations", message.conversationId), {
             messages: arrayUnion({
                 id: message.id,
                 message: message.message,
-                img: message.img,
+                img: imgArray,
                 reply: message.reply,
                 seenIds: message.seenIds,
                 createdAt: new Date(),

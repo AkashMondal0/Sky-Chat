@@ -8,6 +8,7 @@ import { Message, initialMessage } from '@/interfaces/Message';
 import uuid from 'uuid-random'
 import { CreateMessage } from '@/services/firebase/message';
 import { RxCrossCircled } from 'react-icons/rx';
+
 interface InputProps {
     conversationId: string
     messageUserId: string
@@ -90,7 +91,7 @@ export const MessageFooter: React.FC<InputProps> = ({
 
                         {/* right side items */}
 
-                        {input.message?.length > 0 ? <button
+                        {input.message?.length > 0 || input.img?.length > 0 ? <button
                             className='font-semibold text-blue-500 hover:text-black cursor-pointer'
                             onClick={handleSend}>Send</button> :
                             <div className='flex gap-3'>
