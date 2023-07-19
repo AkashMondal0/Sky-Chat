@@ -1,7 +1,7 @@
 
 export interface reply {
-    message: string | null
-    img: string | null
+    message: string
+    img: [] | null
     video: string | null
     messageId: string | null
     authorId: string
@@ -12,11 +12,18 @@ export interface img {
     caption: string
 }
 
+export const initialReply:reply = {
+    message: "",
+    img: null,
+    video: null,
+    messageId: null,
+    authorId: "",
+} 
 export interface Message {
     id: string
     message: string | ""
     img: img | [] | false |any
-    reply: reply | false
+    reply: reply
     seenIds: string[]
     createdAt: Date | any
     updateAt: Date | any
@@ -28,10 +35,11 @@ export const initialMessage: Message = {
     id: "",
     message: "",
     img: [],
-    reply: false,
+    reply: initialReply,
     seenIds: [],
     createdAt: undefined,
     updateAt: undefined,
     conversationId: "",
     messageUserId: ""
 }
+

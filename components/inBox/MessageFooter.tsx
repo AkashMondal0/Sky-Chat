@@ -4,10 +4,11 @@ import { GrEmoji } from 'react-icons/gr';
 import { HiOutlinePhotograph } from 'react-icons/hi';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BsMic } from 'react-icons/bs';
-import { Message, initialMessage } from '@/interfaces/Message';
+import { Message, initialMessage, initialReply } from '@/interfaces/Message';
 import uuid from 'uuid-random'
 import { CreateMessage } from '@/services/firebase/message';
 import { RxCrossCircled } from 'react-icons/rx';
+import useReplyMessage, { UserReply } from '@/hooks/useReply';
 
 interface InputProps {
     conversationId: string
@@ -18,6 +19,7 @@ export const MessageFooter: React.FC<InputProps> = ({
     conversationId,
     messageUserId
 }) => {
+    const replyState = useReplyMessage()
     const [input, setInput] = useState<Message>({
         id: uuid(), // message id
         message: '',
@@ -30,8 +32,9 @@ export const MessageFooter: React.FC<InputProps> = ({
         conversationId: conversationId // conversation id
     })
     const handleSend = async () => {
-        CreateMessage({ ...input, conversationId: conversationId })
+        CreateMessage({ ...input, conversationId: conversationId, reply: replyState.state })
         setInput({ ...initialMessage, messageUserId: messageUserId, id: uuid() })
+        replyState.setReply(initialReply)
     }
 
     const onChangeFilePicker = (event: any) => {
@@ -50,13 +53,13 @@ export const MessageFooter: React.FC<InputProps> = ({
         const newImage = input.img.filter((item: any) => item.id !== id)
         setInput({ ...input, img: newImage })
     }
-
     return (
         <React.Fragment>
             <div className='fixed bottom-0 bg-white width-available p-3 pt-1 '>
                 <div className='rounded-3xl border-[1px]'>
-                    {/* file input */}
+                    {/* Action Show */}
                     <div className='w-full flex gap-3 m-1 mt-0 items-center'>
+                        {/* file */}
                         {input.img.map((item: any, index: any) =>
                             <div key={index}>
                                 <div onClick={() => { handleDeleteImage(item.id) }}
@@ -66,8 +69,25 @@ export const MessageFooter: React.FC<InputProps> = ({
                                 <img className='w-16 h-16 rounded-2xl object-cover'
                                     alt="not found"
                                     src={URL.createObjectURL(item)} />
+                            </div>)}
+                        {/* reply message */}
+                        {replyState.state.messageId &&
+                            <div className='flex m-3 justify-between w-full'>
+                                <div>
+                                    <p>{replyState.state?.authorId === messageUserId ? "Replying to yourself" : "Replying"}</p>
+                                    {replyState.state?.message && <div>{replyState.state?.message}</div>}
+                                    {replyState.state?.img &&
+                                        replyState.state?.img.map((i) => <img key={i}
+                                            className='w-16 h-16 rounded-2xl object-cover' alt="not found"
+                                            src={i} />)}
+                                </div>
+                                <div onClick={() => { replyState.setReply(initialReply) }}
+                                    className='flex justify-end cursor-pointer'>
+                                    <RxCrossCircled size={25} />
+                                </div>
                             </div>
-                        )}
+                        }
+                        {/*  ////////////*/}
                         {input.img.length > 0 && <label htmlFor='myImage'
                             className='cursor-pointer w-16
                              h-16 bg-gray-100 rounded-2xl

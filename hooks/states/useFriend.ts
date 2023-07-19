@@ -1,5 +1,5 @@
 import { initialConversation } from '@/interfaces/Conversation'
-import { friend, initialUser } from '@/interfaces/User'
+import { friend, initialFriend, initialUser } from '@/interfaces/User'
 import { create } from 'zustand'
 
 interface UseFriend {
@@ -8,13 +8,7 @@ interface UseFriend {
 }
 
 const useFriend = create<UseFriend>((set) => ({
-    state: {
-        friend: initialUser,
-        lastMessage: '',
-        lastMessageTime: "",
-        conversation: initialConversation,
-        conversationID: ''
-    },
+    state: initialFriend,
     setUser: (friend: friend) => set({ state: friend })
 }))
 

@@ -1,4 +1,4 @@
-import { Conversation } from '@/interfaces/Conversation'
+import { Conversation, initialConversation } from '@/interfaces/Conversation'
 import { create } from 'zustand'
 
 interface ConversationState {
@@ -7,18 +7,7 @@ interface ConversationState {
 }
 
 const useConversation = create<ConversationState>((set) => ({
-    state: {
-        id: "",
-        createdAt: new Date(),
-        updateAt: new Date(),
-        lastMessageAt: new Date(),
-        lastMessage: "",
-        groupName: "",
-        groupImage: "",
-        isGroup: false,
-        messages: [],
-        userIds: []
-    },
+    state: initialConversation,
     setConversation: (conversation: Conversation) => set({ state: conversation })
 }))
 

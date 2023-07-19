@@ -24,12 +24,12 @@ export interface ConversationRequest {
 
 export const initialConversation: Conversation = {
     id: "",
-    createdAt: undefined,
-    updateAt: undefined,
-    lastMessageAt: undefined,
+    createdAt: new Date(),
+    updateAt: new Date(),
+    lastMessageAt: new Date(),
     lastMessage: "",
-    groupName: null,
-    groupImage: null,
+    groupName: "",
+    groupImage: "",
     isGroup: false,
     messages: [],
     userIds: []

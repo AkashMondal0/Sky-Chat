@@ -1,6 +1,6 @@
 import { Conversation, initialConversation } from "./Conversation"
 export const initialUser: User = {
-    id: '',
+    id: "",
     name: '',
     email: '',
     emailVerified: false,
@@ -66,10 +66,10 @@ export interface friend {
 
 export const initialFriend: friend = {
     friend: initialUser,
-    lastMessage: "",
-    lastMessageTime: undefined,
+    lastMessage: '',
+    lastMessageTime: "",
     conversation: initialConversation,
-    conversationID: "",
+    conversationID: ''
 }
 
 export interface UserState {

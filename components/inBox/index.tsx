@@ -31,6 +31,8 @@ const Home = () => {
   const Friend = useFriend()
 
   useEffect(() => {
+    console.log("conversation") // TODO: remove console.log
+    // UpdateUserStatus(id, true)
     if (friendIdParams) {
       console.log("conversation") // TODO: remove console.log
       FindFriend(friendIdParams, localDataFriends).then((data) => {
@@ -48,11 +50,6 @@ const Home = () => {
   }, [friendIdParams])
 
   useEffect(() => {
-    console.log("start 2") // TODO: remove console.log
-    UpdateUserStatus(id, true)
-  }, [])
-
-  useEffect(() => {
     window.addEventListener("beforeunload", function (e) {
       UpdateUserStatus(id, false)
     })
@@ -62,6 +59,11 @@ const Home = () => {
       })
     };
   })
+
+  useEffect(() => {
+    console.log("start 2") // TODO: remove console.log
+    UpdateUserStatus(id, true)
+  }, [])
 
   return (
     <div className="flex md:w-1/1">

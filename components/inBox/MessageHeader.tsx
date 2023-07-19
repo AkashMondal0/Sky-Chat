@@ -10,22 +10,24 @@ import {
 } from "@/app/Material"
 import { BsCameraVideo, BsTelephone } from 'react-icons/bs'
 import { RxInfoCircled } from 'react-icons/rx'
-import { Conversation } from '@/interfaces/Conversation'
+import { Conversation, initialConversation } from '@/interfaces/Conversation'
 import { UserState, initialFriend } from '@/interfaces/User'
 import useRightSideBar from '@/hooks/useRightSideBar'
 import useFriend from '@/hooks/states/useFriend'
 import { BiArrowBack } from 'react-icons/bi'
 import { useRouter } from 'next/navigation'
+import useConversation from '@/hooks/states/useConversation'
 
 interface MessageHeader {
   conversation: Conversation
   UserState: UserState
 }
 
-const MessageHeader: React.FC<MessageHeader> = ({ conversation, UserState }) => {
+const MessageHeader: React.FC<MessageHeader> = () => {
   const friend = useFriend()
   const RightSideBar = useRightSideBar()
   const router = useRouter()
+  const conversation = useConversation()
 
   return (
     <div className='h-[60px] w-1/1 
@@ -35,8 +37,9 @@ const MessageHeader: React.FC<MessageHeader> = ({ conversation, UserState }) => 
 
       <div className='flex items-center p-2 cursor-pointer'>
         <BiArrowBack className='mr-2 md:hidden' size={28} onClick={() => {
-          router.push("/")
+          router.back()
           friend.setUser(initialFriend)
+          conversation.setConversation(initialConversation)
         }} />
         <ListItemPrefix>
           <Avatar

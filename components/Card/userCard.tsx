@@ -24,7 +24,8 @@ const UserCard: React.FC<UserCardProps> = ({
     const { friend } = localDataFriends
 
     return (
-        <div onClick={() => { router.push(`/?chat=${friend.id}`) }}>
+        <div onClick={() => { router.push(`/?chat=${friend.id}`) // TODO push to change clicked function or method
+         }}> 
             <ListItem
                 className='cursor-pointer my-1'>
                 <ListItemPrefix>
