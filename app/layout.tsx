@@ -1,7 +1,6 @@
 import ToasterContext from '@/context/ToasterContext'
 import '../style/globals.css'
 import type { Metadata } from 'next'
-import UserContext from '@/context/UserState'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,9 +16,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ToasterContext />
-        <UserContext>
+      
           {children}
-        </UserContext>
+    
       </body>
     </html>
   )

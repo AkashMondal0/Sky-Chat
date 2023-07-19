@@ -9,8 +9,8 @@ import Button from '@/components/Button/Button';
 import AuthSocialButton from '@/components/Button/AuthSocialButton';
 import { Typography } from '../Material';
 import { LoginFireBase, RegisterFireBase } from '../../services/firebase/auth';
-import UserContext from '@/context/UserContext';
-import { UserContextIn } from '@/interfaces/User';
+import useUser from '@/hooks/states/useUser';
+import { User } from '@/interfaces/User';
 
 type Variant = 'LOGIN' | 'REGISTER'
 
@@ -18,7 +18,7 @@ const AuthForm = () => {
   const [variant, setVariant] = useState<Variant>('LOGIN')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const router = useRouter()
-  const User = useContext<UserContextIn>(UserContext)
+  const UserState = useUser()
 
   const toggleVariant = useCallback(() => {
     if (variant === "LOGIN") {
@@ -52,7 +52,7 @@ const AuthForm = () => {
           }
           // set user
          else{
-          User.dispatch({ type: "SET_USER", payload: user })
+          UserState.setUser(user as User)
           router.push('/')
          }
         })
@@ -68,7 +68,7 @@ const AuthForm = () => {
           }
           // set user
           else{
-            User.dispatch({ type: "SET_USER", payload: user })
+            UserState.setUser(user as User)
             router.push('/')
            }
         })

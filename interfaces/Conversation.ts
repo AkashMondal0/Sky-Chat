@@ -3,13 +3,38 @@ import { User } from "./User"
 
 export interface Conversation {
     id: string
-    createdAt: Date
-    updateAt: Date
-    lastMessageAt: Date
-    name: string
+    createdAt: Date | any
+    updateAt: Date | any
+    lastMessageAt: Date | any
+    lastMessage: string
+    groupName: string | null
+    groupImage: string | null
     isGroup: Boolean
-    messagesIds: string[]
     messages: Message[]
-    userId: string[]
-    user: User[]
+    userIds: string[]
+}
+export interface ConversationRequest {
+    groupImage: Conversation["groupImage"],
+    groupName: Conversation["groupName"],
+    isGroup: Conversation["isGroup"],
+    lastMessage: Conversation["lastMessage"],
+    authorId: User["id"],
+    userId: string
+}
+
+export const initialConversation: Conversation = {
+    id: "",
+    createdAt: new Date(),
+    updateAt: new Date(),
+    lastMessageAt: new Date(),
+    lastMessage: "",
+    groupName: "",
+    groupImage: "",
+    isGroup: false,
+    messages: [],
+    userIds: []
+}
+
+export const conversationLocalData = {
+    
 }

@@ -1,7 +1,15 @@
-import { Account } from "./Account"
-import { Conversation } from "./Conversation"
-import { Message } from "./Message"
-
+import { Conversation, initialConversation } from "./Conversation"
+export const initialUser: User = {
+    id: "",
+    name: '',
+    email: '',
+    emailVerified: false,
+    image: '',
+    createdAt: undefined,
+    updateAt: undefined,
+    Contacts: [],
+    localDataFriends: []
+}
 export interface User {
     id: string
     name: string
@@ -10,16 +18,19 @@ export interface User {
     image: string
     createdAt: Date | undefined
     updateAt: Date | undefined
-
-    conversationsIds: string[]
-    conversation: Conversation[]
-
-    seenMessagesIds: string[]
-    seenMessages: Message[]
-    accounts: Account[]
-    messages: Message[]
+    Contacts: Contacts[]
+    localDataFriends: friend[]
+    activeUser?: boolean
+    lastTimeOnline?: any
 }
 
+
+export interface Contacts {
+    friend: string
+    conversation: string
+    lastMessage?: string
+    lastMessageTime?: any
+}
 
 export interface UserCredential {
     name?: User["name"];
@@ -45,18 +56,23 @@ export interface UserContextIn {
     dispatch: React.Dispatch<Action>;
 }
 
-export const initialState: User = {
-    id: '',
-    name: '',
-    email: '',
-    emailVerified: false,
-    image: '',
-    createdAt: undefined,
-    updateAt: undefined,
-    conversationsIds: [],
-    conversation: [],
-    seenMessagesIds: [],
-    seenMessages: [],
-    accounts: [],
-    messages: []
+export interface friend {
+    friend: User
+    lastMessage: string
+    lastMessageTime: any
+    conversation: Conversation
+    conversationID: string
+}
+
+export const initialFriend: friend = {
+    friend: initialUser,
+    lastMessage: '',
+    lastMessageTime: "",
+    conversation: initialConversation,
+    conversationID: ''
+}
+
+export interface UserState {
+    state: User
+    setUser: (User: User) => void
 }

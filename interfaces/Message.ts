@@ -1,15 +1,45 @@
-import { Conversation } from "./Conversation"
-import { User } from "./User"
 
+export interface reply {
+    message: string
+    img: [] | null
+    video: string | null
+    messageId: string | null
+    authorId: string
+}
+
+export interface img {
+    src: string[]
+    caption: string
+}
+
+export const initialReply:reply = {
+    message: "",
+    img: null,
+    video: null,
+    messageId: null,
+    authorId: "",
+} 
 export interface Message {
     id: string
-    body: string
-    image: string
-    createdAt: Date
+    message: string | ""
+    img: img | [] | false |any
+    reply: reply
     seenIds: string[]
-    seen: User[]
+    createdAt: Date | any
+    updateAt: Date | any
     conversationId: string
-    conversation: Conversation
-    senderId: string
-    sender: User
-} 
+    messageUserId: string
+}
+
+export const initialMessage: Message = {
+    id: "",
+    message: "",
+    img: [],
+    reply: initialReply,
+    seenIds: [],
+    createdAt: undefined,
+    updateAt: undefined,
+    conversationId: "",
+    messageUserId: ""
+}
+

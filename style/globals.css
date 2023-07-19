@@ -8,3 +8,7 @@ body,
 :root {
   height: 100%;
 }
+
+.width-available{
+  width:  -webkit-fill-available;
+}

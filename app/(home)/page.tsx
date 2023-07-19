@@ -1,30 +1,63 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
+import React from "react"
 import { useRouter } from "next/navigation"
-import { useContext, useEffect } from "react"
+import { useEffect, useState } from "react"
 import routesName from "@/routes"
-import UserContext from "@/context/UserContext"
-import { UserContextIn } from "@/interfaces/User"
-import HomePage from "./home"
+import { User} from "@/interfaces/User"
 import { GetToken } from "@/functions/localData"
-import { GetUserData } from "@/services/firebase/UserDoc"
+import Home from "@/components/inBox"
+import { doc, onSnapshot } from "firebase/firestore"
+import { db } from "@/services/firebase/config"
+import { setData } from "./home"
+import useUser from "@/hooks/states/useUser"
+
+type loading = true | false
+
 
 export default function Index() {
-  const User = useContext<UserContextIn>(UserContext)
+  const [loading, setLoading] = useState<loading>(true)
+  const userState = useUser()
   const router = useRouter()
-  const get = async (token: string) => {
-    const userData = await GetUserData(token)
-    userData ? User.dispatch({ type: "SET_USER", payload: userData }) : router.replace(routesName.auth)
-  }
+
+
   useEffect(() => {
     const token = GetToken()
-    !token ? router.replace(routesName.auth) : get(token)
+    if (token) {
+      console.log("start") // TODO: remove console.log
+      try {
+        const unSubscribe = onSnapshot(
+          doc(db, "users", token),
+          { includeMetadataChanges: true },
+          (doc) => {
+            setData(doc.data() as User)
+              .then((data) => {
+                const state: User = {
+                  ...doc.data() as User,
+                  localDataFriends: data
+                }
+                userState.setUser(state)
+              })
+              .catch((e) => { console.log(e) })
+              .finally(() => {
+                setLoading(false)
+              })
+          })
+        return () => {
+          unSubscribe()
+        }
+      } catch (e) {
+        console.log("error", e)
+      }
+    } else {
+      router.replace(routesName.auth)
+    }
   }, [router])
+
 
   return (
     <div>
-      Loading....
-      <HomePage />
+      {loading ? "Loading...." : <Home />}
     </div>
   )
 }
