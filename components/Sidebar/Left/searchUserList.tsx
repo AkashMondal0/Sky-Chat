@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { steps } from '.'
 import { BiArrowBack } from 'react-icons/bi'
 import { Avatar, List, ListItem, ListItemPrefix, Typography } from '@/app/Material'
-import UserCard from '../../Card/userCard'
-import { User, UserContextIn, UserState } from '@/interfaces/User'
-import { ConversationRequest } from '@/interfaces/Conversation'
+import { User, UserState, friendRequest } from '@/interfaces/User'
 import { GetUsers } from '@/services/firebase/UserDoc'
-import { CreateConversation } from '@/services/firebase/Conversation'
+import UserCard from '@/components/Card/UserCard'
+import { BtnInstagram } from '@/components/Button/Button'
+import { CreateFriendRequest } from '@/services/firebase/friendRequest'
 
 interface SearchUserList {
   onTabChange: (value: steps) => void
@@ -27,42 +27,36 @@ const SearchUserList: React.FC<SearchUserList> = ({
     get()
   }, [])
 
-  const handle = async (id: string) => {
-    const data: ConversationRequest = {
-      groupImage: null,
-      groupName: null,
-      isGroup: false,
-      lastMessage: "new friend",
-      authorId: UserState.state.id,
-      userId: id
+  const handle = async (friend: User) => {
+    const FriendRequest: friendRequest = {
+      sender: UserState.state,
+      status: false,
+      receiver: friend,
+      keyValue: 'SENDER',
+      id: ''
     }
-    CreateConversation(data)
+    CreateFriendRequest(FriendRequest)
   }
-
-  return <div>
-    <div className='p-3 flex items-center gap-5 sticky top-0 z-50 px-4 py-2 bg-white'>
+  return <div className='p-3'>
+    <div className='flex items-center gap-2 my-4'>
       <BiArrowBack className='cursor-pointer' size={30} onClick={() => { onTabChange("myUserList") }} />
       <Typography variant="h4">Search</Typography>
     </div>
     <List>
-      {users.map((item, index: number) => (
-        <div key={index} onClick={() => { handle(item.id) }}>
-          <ListItem
-            className='cursor-pointer my-1'>
-            <ListItemPrefix>
-              <Avatar variant="circular" alt="candice" src={"https://assets.mycast.io/actor_images/actor-olivia-sanabia-279726_large.jpg?1633292709"} />
-            </ListItemPrefix>
-            <div>
-              <Typography variant="h6" color="blue-gray">
-                {item.name || "Loading..."}
-              </Typography>
-              <Typography variant="small" color="gray" className="font-normal">
-                Software Engineer
-              </Typography>
-            </div>
-          </ListItem>
-        </div>
-      ))}
+      {users.map((item, index: number) => <UserCard
+        key={index}
+        profileImg={item.image} name={item.name}
+        activeUser={false}
+        email={item.email}
+        id={item.id}
+        right={
+          <>
+            <BtnInstagram
+              onClick={() => { handle(item) }}
+              label={"Add"} />
+          </>
+        }
+      />)}
     </List>
   </div >
 }

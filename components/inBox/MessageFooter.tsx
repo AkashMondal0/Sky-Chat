@@ -5,10 +5,12 @@ import { HiOutlinePhotograph } from 'react-icons/hi';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BsMic } from 'react-icons/bs';
 import { Message, initialMessage, initialReply } from '@/interfaces/Message';
-import uuid from 'uuid-random'
+
 import { CreateMessage } from '@/services/firebase/message';
 import { RxCrossCircled } from 'react-icons/rx';
-import useReplyMessage, { UserReply } from '@/hooks/useReply';
+import useReplyMessage from '@/hooks/useReply';
+import uuid4 from 'uuid4';
+import useUser from '@/hooks/states/useUser';
 
 interface InputProps {
     conversationId: string
@@ -19,12 +21,13 @@ export const MessageFooter: React.FC<InputProps> = ({
     conversationId,
     messageUserId
 }) => {
+    const UserState = useUser()
     const replyState = useReplyMessage()
     const [input, setInput] = useState<Message>({
-        id: uuid(), // message id
+        id: uuid4(), // message id
         message: '',
         img: [],
-        reply: false,
+        reply: initialReply,
         seenIds: [],
         messageUserId: messageUserId, // user id
         createdAt: undefined,
@@ -33,7 +36,7 @@ export const MessageFooter: React.FC<InputProps> = ({
     })
     const handleSend = async () => {
         CreateMessage({ ...input, conversationId: conversationId, reply: replyState.state })
-        setInput({ ...initialMessage, messageUserId: messageUserId, id: uuid() })
+        setInput({ ...initialMessage, messageUserId: messageUserId, id: uuid4() })
         replyState.setReply(initialReply)
     }
 
@@ -42,7 +45,7 @@ export const MessageFooter: React.FC<InputProps> = ({
         const files = event.target.files.length
         for (let i = 0; i < files; i++) {
             const img = event.target.files[i]
-            img['id'] = uuid()
+            img['id'] = uuid4()
             fileArray.push(event.target.files[i])
         }
         const stateImages = [...input.img, ...fileArray]

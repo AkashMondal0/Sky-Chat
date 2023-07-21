@@ -19,12 +19,12 @@ const RightSideBar: React.FC<RightSideBar> = ({
             </div>
             <div className='cursor-pointer flex p-4 border-t-[1px] border-b-[1px] border-gray-300 my-5 items-center hover:bg-gray-100'>
                 <ListItemPrefix>
-                    <Avatar color='green' withBorder={friend?.friend.activeUser} size='xl'
-                        variant="circular" alt="candice" src={friend?.friend.image} />
+                    <Avatar color='green' withBorder={friend?.details.activeUser} size='xl'
+                        variant="circular" alt="candice" src={friend?.details.image} />
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">
-                        {friend?.friend.name || "Loading..."}
+                        {friend?.details.name || "Loading..."}
                     </Typography>
                     <Typography variant="small" color="gray" className="font-normal">
                         Software Engineer

@@ -5,22 +5,34 @@ export const initialUser: User = {
     email: '',
     emailVerified: false,
     image: '',
-    createdAt: undefined,
-    updateAt: undefined,
+    create: new Date(),
+    updateAt: new Date(),
     Contacts: [],
-    localDataFriends: []
+    localDataFriends: [],
+    FriendRequest: [],
+    activeUser: false,
 }
+export const initialFriend: friend = {
+    details: initialUser,
+    lastMessage: '',
+    lastMessageTime: new Date(),
+    conversation: initialConversation,
+    conversationID: ''
+}
+
 export interface User {
     id: string
     name: string
     email: string
+    bio?: string
     emailVerified: boolean
     image: string
-    createdAt: Date | undefined
-    updateAt: Date | undefined
+    create: any
+    updateAt: any
     Contacts: Contacts[]
+    FriendRequest: friendRequest[]
     localDataFriends: friend[]
-    activeUser?: boolean
+    activeUser: boolean
     lastTimeOnline?: any
 }
 
@@ -57,22 +69,26 @@ export interface UserContextIn {
 }
 
 export interface friend {
-    friend: User
+    details: User
     lastMessage: string
     lastMessageTime: any
     conversation: Conversation
     conversationID: string
 }
 
-export const initialFriend: friend = {
-    friend: initialUser,
-    lastMessage: '',
-    lastMessageTime: "",
-    conversation: initialConversation,
-    conversationID: ''
-}
 
 export interface UserState {
     state: User
     setUser: (User: User) => void
 }
+
+export interface friendRequest {
+    receiver: User
+    sender: User
+    id: string
+    createDate?: any
+    status: boolean
+    keyValue: idValue
+}
+
+type idValue = "SENDER" | "RECEIVER"

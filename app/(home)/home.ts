@@ -10,7 +10,7 @@ const setData = async (data: User) => {
 
     for (let i = 0; i < Contacts.length; i++) {
         const friends: friend = {
-            friend: await GetUserData(Contacts[i].friend) as User,
+            details: await GetUserData(Contacts[i].friend) as User,
             lastMessage: Contacts[i].lastMessage || "",
             lastMessageTime: Contacts[i].lastMessageTime,
             conversation: await GetConversationData(Contacts[i].conversation) as Conversation,

@@ -1,9 +1,8 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { firebaseAuth } from "@/services/firebase/config";
-import { User, UserCredential } from "@/interfaces/User";
+import { User, UserCredential, initialUser } from "@/interfaces/User";
 import { CreateUserData } from "./UserDoc";
-import { SetToken } from "@/functions/localData";
-import { initialUser } from "@/context/User/UserReducer";
+import { SetToken } from "@/functions/localData"
 
 
 const LoginFireBase = async (Data: UserCredential) => {

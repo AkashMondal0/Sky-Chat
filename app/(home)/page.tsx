@@ -24,7 +24,7 @@ export default function Index() {
   useEffect(() => {
     const token = GetToken()
     if (token) {
-      console.log("start") // TODO: remove console.log
+      console.log("start User fetch") // TODO: remove console.log
       try {
         const unSubscribe = onSnapshot(
           doc(db, "users", token),
@@ -34,7 +34,8 @@ export default function Index() {
               .then((data) => {
                 const state: User = {
                   ...doc.data() as User,
-                  localDataFriends: data
+                  localDataFriends: data,
+                  activeUser: true
                 }
                 userState.setUser(state)
               })

@@ -31,8 +31,6 @@ const Home = () => {
   const Friend = useFriend()
 
   useEffect(() => {
-    console.log("conversation") // TODO: remove console.log
-    // UpdateUserStatus(id, true)
     if (friendIdParams) {
       console.log("conversation") // TODO: remove console.log
       FindFriend(friendIdParams, localDataFriends).then((data) => {
@@ -41,7 +39,6 @@ const Home = () => {
           doc(db, "conversations", data?.conversation.id as string),
           { includeMetadataChanges: true },
           (doc) => {
-            // ... 
             conversation.setConversation({ ...doc.data() as Conversation, id: data?.conversation.id as string })
           });
         return () => unSubscribe()

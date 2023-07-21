@@ -13,16 +13,19 @@ const CreateMessage = async (message: Message) => {
             }
         }
         await updateDoc(doc(db, "conversations", message.conversationId), {
+            lastMessage: message.message,
+            lastMessageAt: new Date().toISOString(),
             messages: arrayUnion({
                 id: message.id,
                 message: message.message,
                 img: imgArray,
                 reply: message.reply,
                 seenIds: message.seenIds,
-                createdAt: new Date(),
-                updateAt: new Date(),
+                createdAt: new Date().toISOString(),
+                updateAt: new Date().toISOString(),
+                date: new Date().toISOString(),
                 conversationId: message.conversationId,
-                messageUserId: message.messageUserId,
+                messageUserId: message.messageUserId
             })
         });
     } catch (error) {

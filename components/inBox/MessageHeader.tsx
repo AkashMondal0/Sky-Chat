@@ -17,6 +17,7 @@ import useFriend from '@/hooks/states/useFriend'
 import { BiArrowBack } from 'react-icons/bi'
 import { useRouter } from 'next/navigation'
 import useConversation from '@/hooks/states/useConversation'
+import { timeFormat } from '@/functions/dateTimeFormat'
 
 interface MessageHeader {
   conversation: Conversation
@@ -43,19 +44,19 @@ const MessageHeader: React.FC<MessageHeader> = () => {
         }} />
         <ListItemPrefix>
           <Avatar
-            withBorder={friend.state.friend.activeUser}
+            withBorder={friend.state.details.activeUser}
             color='green'
             size="md"
             variant="circular"
             alt="candice"
-            src={friend.state.friend.image} />
+            src={friend.state.details.image} />
         </ListItemPrefix>
         <div>
           <Typography variant="h6" color="blue-gray">
-            {friend.state.friend.name}
+            {friend.state.details.name}
           </Typography>
           <Typography variant="small" color="gray" className="font-normal">
-            {friend.state.friend.email}
+            {timeFormat(friend.state.details.lastTimeOnline) || "offline"}
           </Typography>
         </div>
       </div>

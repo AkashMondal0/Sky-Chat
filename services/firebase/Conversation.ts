@@ -1,13 +1,14 @@
-import uuid from 'uuid-random';
 import { ConversationRequest } from "@/interfaces/Conversation";
-import { doc, getDoc, updateDoc, serverTimestamp, arrayUnion, setDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion, setDoc, serverTimestamp } from "firebase/firestore";
 import { GetUserData } from "./UserDoc";
 import { db } from "./config";
 import { User } from "@/interfaces/User";
+import uuid4  from "uuid4";
+
 
 
 const CreateConversation = async (data: ConversationRequest) => {
-    const newID = uuid()
+    const newID = uuid4()
     try {
         const userFind = await GetUserData(data.authorId) as User
         const friend = userFind.Contacts.find((item) => item.friend === data.userId)
@@ -15,14 +16,15 @@ const CreateConversation = async (data: ConversationRequest) => {
         if (!friend) {
             setDoc(doc(db, "conversations", newID), {
                 id: newID,
-                createdAt: serverTimestamp(),
-                updateAt: serverTimestamp(),
-                lastMessageAt: serverTimestamp(),
+                createdAt: new Date().toDateString(),
+                updateAt: new Date().toDateString(),
+                lastMessageAt: new Date().toDateString(),
                 lastMessage: data.lastMessage,
                 groupName: data.groupName,
                 groupImage: data.groupImage,
                 isGroup: data.isGroup,
                 messages: [],
+                orderDate:serverTimestamp(),
                 userIds: [data.authorId, data.userId],
             }).then(() => {
                 updateDoc(doc(db, "users", data.authorId), {

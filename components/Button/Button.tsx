@@ -9,6 +9,7 @@ interface ButtonProps {
   secondary?: boolean
   danger?: boolean
   disabled?: boolean
+  label?: string
 }
 const Button: React.FC<ButtonProps> = ({
   type,
@@ -48,3 +49,31 @@ const Button: React.FC<ButtonProps> = ({
 }
 
 export default Button
+
+const BtnInstagram: React.FC<ButtonProps> = ({
+  type,
+  fullWidth,
+  children,
+  onClick,
+  secondary,
+  danger,
+  disabled,
+  label
+}) => {
+  return <button
+    onClick={onClick}
+    type={type}
+    disabled={disabled}
+    className={` 
+    p-1 px-2 text-base
+   opacity-90 font-semibold
+   ${fullWidth && "w-full"}
+    ${!danger ? "bg-blue-500 hover:bg-blue-600 text-white"
+        :
+        "bg-gray-300 hover:bg-gray-300 text-gray-900 focus-visible:outline-gray-600"}
+   rounded-md`}>
+    {label}
+  </button>
+}
+
+export { BtnInstagram }

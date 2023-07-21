@@ -1,38 +1,7 @@
-import { collection, doc, getDoc, getDocs, setDoc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDoc, getDocs, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./config";
-import { User } from "@/interfaces/User";
-
-const CreateUserData = async (data: User) => {
-    try {
-        await setDoc(doc(db, "users", data.id), {
-            id: data.id,
-            name: data.name,
-            email: data.email,
-            emailVerified: false,
-            image: data.image,
-            createdAt: serverTimestamp(),
-            updateAt: serverTimestamp(),
-            Contacts: [],
-            activeUser: true,
-            lastTimeOnline: serverTimestamp()
-        })
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-const UpdateUserStatus = async (UserId: string, activeUser: boolean) => {
-    // console.log(UserId, activeUser)
-    try {
-        await updateDoc(doc(db, "users", UserId), {
-            activeUser: activeUser,
-            lastTimeOnline: serverTimestamp()
-        });
-    } catch (error) {
-        console.log(error)
-    }
-}
-
+import { User, friendRequest, initialUser } from "@/interfaces/User";
+import uuid4 from "uuid4";
 const GetUserData = async (id: string) => {
     try {
         const docSnap = await getDoc(doc(db, "users", id));
@@ -52,10 +21,46 @@ const GetUsers = async () => {
         return null
     }
 }
+const CreateUserData = async (data: User) => {
+    const newUser = {
+        ...initialUser,
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        emailVerified: false,
+        image: data.image,
+        create: new Date().toISOString(),
+        updateAt: new Date().toDateString(),
+        lastTimeOnline: new Date().toISOString(),
+        activeUser: true,
+        orderDate: serverTimestamp()
+    }
+    try {
+        await setDoc(doc(db, "users", data.id), newUser)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+const UpdateUserStatus = async (UserId: string, activeUser: boolean) => {
+    try {
+        await updateDoc(doc(db, "users", UserId), {
+            activeUser: activeUser,
+            lastTimeOnline: new Date().toISOString(),
+        });
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+
+
 
 export {
     CreateUserData,
     GetUserData,
     GetUsers,
-    UpdateUserStatus
+    UpdateUserStatus,
 }
