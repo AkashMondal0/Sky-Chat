@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, List, Typography } from '@/app/Material'
+import { List, Typography } from '@/app/Material'
 import { LuEdit } from 'react-icons/lu'
 import { steps } from '.'
 import { UserState, initialUser } from '@/interfaces/User'
@@ -8,7 +8,8 @@ import { useRouter } from 'next/navigation'
 import { RemoveToken } from '@/functions/localData'
 import routesName from '@/routes'
 import { UpdateUserStatus } from '@/services/firebase/UserDoc'
-import FriendCard from '../../Card/FriendCard'
+import ConversationCard from '../../Card/ConversationCard'
+
 
 interface MyUserList {
     onTabChange: (value: steps) => void
@@ -19,7 +20,6 @@ const MyUserList: React.FC<MyUserList> = ({
     UserState
 }) => {
     const router = useRouter()
-    const { name, localDataFriends, activeUser } = UserState.state
     const userState = useUser()
 
     const logout = () => {
@@ -29,12 +29,13 @@ const MyUserList: React.FC<MyUserList> = ({
         router.replace(routesName.auth)
     }
 
+
     return (
         <>
-            <div className='h-[90px] sticky top-0 z-50 px-4 py-2 bg-white my-4'>
+            <div className='h-[90px] sticky top-0 z-50 px-4 bg-white my-4'>
                 <div className='justify-between items-center flex pt-1'>
-                    <Typography variant="h4">{name}</Typography>
-                    {activeUser && <div className='cursor-pointer' onClick={logout}>Logout</div>}
+                    <Typography variant="h4">{userState.state.name}</Typography>
+                    {userState.state.activeUser && <div className='cursor-pointer' onClick={logout}>Logout</div>}
                     <LuEdit size={26} className='cursor-pointer' onClick={() => { onTabChange("searchUserList") }} />
                 </div>
                 <div className='flex justify-between pt-4'>
@@ -44,8 +45,8 @@ const MyUserList: React.FC<MyUserList> = ({
                 </div>
             </div>
             <List>
-                {localDataFriends.map((item, index) => {
-                    return <FriendCard key={index} localDataFriends={item} />
+                {userState.state?.Conversations?.map((item, index) => {
+                    return item.type === "PERSONAL" && <ConversationCard key={index} conversation={item} />
                 })}
             </List>
         </>

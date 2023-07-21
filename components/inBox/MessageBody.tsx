@@ -1,22 +1,23 @@
 import React, { useEffect, useRef } from 'react'
 import MessageCard from '../Card/MessageCard'
 import { UserState } from '@/interfaces/User'
-import { Conversation } from '@/interfaces/Conversation'
-import useFriend from '@/hooks/states/useFriend'
 import { timeFormat, dateFormat } from '@/functions/dateTimeFormat'
+import useConversation from '@/hooks/states/useConversation'
+import { Conversation } from '@/interfaces/Conversation'
 
 
 interface MessageBodyProps {
-  conversation: Conversation | null
   UserState: UserState
+  conversation: Conversation
 }
 const MessageBody: React.FC<MessageBodyProps> = ({
-  conversation,
-  UserState
+  UserState,
+  conversation
 }) => {
   const { id, image } = UserState.state
-  const Friend = useFriend()
   const messagesEndRef = useRef(null) as any
+  // const currentConversation = useConversation()
+  const { messages, personal: { receiver } } = conversation
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView()
@@ -26,14 +27,14 @@ const MessageBody: React.FC<MessageBodyProps> = ({
   useEffect(() => {
     console.log("scrolling") // TODO: remove this
     scrollToBottom()
-  }, [conversation?.messages]);
+  }, [messages]);
 
 
 
   return (
     <div>
       <div className='h-[85vh] overflow-y-scroll pt-3 px-2'>
-        <>{conversation?.messages.filter((value, index, dateArr) => index === dateArr.findIndex((t) => (dateFormat(t.date) === dateFormat(value.date)))) // this is dateARRAY day by day 
+        <>{messages.filter((value, index, dateArr) => index === dateArr.findIndex((t) => (dateFormat(t.date) === dateFormat(value.date)))) // this is dateARRAY day by day 
           .map((item, index) => {
             return <div className='' key={index}>
               <div className='flex gap-3 w-full justify-center'>
@@ -43,12 +44,12 @@ const MessageBody: React.FC<MessageBodyProps> = ({
 
               {/* this days messages ==> item.date */}
               <div>
-                {conversation?.messages.map((message, index) => {
+                {messages.map((message, index) => {
                   return dateFormat(item.date) === dateFormat(message.date) && <MessageCard
                     key={index}
                     Message={message}
                     isSender={message.messageUserId === id}
-                    ProfileImageUrl={message.messageUserId === id ? image : Friend?.state?.details.image
+                    ProfileImageUrl={message.messageUserId === id ? image : receiver?.image
                       || 'https://assets.mycast.io/actor_images/actor-olivia-sanabia-279726_large.jpg?1633292709'} />
 
                 })}

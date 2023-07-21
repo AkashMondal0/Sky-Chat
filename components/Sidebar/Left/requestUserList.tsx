@@ -15,8 +15,8 @@ const requestUserList: React.FC<requestUserList> = ({
     UserState
 }) => {
 
-    return <div className='p-3'>
-        <div className='flex items-center gap-2 my-4'>
+    return <>
+        <div className='flex items-center gap-2 m-4'>
             <BiArrowBack className='cursor-pointer' size={30} onClick={() => { onTabChange("myUserList") }} />
             <Typography variant="h4">Requests</Typography>
         </div>
@@ -47,7 +47,7 @@ const requestUserList: React.FC<requestUserList> = ({
                 />
             })}
         </div>
-    </div>
+    </>
 }
 
 export default requestUserList

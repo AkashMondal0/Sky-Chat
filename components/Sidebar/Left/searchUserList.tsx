@@ -37,8 +37,8 @@ const SearchUserList: React.FC<SearchUserList> = ({
     }
     CreateFriendRequest(FriendRequest)
   }
-  return <div className='p-3'>
-    <div className='flex items-center gap-2 my-4'>
+  return <>
+    <div className='flex items-center gap-2 m-4'>
       <BiArrowBack className='cursor-pointer' size={30} onClick={() => { onTabChange("myUserList") }} />
       <Typography variant="h4">Search</Typography>
     </div>
@@ -58,6 +58,6 @@ const SearchUserList: React.FC<SearchUserList> = ({
         }
       />)}
     </List>
-  </div >
+  </ >
 }
 export default SearchUserList

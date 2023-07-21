@@ -4,7 +4,7 @@ import React from "react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import routesName from "@/routes"
-import { User} from "@/interfaces/User"
+import { User } from "@/interfaces/User"
 import { GetToken } from "@/functions/localData"
 import Home from "@/components/inBox"
 import { doc, onSnapshot } from "firebase/firestore"
@@ -24,25 +24,19 @@ export default function Index() {
   useEffect(() => {
     const token = GetToken()
     if (token) {
-      console.log("start User fetch") // TODO: remove console.log
       try {
         const unSubscribe = onSnapshot(
           doc(db, "users", token),
           { includeMetadataChanges: true },
           (doc) => {
-            setData(doc.data() as User)
-              .then((data) => {
-                const state: User = {
-                  ...doc.data() as User,
-                  localDataFriends: data,
-                  activeUser: true
-                }
-                userState.setUser(state)
-              })
-              .catch((e) => { console.log(e) })
-              .finally(() => {
-                setLoading(false)
-              })
+            const state: User = {
+              ...doc.data() as User,
+              activeUser: true
+            }
+            // console.log("User", state)
+            console.log("start User fetch") // TODO: remove console.log
+            userState.setUser(state)
+            setLoading(false)
           })
         return () => {
           unSubscribe()

@@ -3,12 +3,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react'
 import MessageHeader from './MessageHeader'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import MessageBody from './MessageBody'
 import LeftSideBar from '../Sidebar/Left'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { db } from '@/services/firebase/config'
-import { Conversation } from '@/interfaces/Conversation'
+import { Conversation, initialConversation } from '@/interfaces/Conversation'
 import { MessageFooter } from './MessageFooter'
 import { LiaFacebookMessenger } from 'react-icons/lia'
 import RightSideBar from '../Sidebar/Right'
@@ -16,9 +16,7 @@ import useRightSideBar from '@/hooks/useRightSideBar'
 import { UpdateUserStatus } from '@/services/firebase/UserDoc'
 import useConversation from '@/hooks/states/useConversation'
 import useUser from '@/hooks/states/useUser'
-import { FindFriend } from './inBox'
-import useFriend from '@/hooks/states/useFriend'
-import { UserState, friend } from '@/interfaces/User'
+import { UserState } from '@/interfaces/User'
 import SideContainer from '../Sidebar/SideContainer';
 
 
@@ -27,22 +25,21 @@ const Home = () => {
   const UserState = useUser()
   const conversation = useConversation()
   const rightSideBar = useRightSideBar()
-  const { localDataFriends, id } = UserState.state
-  const Friend = useFriend()
+  const { id } = UserState.state // current user id
+  const router = useRouter()
+  const asPath = usePathname()
+
 
   useEffect(() => {
     if (friendIdParams) {
-      console.log("conversation") // TODO: remove console.log
-      FindFriend(friendIdParams, localDataFriends).then((data) => {
-        Friend.setUser(data as friend)
-        const unSubscribe = onSnapshot(
-          doc(db, "conversations", data?.conversation.id as string),
-          { includeMetadataChanges: true },
-          (doc) => {
-            conversation.setConversation({ ...doc.data() as Conversation, id: data?.conversation.id as string })
-          });
-        return () => unSubscribe()
-      })
+      console.log("conversation message") // TODO: remove console.log
+      const unSubscribe = onSnapshot(
+        doc(db, "conversations", !conversation.currentConversationId ? friendIdParams : conversation.currentConversationId),
+        { includeMetadataChanges: true },
+        (doc) => {
+          conversation.setCurrentConversation({ ...doc.data() as Conversation })
+        });
+      return () => unSubscribe()
     }
   }, [friendIdParams])
 
@@ -69,14 +66,14 @@ const Home = () => {
       </SideContainer>
       <main className='w-full'>
         <div className='h-[100vh] overflow-y-scroll'>
-          {conversation.state.id ?
-            <><MessageHeader UserState={UserState}
-              conversation={conversation.state} />
-              <MessageBody conversation={conversation.state}
-                UserState={UserState} />
-              <MessageFooter conversationId={conversation.state.id}
-                messageUserId={UserState.state.id} /></>
-            : <ResponsiveSmall UserState={UserState} />}
+          {conversation.currentConversation.id || asPath !== "/" ?
+            <>
+              <MessageHeader conversation={conversation.currentConversation} UserState={UserState} />
+              <MessageBody conversation={conversation.currentConversation} UserState={UserState} />
+              <MessageFooter conversation={conversation.currentConversation} messageUserId={UserState.state.id} />
+            </>
+            : <ResponsiveSmall UserState={UserState} />
+          }
         </div>
       </main>
       {rightSideBar.sideBar && <RightSideBar />}

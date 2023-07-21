@@ -1,40 +1,40 @@
 import { Message } from "./Message"
 import { User } from "./User"
 
+type chatType = "PRIVATE" | "GROUP" | "CHANNEL" | "PERSONAL"
 export interface Conversation {
     id: string
-    createdAt: Date | any
-    updateAt: Date | any
-    lastMessageAt: Date | any
+    createDate: Date | any
+    updateDate: Date | any
+    lastMessageDate: Date | any
     lastMessage: string
+    type: chatType
+    isGroup: Boolean | false
     groupName: string | null
     groupImage: string | null
-    isGroup: Boolean
+    groupMembers: User[]
     messages: Message[]
-    userIds: string[]
+    personal: {
+        sender: User
+        receiver: User
+    }
 }
-export interface ConversationRequest {
-    groupImage: Conversation["groupImage"],
-    groupName: Conversation["groupName"],
-    isGroup: Conversation["isGroup"],
-    lastMessage: Conversation["lastMessage"],
-    authorId: User["id"],
-    userId: string
-}
+
 
 export const initialConversation: Conversation = {
     id: "",
-    createdAt: new Date(),
-    updateAt: new Date(),
-    lastMessageAt: new Date(),
+    createDate: undefined,
+    updateDate: undefined,
+    lastMessageDate: undefined,
     lastMessage: "",
-    groupName: "",
-    groupImage: "",
     isGroup: false,
+    groupName: "",
+    type: "PERSONAL",
+    groupImage: "",
+    groupMembers: [],
     messages: [],
-    userIds: []
-}
-
-export const conversationLocalData = {
-    
+    personal: {
+        sender: {} as User,
+        receiver: {} as User
+    }
 }

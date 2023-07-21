@@ -5,9 +5,10 @@ import { BiArrowBack } from 'react-icons/bi'
 import { Typography } from '@/app/Material'
 import UserCard from '@/components/Card/UserCard'
 import { BtnInstagram } from '@/components/Button/Button'
-import { ConversationRequest } from '@/interfaces/Conversation'
 import { RemoveFriendRequest } from '@/services/firebase/friendRequest'
 import { CreateConversation } from '@/services/firebase/Conversation'
+import { Conversation } from '@/interfaces/Conversation'
+import uuid4 from 'uuid4'
 
 interface notification {
     onTabChange: (value: steps) => void
@@ -18,26 +19,35 @@ const Notification: React.FC<notification> = ({
     UserState
 }) => {
     const handle = async (friend: User, FriendRequestId: string) => {
-        const data: ConversationRequest = {
-            groupImage: null,
-            groupName: null,
+        const d = new Date().toISOString()
+        const data: Conversation = {
+            id: uuid4(),
+            createDate: d,
+            updateDate: d,
+            lastMessageDate: d,
+            lastMessage: 'new conversation',
+            type: "PERSONAL",
             isGroup: false,
-            lastMessage: "new friend",
-            authorId: UserState.state.id,
-            userId: friend.id,
+            groupName: null,
+            groupImage: null,
+            groupMembers: [],
+            messages: [],
+            personal: {
+                sender: UserState.state,
+                receiver: friend
+            },
         }
         RemoveFriendRequest(FriendRequestId, UserState.state, friend)
         CreateConversation(data)
     }
-    return <div className='p-3'>
-        <div className='flex items-center gap-2 my-4'>
+    return <>
+        <div className='flex items-center gap-2 m-4'>
             <BiArrowBack className='cursor-pointer' size={30} onClick={() => { onTabChange("myUserList") }} />
             <Typography variant="h4">Notification</Typography>
         </div>
         <div>
             {UserState.state.FriendRequest?.map((item, index) => {
                 const { id, receiver, keyValue } = item
-                // console.log(item)
                 return keyValue == "RECEIVER" && <UserCard
                     key={index}
                     profileImg={receiver?.image}
@@ -50,7 +60,7 @@ const Notification: React.FC<notification> = ({
                         <>
                             <BtnInstagram
                                 danger
-                                onClick={() => { }}
+                                onClick={() => { RemoveFriendRequest(id, UserState.state, receiver) }}
                                 label={"Cancel"} />
                             <BtnInstagram
                                 onClick={() => { handle(receiver, id) }}
@@ -59,7 +69,7 @@ const Notification: React.FC<notification> = ({
                 />
             })}
         </div>
-    </div>
+    </>
 }
 
 export default Notification

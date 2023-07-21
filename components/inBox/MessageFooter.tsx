@@ -11,17 +11,17 @@ import { RxCrossCircled } from 'react-icons/rx';
 import useReplyMessage from '@/hooks/useReply';
 import uuid4 from 'uuid4';
 import useUser from '@/hooks/states/useUser';
+import { Conversation } from '@/interfaces/Conversation';
 
 interface InputProps {
-    conversationId: string
+    conversation: Conversation
     messageUserId: string
 }
 
 export const MessageFooter: React.FC<InputProps> = ({
-    conversationId,
+    conversation,
     messageUserId
 }) => {
-    const UserState = useUser()
     const replyState = useReplyMessage()
     const [input, setInput] = useState<Message>({
         id: uuid4(), // message id
@@ -32,10 +32,10 @@ export const MessageFooter: React.FC<InputProps> = ({
         messageUserId: messageUserId, // user id
         createdAt: undefined,
         updateAt: undefined,
-        conversationId: conversationId // conversation id
+        conversationId: conversation.id // conversation id
     })
     const handleSend = async () => {
-        CreateMessage({ ...input, conversationId: conversationId, reply: replyState.state })
+        CreateMessage({ ...input, conversationId: conversation.id, reply: replyState.state })
         setInput({ ...initialMessage, messageUserId: messageUserId, id: uuid4() })
         replyState.setReply(initialReply)
     }
