@@ -14,6 +14,7 @@ interface ConversationState {
     setFriendConversation: (friend: User, conversationId: string) => void
     exitCurrentConversation: () => void
     setRef: (ref: string) => void
+    reset(): void
 }
 
 const useConversation = create<ConversationState>((set) => ({
@@ -43,7 +44,8 @@ const useConversation = create<ConversationState>((set) => ({
         isInbox: false,
         currentConversationId: '',
     })),
-    setRef: (Ref: string) => set({ ref: Ref })
+    setRef: (Ref: string) => set({ ref: Ref }),
+    reset: () => set({ conversations: [], currentConversation: initialConversation, friend: initialUser, isInbox: false, currentConversationId: '', ref: "ref" })
 }))
 
 

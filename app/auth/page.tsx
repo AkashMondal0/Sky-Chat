@@ -13,15 +13,17 @@ import { LoginFireBase, RegisterFireBase } from '../../services/firebase/auth';
 import useUser from '@/hooks/states/useUser';
 import { User } from '@/interfaces/User';
 import { UploadPhoto } from '@/services/firebase/uploadFile';
+import useAuthLoading from '@/hooks/authLoading';
+import routesName from '@/routes';
+import { GetToken } from '@/functions/localData';
 
 type Variant = 'LOGIN' | 'REGISTER'
 
 const AuthForm = () => {
   const [variant, setVariant] = useState<Variant>('LOGIN')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isAvatar, setIsAvatar] = useState<File>()
   const router = useRouter()
-  const UserState = useUser()
+  const loading = useAuthLoading()
 
   const toggleVariant = useCallback(() => {
     if (variant === "LOGIN") {
@@ -47,41 +49,52 @@ const AuthForm = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true)
+    loading.startLoading()
 
     if (variant === 'REGISTER') {
       const newData = { ...data, avatar: isAvatar }
       RegisterFireBase(newData)
-        .then((user) => {
-          if (!user) {
-            toast.error("Invalid Credential")
+        .then((data) => {
+          if (data?.status === 400) {
+            toast.error(data.message)
+            loading.stopLoading()
           }
-          // set user
           else {
-            UserState.setUser(user as User)
-            router.push('/')
+            toast.success(data.message)
+            router.replace(routesName.home)
           }
         })
-        .catch(() => toast.error("Something went wrong!"))
-        .finally(() => setIsLoading(false))
+        .catch(() => {
+          toast.error("Something went wrong!")
+          loading.stopLoading()
+        })
     }
 
     if (variant === "LOGIN") {
       LoginFireBase({ email: data.email, password: data.password })
-        .then((user) => {
-          if (!user) {
-            toast.error("Invalid Credential")
+        .then((data) => {
+          if (data?.status === 400) {
+            toast.error(data.message)
+            loading.stopLoading()
           }
-          // set user
           else {
-            UserState.setUser(user as User)
-            router.push('/')
+            toast.success(data.message)
+            router.replace(routesName.home)
           }
         })
-        .catch(() => toast.error("Something went wrong!"))
-        .finally(() => setIsLoading(false))
+        .catch(() => {
+          toast.error("Something went wrong!")
+          loading.stopLoading()
+        })
     }
   }
+  useEffect(() => {
+    
+    const token = GetToken()
+    if (token) {
+      router.replace(routesName.home)
+    }
+  }, [router,loading.state])
 
   return (
     <React.Fragment>
@@ -105,8 +118,8 @@ const AuthForm = () => {
                 <div className='mt-1 flex items-center'>
                   {isAvatar ? <label htmlFor='myImage'>
                     <img className='w-16 h-16 rounded-full object-cover'
-                    alt="not found"
-                    src={URL.createObjectURL(isAvatar)} />
+                      alt="not found"
+                      src={URL.createObjectURL(isAvatar)} />
                   </label>
                     : <span className='inline-block h-16 w-16 rounded-full overflow-hidden bg-gray-100 p-1'>
                       <svg className='h-full w-full text-gray-300' fill='currentColor' viewBox='0 0 24 24'>
@@ -133,7 +146,7 @@ const AuthForm = () => {
                 label='name'
                 id='name'
                 register={register}
-                disabled={isLoading}
+                disabled={loading.state}
                 errors={errors} />
             </>)}
 
@@ -141,17 +154,17 @@ const AuthForm = () => {
               label='email'
               id='email'
               register={register}
-              disabled={isLoading}
+              disabled={loading.state}
               errors={errors} />
             <Input
               label='password'
               id='password'
               register={register}
-              disabled={isLoading}
+              disabled={loading.state}
               errors={errors} />
             <div>
               <Button
-                disabled={isLoading}
+                disabled={loading.state}
                 fullWidth
                 type='submit'
               >{variant === "LOGIN" ? "Sign in" : "Register"}

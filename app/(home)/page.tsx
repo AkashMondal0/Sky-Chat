@@ -10,6 +10,7 @@ import Home from "@/components/inBox"
 import { doc, onSnapshot } from "firebase/firestore"
 import { db } from "@/services/firebase/config"
 import useUser from "@/hooks/states/useUser"
+import useAuthLoading from "@/hooks/authLoading"
 
 type loading = true | false
 
@@ -18,6 +19,7 @@ export default function Index() {
   const [loading, setLoading] = useState<loading>(true)
   const userState = useUser()
   const router = useRouter()
+  const AuthLoading = useAuthLoading()
 
 
   useEffect(() => {
@@ -35,6 +37,7 @@ export default function Index() {
             // console.log("User", state)
             console.log("start User fetch") // TODO: remove console.log
             userState.setUser(state)
+            AuthLoading.stopLoading()
             setLoading(false)
           })
         return () => {

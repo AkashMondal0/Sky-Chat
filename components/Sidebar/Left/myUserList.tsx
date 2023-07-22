@@ -20,7 +20,7 @@ const MyUserList: React.FC<MyUserList> = ({
     onTabChange,
     UserState,
 }) => {
-    const [conversations, setConversations] = useState(UserState.state.Conversations)
+    const [conversations, setConversations] = useState(UserState?.state?.Conversations)
     const router = useRouter()
     const userState = useUser()
     const currentConversation = useConversation()
@@ -30,18 +30,18 @@ const MyUserList: React.FC<MyUserList> = ({
         RemoveToken()
         router.replace(routesName.auth)
         userState.setUser(initialUser)
+        currentConversation.reset()
     }
     useEffect(() => {
         const realtime = userState.state?.Conversations?.sort((a, b) => {
             return b.lastMessageDate - a.lastMessageDate // sort by updateDate
         })
         setConversations(realtime)
-        // console.log("realtime con")
     }, [])
     const indicator = (<div className='w-2 h-2 bg-red-400 rounded-full'></div>)
 
     return (
-        <>
+        <>{userState.state.id && <div>
             <div className='h-[90px] sticky top-0 z-50 px-4 bg-white my-4'>
                 <div className='justify-between items-center flex pt-1'>
                     <Typography variant="h4">{userState.state.name}</Typography>
@@ -52,12 +52,12 @@ const MyUserList: React.FC<MyUserList> = ({
                     <Typography variant="h6">Message</Typography>
                     <div className='text-sm cursor-pointer flex' onClick={() => { onTabChange("notification") }}>
                         Notification
-                        {userState.state.FriendRequest.find(item => item.keyValue === "RECEIVER") && indicator}
+                        {userState.state?.FriendRequest?.find(item => item.keyValue === "RECEIVER") && indicator}
                     </div>
                 </div>
             </div>
             <List>
-                {conversations.reverse().map((item, index) => {
+                {conversations?.reverse()?.map((item, index) => {
                     // console.log(item.id)
                     return item.type === "PERSONAL" && <ConversationCard
                         key={index} conversation={item}
@@ -65,7 +65,7 @@ const MyUserList: React.FC<MyUserList> = ({
                     />
                 })}
             </List>
-        </>
+        </div>}</>
     )
 }
 
