@@ -13,12 +13,16 @@ interface MessageCardProps {
   Message: Message
   isSender: boolean
   ProfileImageUrl: string
+  setSelectedMessage: (value: string) => void
+  selectedMessage: string
 }
 
 const MessageCard: React.FC<MessageCardProps> = ({
   Message,
   isSender,
-  ProfileImageUrl
+  ProfileImageUrl,
+  setSelectedMessage,
+  selectedMessage
 }) => {
   const { id, message, img, messageUserId, reply } = Message
   const [isHover, setIsHover] = useState("")
@@ -35,7 +39,10 @@ const MessageCard: React.FC<MessageCardProps> = ({
   }
 
   return (
-    <div onMouseOut={() => setIsHover("")}
+    <div 
+    // className={`${selectedMessage===id && "bg-gray-100 rounded-2xl"}`}
+      onClick={() => setSelectedMessage(id)}
+      onMouseOut={() => setIsHover("")}
       onMouseOver={() => {
         setIsHover(id)
       }}>
@@ -50,7 +57,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
         {/* message */}
         {!isSender &&
 
-          <img className='w-10 h-10 rounded-full object-cover'
+          <img className='w-10 h-10 rounded-full object-cover mr-1'
             alt="not found"
             src={ProfileImageUrl || "/images/user.png"} />}
         <div>
@@ -64,8 +71,9 @@ const MessageCard: React.FC<MessageCardProps> = ({
        md:max-w-[30vw] my-[2px]`}>
                 {reply.message}
               </div>
-              {/* {reply?.img.map((image: string, index: number)=><img key={index} src={image} alt="cascac" className='object-cover h-60 w-48 rounded-3xl mb-2 opacity-30' />)} */}
             </>}
+            {reply.img && reply?.img.map((image: string, index: number) =>
+              <img key={index} src={image} alt="cascac" className='object-cover h-60 w-48 rounded-3xl mb-2 opacity-40' />)}
           </div>
           {message && <div className={`p-1 px-4 
        ${!isSender ? "bg-gray-200 text-black" : `bg-blue-400 text-white`}

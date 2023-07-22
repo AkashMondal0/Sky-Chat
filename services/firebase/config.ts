@@ -1,4 +1,5 @@
 'use client'
+import { firebaseConfig } from "@/keys";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -8,14 +9,15 @@ import { getStorage } from "firebase/storage";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyATXUk8_HTw6gVnQiOdk-agcQ6AkXshDW4",
-  authDomain: "nextjs-chat-app-b7eb9.firebaseapp.com",
-  projectId: "nextjs-chat-app-b7eb9",
-  storageBucket: "nextjs-chat-app-b7eb9.appspot.com",
-  messagingSenderId: "628595481613",
-  appId: "1:628595481613:web:5444c4398de72d608a0944"
-};
+// const firebaseConfig = {
+//   apiKey: process.env.APIKEY,
+//   authDomain: process.env.AUTHDOMAIN,
+//   projectId: process.env.PROJECTID,
+//   storageBucket: process.env.STORAGEBUCKET,
+//   messagingSenderId: process.env.MESSAGINGSENDERID,
+//   appId: process.env.APPID,
+//   measurementId:process.env.MEASUREMENTID
+// };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

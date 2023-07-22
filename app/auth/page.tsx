@@ -89,7 +89,6 @@ const AuthForm = () => {
     }
   }
   useEffect(() => {
-    
     const token = GetToken()
     if (token) {
       router.replace(routesName.home)

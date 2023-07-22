@@ -17,7 +17,7 @@ const requestUserList: React.FC<requestUserList> = ({
 
     return <>
         <div className='flex items-center gap-2 m-4'>
-            <BiArrowBack className='cursor-pointer' size={30} onClick={() => { onTabChange("myUserList") }} />
+            <BiArrowBack className='cursor-pointer' size={30} onClick={() => { onTabChange("notification") }} />
             <Typography variant="h4">Requests</Typography>
         </div>
         <div>

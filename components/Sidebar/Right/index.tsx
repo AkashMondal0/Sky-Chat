@@ -10,12 +10,12 @@ const RightSideBar: React.FC<RightSideBar> = ({
 
 }) => {
 
-    const friend = useConversation()
+    const friend = useConversation().friend
 
 
     return (
         <SideContainer>
-            {/* <div className='p-3 flex items-center gap-5 sticky top-0 z-50 px-4 py-4 bg-white'>
+            <div className='p-3 flex items-center gap-5 sticky top-0 z-50 px-4 py-4 bg-white'>
                 <Typography variant="h5">Details</Typography>
             </div>
             <div className='cursor-pointer flex p-4 border-t-[1px] border-b-[1px] border-gray-300 my-5 items-center hover:bg-gray-100'>
@@ -32,7 +32,7 @@ const RightSideBar: React.FC<RightSideBar> = ({
                         Software Engineer bio here 
                     </Typography>
                 </div>
-            </div> */}
+            </div>
             <div className='m-5'>
                 <Typography variant="h6" color="red" className="font-semibold text-base my-4 cursor-pointer">
                     Report

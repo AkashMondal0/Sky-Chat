@@ -20,7 +20,7 @@ const MyUserList: React.FC<MyUserList> = ({
     onTabChange,
     UserState,
 }) => {
-    const [conversations, setConversations] = useState(UserState?.state?.Conversations)
+    const [conversations, setConversations] = useState(UserState.state.Conversations)
     const router = useRouter()
     const userState = useUser()
     const currentConversation = useConversation()
@@ -37,7 +37,7 @@ const MyUserList: React.FC<MyUserList> = ({
             return b.lastMessageDate - a.lastMessageDate // sort by updateDate
         })
         setConversations(realtime)
-    }, [])
+    }, [userState.state?.Conversations])
     const indicator = (<div className='w-2 h-2 bg-red-400 rounded-full'></div>)
 
     return (
@@ -52,12 +52,12 @@ const MyUserList: React.FC<MyUserList> = ({
                     <Typography variant="h6">Message</Typography>
                     <div className='text-sm cursor-pointer flex' onClick={() => { onTabChange("notification") }}>
                         Notification
-                        {userState.state?.FriendRequest?.find(item => item.keyValue === "RECEIVER") && indicator}
+                        {userState.state?.FriendRequest.find(item => item.keyValue === "RECEIVER") && indicator}
                     </div>
                 </div>
             </div>
             <List>
-                {conversations?.reverse()?.map((item, index) => {
+                {conversations.reverse().map((item, index) => {
                     // console.log(item.id)
                     return item.type === "PERSONAL" && <ConversationCard
                         key={index} conversation={item}

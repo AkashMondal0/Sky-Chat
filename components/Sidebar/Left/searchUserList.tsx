@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { steps } from '.'
 import { BiArrowBack } from 'react-icons/bi'
-import { Avatar, List, ListItem, ListItemPrefix, Typography } from '@/app/Material'
+import { Typography } from '@/app/Material'
 import { User, UserState, friendRequest } from '@/interfaces/User'
 import { GetUsers } from '@/services/firebase/UserDoc'
 import UserCard from '@/components/Card/UserCard'
@@ -20,7 +20,8 @@ const SearchUserList: React.FC<SearchUserList> = ({
 
   const get = async () => {
     const users = await GetUsers() as User[]
-    setUsers(users)
+    const UserFilter = users.filter((item) => item.id !== UserState.state.id)
+    setUsers(UserFilter)
   }
 
   useEffect(() => {

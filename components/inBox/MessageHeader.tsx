@@ -57,11 +57,11 @@ const MessageHeader: React.FC<MessageHeader> = ({
             {friend.name}
           </Typography>
           <Typography variant="small" color="gray" className="font-normal">
-            {timeAgoFormat(friend.lastTimeOnline)|| "offline"} Last Online
+            {timeAgoFormat(friend.lastTimeOnline)|| "offline"}
           </Typography>
         </div>
       </div>
-      <div className='flex items-center px-5 cursor-pointer'>
+      <div className='flex items-center cursor-pointer pr-2'>
         <ul className='flex gap-4'>
           <li>
             <BsTelephone size={24} />

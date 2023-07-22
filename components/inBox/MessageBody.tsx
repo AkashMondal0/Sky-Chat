@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MessageCard from '../Card/MessageCard'
 import { UserState } from '@/interfaces/User'
 import { timeFormat, dateFormat } from '@/functions/dateTimeFormat'
@@ -17,8 +17,8 @@ const MessageBody: React.FC<MessageBodyProps> = ({
 }) => {
   const { id, image } = UserState.state
   const messagesEndRef = useRef(null) as any
-  const currentConversation = useConversation()
   const { messages, personal: { receiver } } = conversation
+  const [selectedMessage, setSelectedMessage] = useState("")
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView()
@@ -31,7 +31,6 @@ const MessageBody: React.FC<MessageBodyProps> = ({
     // setRef()
     // currentConversation.setRef(uuid4()) // TODO: remove this
   }, [messages]);
-
 
 
   return (
@@ -53,14 +52,14 @@ const MessageBody: React.FC<MessageBodyProps> = ({
                     Message={message}
                     isSender={message.messageUserId === id}
                     ProfileImageUrl={message.messageUserId === id ? image : receiver?.image
-                      || '/images/user.png'} />
+                      || '/images/user.png'}
+                    setSelectedMessage={setSelectedMessage}
+                    selectedMessage={selectedMessage}
+                  />
                 })}
               </div>
             </div>
           })}</>
-
-
-
         <div className='h-8' ref={messagesEndRef} ></div>
       </div>
     </div>

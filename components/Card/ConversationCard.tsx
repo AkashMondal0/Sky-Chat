@@ -27,12 +27,12 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
 }) => {
     const router = useRouter()
     const currentConversation = useConversation()
-    const UserState = useUser()
+    const currentUser = useUser()
     const [conversation, setConversation] = useState<Conversation>(initialConversation)
     const [user, setUser] = useState<User>(initialUser)
 
     useEffect(() => {
-        const friendId = UserState.state.id === Conversation.personal.sender.id ? Conversation.personal.receiver.id : Conversation.personal.sender.id
+        const friendId = currentUser.state.id === Conversation.personal.sender.id ? Conversation.personal.receiver.id : Conversation.personal.sender.id
         const unSubscribeConversation = onSnapshot(
             doc(db, "conversations", Conversation.id), // conversation id
             { includeMetadataChanges: true },
@@ -42,10 +42,10 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
                 // currentConversation.setRef(uuid4())
                 // 
             })
-            const unSubscribeUser = onSnapshot(
-                doc(db, "users", friendId), // friend id
-                { includeMetadataChanges: true },
-                (doc) => {
+        const unSubscribeUser = onSnapshot(
+            doc(db, "users", friendId), // friend id
+            { includeMetadataChanges: true },
+            (doc) => {
                 console.log("conversation User") // TODO: remove console.log
                 setUser(doc.data() as User)
                 // console.log("user", data) // TODO: remove console.log
@@ -66,9 +66,15 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
             <ListItem
                 className='cursor-pointer my-1'>
                 <ListItemPrefix>
-                    <img className='w-14 h-14 rounded-full object-cover border-[1px]'
-                        alt="not found"
-                        src={user?.image || "/images/user.png"} />
+                    <div className="mr-3 relative flex justify-center items-center border-[2px] rounded-full">
+                        <div className={`absolute right-0 bottom-1 w-3 h-3 rounded-full 
+                        ${user.activeUser ? "bg-green-500" : " bg-red-500"}`} />
+
+                        <img className='w-14 h-14 rounded-full object-cover border-[1px]'
+                            alt="not found"
+                            src={user?.image || "/images/user.png"} />
+                    </div>
+
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">
