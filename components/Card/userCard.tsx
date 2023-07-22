@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React from 'react'
@@ -38,14 +39,14 @@ const UserCard: React.FC<UserCardProps> = ({
         <div onClick={() => {
 
         }}>
-            <ListItem className='cursor-pointer my-1 flex justify-between items-center'>
+            <div className='cursor-pointer flex justify-between items-center py-3 mx-1
+             px-2 rounded-xl hover:bg-gray-100'>
                 <div className='flex justify-between items-center'>
                     <ListItemPrefix>
-                        <Avatar color='green'
-                            size='md'
-                            withBorder={activeUser}
-                            variant="circular"
-                            alt="candice" src={profileImg} />
+                      
+                        <img className='w-14 h-14 rounded-full object-cover border-[1px]'
+                            alt="not found"
+                            src={profileImg || "/images/user.png"} />
                     </ListItemPrefix>
                     <div>
                         <Typography variant="h6" color="blue-gray">
@@ -59,7 +60,7 @@ const UserCard: React.FC<UserCardProps> = ({
                 <div className='flex gap-1'>
                     {right}
                 </div>
-            </ListItem>
+            </div>
         </div>
     )
 }

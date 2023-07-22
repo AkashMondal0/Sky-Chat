@@ -20,8 +20,9 @@ const RightSideBar: React.FC<RightSideBar> = ({
             </div>
             <div className='cursor-pointer flex p-4 border-t-[1px] border-b-[1px] border-gray-300 my-5 items-center hover:bg-gray-100'>
                 <ListItemPrefix>
-                    <Avatar color='green' withBorder={friend?.friend.activeUser} size='xl'
-                        variant="circular" alt="candice" src={friend?.image} />
+                   <img className='w-14 h-14 rounded-full object-cover border-[1px] border-black'
+            alt="not found"
+            src={friend.image || "/images/user.png"} />
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">

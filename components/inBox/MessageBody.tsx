@@ -4,6 +4,7 @@ import { UserState } from '@/interfaces/User'
 import { timeFormat, dateFormat } from '@/functions/dateTimeFormat'
 import useConversation from '@/hooks/states/useConversation'
 import { Conversation } from '@/interfaces/Conversation'
+import uuid4 from 'uuid4'
 
 
 interface MessageBodyProps {
@@ -16,7 +17,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({
 }) => {
   const { id, image } = UserState.state
   const messagesEndRef = useRef(null) as any
-  // const currentConversation = useConversation()
+  const currentConversation = useConversation()
   const { messages, personal: { receiver } } = conversation
 
   const scrollToBottom = () => {
@@ -27,6 +28,8 @@ const MessageBody: React.FC<MessageBodyProps> = ({
   useEffect(() => {
     console.log("scrolling") // TODO: remove this
     scrollToBottom()
+    // setRef()
+    // currentConversation.setRef(uuid4()) // TODO: remove this
   }, [messages]);
 
 
@@ -50,8 +53,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({
                     Message={message}
                     isSender={message.messageUserId === id}
                     ProfileImageUrl={message.messageUserId === id ? image : receiver?.image
-                      || 'https://assets.mycast.io/actor_images/actor-olivia-sanabia-279726_large.jpg?1633292709'} />
-
+                      || '/images/user.png'} />
                 })}
               </div>
             </div>

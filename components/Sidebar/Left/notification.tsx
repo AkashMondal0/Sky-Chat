@@ -45,6 +45,9 @@ const Notification: React.FC<notification> = ({
             <BiArrowBack className='cursor-pointer' size={30} onClick={() => { onTabChange("myUserList") }} />
             <Typography variant="h4">Notification</Typography>
         </div>
+        <div className='text-sm cursor-pointer justify-end p-4 items-center flex h-4' onClick={() => { onTabChange("requestUserList") }}>
+        <Typography variant="h6">Send Request</Typography>
+        </div>
         <div>
             {UserState.state.FriendRequest?.map((item, index) => {
                 const { id, receiver, keyValue } = item

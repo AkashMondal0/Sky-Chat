@@ -5,7 +5,7 @@ import { storage } from "./config";
 
 const UploadPhoto = async (file: File, userId: string) => {
     const myPromise = new Promise((resolve, reject) => {
-        const storageRef = ref(storage, `images/${userId}/${file.name}`);
+        const storageRef = ref(storage, `UserFiles/${userId}/${file.name}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
         // Register three observers:
         // 1. 'state_changed' observer, called any time the state changes

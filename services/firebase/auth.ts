@@ -3,6 +3,8 @@ import { firebaseAuth } from "@/services/firebase/config";
 import { User, UserCredential, initialUser } from "@/interfaces/User";
 import { CreateUserData } from "./UserDoc";
 import { SetToken } from "@/functions/localData"
+import { FieldValues } from "react-hook-form";
+import { UploadPhoto } from "./uploadFile";
 
 
 const LoginFireBase = async (Data: UserCredential) => {
@@ -24,10 +26,16 @@ const LoginFireBase = async (Data: UserCredential) => {
     }
 }
 
-const RegisterFireBase = async (Data: UserCredential) => {
+const RegisterFireBase = async (Data: FieldValues) => {
     try {
         var user = (await createUserWithEmailAndPassword(firebaseAuth, Data.email, Data.password)).user
-        await updateProfile(user, { displayName: Data.name })
+
+        const avatar = await UploadPhoto(Data.avatar, user.uid) // upload avatar
+
+        await updateProfile(user, {
+            displayName: Data.name,
+            photoURL: avatar as string
+        })
         const loginData = {
             ...initialUser,
             name: user.displayName,

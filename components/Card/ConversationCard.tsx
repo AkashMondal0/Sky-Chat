@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useEffect, useState } from 'react'
@@ -14,10 +15,9 @@ import useConversation from '@/hooks/states/useConversation';
 import { Conversation, initialConversation } from '@/interfaces/Conversation';
 import { db } from '@/services/firebase/config'
 import { doc, onSnapshot } from 'firebase/firestore'
-import { GetUserData } from '@/services/firebase/UserDoc';
 import { User, initialUser } from '@/interfaces/User';
 import useUser from '@/hooks/states/useUser';
-import useFriend from '@/hooks/states/useFriend';
+import uuid4 from 'uuid4';
 interface ConversationCardProps {
     conversation: Conversation
 }
@@ -32,23 +32,21 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
     const [user, setUser] = useState<User>(initialUser)
 
     useEffect(() => {
-        console.log("conversation") //TODO: remove console.log
         const friendId = UserState.state.id === Conversation.personal.sender.id ? Conversation.personal.receiver.id : Conversation.personal.sender.id
         const unSubscribeConversation = onSnapshot(
             doc(db, "conversations", Conversation.id), // conversation id
             { includeMetadataChanges: true },
             (doc) => {
+                console.log("conversation") //TODO: remove console.log
                 setConversation(doc.data() as Conversation)
-                // if (!currentConversation.state.find((i) => i.id === doc.data()?.id)) {
-                //     currentConversation.setConversation(doc.data() as Conversation)
-                // }
-                // // console.log("conversation", data) // TODO: remove console.log
+                // currentConversation.setRef(uuid4())
+                // 
             })
-        console.log("conversation User") // TODO: remove console.log
-        const unSubscribeUser = onSnapshot(
-            doc(db, "users", friendId), // friend id
-            { includeMetadataChanges: true },
-            (doc) => {
+            const unSubscribeUser = onSnapshot(
+                doc(db, "users", friendId), // friend id
+                { includeMetadataChanges: true },
+                (doc) => {
+                console.log("conversation User") // TODO: remove console.log
                 setUser(doc.data() as User)
                 // console.log("user", data) // TODO: remove console.log
             })
@@ -68,8 +66,9 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
             <ListItem
                 className='cursor-pointer my-1'>
                 <ListItemPrefix>
-                    <Avatar color='green' withBorder={user?.activeUser}
-                        variant="circular" alt="candice" src={user?.image} />
+                    <img className='w-14 h-14 rounded-full object-cover border-[1px]'
+                        alt="not found"
+                        src={user?.image || "/images/user.png"} />
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">

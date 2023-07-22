@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { FieldValues, RegisterOptions, SubmitHandler, UseFormRegisterReturn, useForm } from "react-hook-form";
@@ -11,12 +12,14 @@ import { Typography } from '../Material';
 import { LoginFireBase, RegisterFireBase } from '../../services/firebase/auth';
 import useUser from '@/hooks/states/useUser';
 import { User } from '@/interfaces/User';
+import { UploadPhoto } from '@/services/firebase/uploadFile';
 
 type Variant = 'LOGIN' | 'REGISTER'
 
 const AuthForm = () => {
   const [variant, setVariant] = useState<Variant>('LOGIN')
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isAvatar, setIsAvatar] = useState<File>()
   const router = useRouter()
   const UserState = useUser()
 
@@ -37,7 +40,9 @@ const AuthForm = () => {
     defaultValues: {
       name: "",
       email: "",
-      password: ""
+      password: "",
+      bio: "",
+      avatar: "",
     }
   });
 
@@ -45,16 +50,17 @@ const AuthForm = () => {
     setIsLoading(true)
 
     if (variant === 'REGISTER') {
-      RegisterFireBase({ email: data.email, password: data.password, name: data.name })
+      const newData = { ...data, avatar: isAvatar }
+      RegisterFireBase(newData)
         .then((user) => {
           if (!user) {
             toast.error("Invalid Credential")
           }
           // set user
-         else{
-          UserState.setUser(user as User)
-          router.push('/')
-         }
+          else {
+            UserState.setUser(user as User)
+            router.push('/')
+          }
         })
         .catch(() => toast.error("Something went wrong!"))
         .finally(() => setIsLoading(false))
@@ -67,10 +73,10 @@ const AuthForm = () => {
             toast.error("Invalid Credential")
           }
           // set user
-          else{
+          else {
             UserState.setUser(user as User)
             router.push('/')
-           }
+          }
         })
         .catch(() => toast.error("Something went wrong!"))
         .finally(() => setIsLoading(false))
@@ -93,12 +99,43 @@ const AuthForm = () => {
         >
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <Typography variant="h1">Chat {variant === "REGISTER" ? "Register" : "Login"}</Typography>
-            {variant === "REGISTER" && (<Input
-              label='name'
-              id='name'
-              register={register}
-              disabled={isLoading}
-              errors={errors} />)}
+            {variant === "REGISTER" && (<>
+              {/* upload photo */}
+              <div className='flex items-center gap-4'>
+                <div className='mt-1 flex items-center'>
+                  {isAvatar ? <label htmlFor='myImage'>
+                    <img className='w-16 h-16 rounded-full object-cover'
+                    alt="not found"
+                    src={URL.createObjectURL(isAvatar)} />
+                  </label>
+                    : <span className='inline-block h-16 w-16 rounded-full overflow-hidden bg-gray-100 p-1'>
+                      <svg className='h-full w-full text-gray-300' fill='currentColor' viewBox='0 0 24 24'>
+                        <path
+                          fillRule='evenodd'
+                          clipRule='evenodd'
+                          d='M12 14c2.21 0 4-1.79 4-4 0-2.21-1.79-4-4-4-2.21 0-4 1.79-4 4 0 2.21 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v1h16v-1c0-2.66-5.33-4-8-4z'
+                        />
+                      </svg>
+                    </span>}
+                </div>
+                {
+                  isAvatar ? <div onClick={() => setIsAvatar(undefined)} className='cursor-pointer border-[1px] border-red-300
+                  px-4 py-2 rounded-full font-semibold text-red-400'>
+                    Remove
+                  </div> :
+                    <label htmlFor='myImage' className='cursor-pointer font-semibold
+                    border-[1px] px-5 py-2 rounded-full hover:bg-gray-300 bg-gray-200'>
+                      Upload
+                    </label>
+                }
+              </div>
+              <Input
+                label='name'
+                id='name'
+                register={register}
+                disabled={isLoading}
+                errors={errors} />
+            </>)}
 
             <Input
               label='email'
@@ -172,6 +209,14 @@ const AuthForm = () => {
             </div>
           </div>
         </div>
+        <input
+          multiple
+          className='hidden'
+          type="file"
+          name="myImage"
+          id="myImage"
+          onChange={(event: any) => setIsAvatar(event.target.files[0])}
+        />
       </div>
     </React.Fragment>
   )

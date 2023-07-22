@@ -15,7 +15,7 @@ import useRightSideBar from '@/hooks/useRightSideBar'
 import { BiArrowBack } from 'react-icons/bi'
 import { useRouter } from 'next/navigation'
 import useConversation from '@/hooks/states/useConversation'
-import { timeFormat } from '@/functions/dateTimeFormat'
+import { timeAgoFormat } from '@/functions/dateTimeFormat'
 import { Conversation } from '@/interfaces/Conversation'
 import useUser from '@/hooks/states/useUser'
 import routesName from '@/routes'
@@ -48,20 +48,16 @@ const MessageHeader: React.FC<MessageHeader> = ({
           currentConversation.exitCurrentConversation()
         }} />
         <ListItemPrefix>
-          <Avatar
-            withBorder={friend.activeUser}
-            color='green'
-            size="md"
-            variant="circular"
-            alt="candice"
-            src={friend.image} />
+          <img className='w-12 h-12 rounded-full object-cover border-[1px] border-black'
+            alt="not found"
+            src={friend.image || "/images/user.png"} />
         </ListItemPrefix>
         <div>
           <Typography variant="h6" color="blue-gray">
             {friend.name}
           </Typography>
           <Typography variant="small" color="gray" className="font-normal">
-            {timeFormat(friend.lastTimeOnline) || "offline"}
+            {timeAgoFormat(friend.lastTimeOnline)|| "offline"} Last Online
           </Typography>
         </div>
       </div>

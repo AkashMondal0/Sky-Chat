@@ -48,10 +48,13 @@ const MessageCard: React.FC<MessageCardProps> = ({
         </div>}
 
         {/* message */}
-        {!isSender && <Avatar className='mr-1'
-          variant="circular" alt="candice" size='sm' src={ProfileImageUrl} />}
+        {!isSender &&
+
+          <img className='w-10 h-10 rounded-full object-cover'
+            alt="not found"
+            src={ProfileImageUrl || "/images/user.png"} />}
         <div>
-        <div className='reply'>
+          <div className='reply'>
             {reply.message && <>
               <div className={`p-1 px-4
        break-words
@@ -75,10 +78,11 @@ const MessageCard: React.FC<MessageCardProps> = ({
           </div>}
 
           {/* reply */}
-        
+
           {/* image */}
           {img.length > 0 && img.map((image: string, index: number) => {
-            return <img key={index} src={image} alt="" className='object-cover h-60 w-48 rounded-3xl mb-2' />
+            return <img key={index} src={image || // TODO: remove this
+              "/images/user.png"} alt="" className='object-cover h-60 w-48 rounded-3xl mb-2' />
           })}
         </div>
 

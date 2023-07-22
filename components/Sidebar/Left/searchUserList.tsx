@@ -42,7 +42,7 @@ const SearchUserList: React.FC<SearchUserList> = ({
       <BiArrowBack className='cursor-pointer' size={30} onClick={() => { onTabChange("myUserList") }} />
       <Typography variant="h4">Search</Typography>
     </div>
-    <List>
+    <div className=''>
       {users.map((item, index: number) => <UserCard
         key={index}
         profileImg={item.image} name={item.name}
@@ -57,7 +57,7 @@ const SearchUserList: React.FC<SearchUserList> = ({
           </>
         }
       />)}
-    </List>
+    </div>
   </ >
 }
 export default SearchUserList

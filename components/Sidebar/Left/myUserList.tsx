@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { List, Typography } from '@/app/Material'
 import { LuEdit } from 'react-icons/lu'
 import { steps } from '.'
@@ -9,6 +9,7 @@ import { RemoveToken } from '@/functions/localData'
 import routesName from '@/routes'
 import { UpdateUserStatus } from '@/services/firebase/UserDoc'
 import ConversationCard from '../../Card/ConversationCard'
+import useConversation from '@/hooks/states/useConversation'
 
 
 interface MyUserList {
@@ -17,18 +18,27 @@ interface MyUserList {
 }
 const MyUserList: React.FC<MyUserList> = ({
     onTabChange,
-    UserState
+    UserState,
 }) => {
+    const [conversations, setConversations] = useState(UserState.state.Conversations)
     const router = useRouter()
     const userState = useUser()
+    const currentConversation = useConversation()
 
     const logout = () => {
-        userState.setUser(initialUser)
-        RemoveToken()
         UpdateUserStatus(userState.state.id, false)
+        RemoveToken()
         router.replace(routesName.auth)
+        userState.setUser(initialUser)
     }
-
+    useEffect(() => {
+        const realtime = userState.state?.Conversations?.sort((a, b) => {
+            return b.lastMessageDate - a.lastMessageDate // sort by updateDate
+        })
+        setConversations(realtime)
+        // console.log("realtime con")
+    }, [])
+    const indicator = (<div className='w-2 h-2 bg-red-400 rounded-full'></div>)
 
     return (
         <>
@@ -38,15 +48,21 @@ const MyUserList: React.FC<MyUserList> = ({
                     {userState.state.activeUser && <div className='cursor-pointer' onClick={logout}>Logout</div>}
                     <LuEdit size={26} className='cursor-pointer' onClick={() => { onTabChange("searchUserList") }} />
                 </div>
-                <div className='flex justify-between pt-4'>
+                <div className='flex justify-between pt-4 mt-3'>
                     <Typography variant="h6">Message</Typography>
-                    <p className='text-sm cursor-pointer' onClick={() => { onTabChange("requestUserList") }}>Requests</p>
-                    <p className='text-sm cursor-pointer' onClick={() => { onTabChange("notification") }}>Notification</p>
+                    <div className='text-sm cursor-pointer flex' onClick={() => { onTabChange("notification") }}>
+                        Notification
+                        {userState.state.FriendRequest.find(item => item.keyValue === "RECEIVER") && indicator}
+                    </div>
                 </div>
             </div>
             <List>
-                {userState.state?.Conversations?.map((item, index) => {
-                    return item.type === "PERSONAL" && <ConversationCard key={index} conversation={item} />
+                {conversations.reverse().map((item, index) => {
+                    // console.log(item.id)
+                    return item.type === "PERSONAL" && <ConversationCard
+                        key={index} conversation={item}
+
+                    />
                 })}
             </List>
         </>

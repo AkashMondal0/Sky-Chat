@@ -9,7 +9,6 @@ import { GetToken } from "@/functions/localData"
 import Home from "@/components/inBox"
 import { doc, onSnapshot } from "firebase/firestore"
 import { db } from "@/services/firebase/config"
-import { setData } from "./home"
 import useUser from "@/hooks/states/useUser"
 
 type loading = true | false
