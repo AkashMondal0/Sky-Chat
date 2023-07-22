@@ -8,8 +8,14 @@ import { useRouter } from 'next/navigation'
 import { RemoveToken } from '@/functions/localData'
 import routesName from '@/routes'
 import { UpdateUserStatus } from '@/services/firebase/UserDoc'
-import ConversationCard from '../../Card/ConversationCard'
+// import ConversationCard from '../../Card/ConversationCard'
 import useConversation from '@/hooks/states/useConversation'
+import dynamic from 'next/dynamic'
+
+const ConversationCard = dynamic(() => import('../../Card/ConversationCard',), {
+    loading: () => <div>Loading</div>,
+    ssr: false
+})
 
 
 interface MyUserList {

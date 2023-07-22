@@ -11,6 +11,7 @@ import { doc, onSnapshot } from "firebase/firestore"
 import { db } from "@/services/firebase/config"
 import useUser from "@/hooks/states/useUser"
 import useAuthLoading from "@/hooks/authLoading"
+import PageLoading from "./pageLoading"
 
 type loading = true | false
 
@@ -54,7 +55,7 @@ export default function Index() {
 
   return (
     <div>
-      {loading ? "Loading...." : <Home />}
+      {loading ? <PageLoading /> : <Home />}
     </div>
   )
 }
