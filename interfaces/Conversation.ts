@@ -13,8 +13,8 @@ export interface Conversation {
     groupName: string | null
     groupImage: string | null
     groupMembers: User[]
-    MessageDataId: string // real time
     personal: string[]
+    MessageDataId: string // real time
 }
 
 export const initialConversation: Conversation = {
@@ -31,3 +31,5 @@ export const initialConversation: Conversation = {
     MessageDataId: "",
     personal: []
 }
+
+// export interface LastMe

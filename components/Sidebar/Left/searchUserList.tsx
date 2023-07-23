@@ -11,7 +11,7 @@ import { steps } from '.'
 import { BiArrowBack } from 'react-icons/bi'
 import { User, UserState, friendRequest } from '@/interfaces/User'
 import { GetUsers } from '@/services/firebase/UserDoc'
-import UserCard from '@/components/Card/UserCard'
+import UserCard from '@/components/Card/conversationUserCard'
 import { BtnInstagram } from '@/components/Button/Button'
 import { CreateFriendRequest } from '@/services/firebase/friendRequest'
 

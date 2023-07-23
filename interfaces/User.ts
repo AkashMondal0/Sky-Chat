@@ -1,4 +1,4 @@
-import { Conversation, initialConversation } from "./Conversation"
+import { Conversation, ConversationsList, initialConversation } from "./Conversation"
 export const initialUser: User = {
     id: "",
     name: '',
@@ -7,11 +7,13 @@ export const initialUser: User = {
     image: '',
     createDate: new Date(),
     updateDate: new Date(),
-    Conversations: [],
     FriendRequest: [],
     activeUser: false,
-    bio: ""
+    bio: "",
+    Conversations: [],
 }
+
+
 
 export interface User {
     id: string
@@ -22,7 +24,7 @@ export interface User {
     image: string
     updateDate: any
     createDate: any
-    Conversations: string[]
+    Conversations:Conversation[]
     FriendRequest: friendRequest[]
     activeUser: boolean
     lastTimeOnline?: any

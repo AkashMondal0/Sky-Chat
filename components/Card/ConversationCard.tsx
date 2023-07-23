@@ -18,7 +18,7 @@ import { doc, onSnapshot } from 'firebase/firestore'
 import { User, initialUser } from '@/interfaces/User';
 import useUser from '@/hooks/states/useUser';
 import uuid4 from 'uuid4';
-import UserCard from './UserCard';
+import ConversationUserCard from './conversationUserCard';
 interface ConversationCardProps {
     conversationId: string
 }
@@ -27,38 +27,32 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
     conversationId
 }) => {
     const router = useRouter()
+    const [conversation, setConversation] = useState<Conversation>(initialConversation)
     const currentConversation = useConversation()
     const currentUser = useUser()
-    const [conversation, setConversation] = useState<Conversation>(initialConversation)
-    const friendId = useRef(null)
+    const friendId = useRef("")
 
     useEffect(() => {
-        const unSubscribeConversation = onSnapshot(
-            doc(db, "conversations", conversationId), // conversation id
-            { includeMetadataChanges: true },
-            (doc) => {
-                friendId.current = doc.data()?.personal.find((u: string) => u !== currentUser.state.id)
-                console.log("conversation") //TODO: remove console.log
-                setConversation(doc.data() as Conversation)
-            })
-        return () => {
-            unSubscribeConversation()
-        }
+        currentUser.state.Conversations?.find((c: Conversation) => {
+            if (c.id === conversationId) {
+                setConversation(c)
+                friendId.current = c.personal.find((u: string) => u !== currentUser.state.id) || ""
+            }
+        })
     }, [])
 
-    const conversationHandle = (friend: User) => {
+    const conversationHandle = (friend:User) => {
         currentConversation.setFriend(friend)
-        router.replace(`/?chat=${conversation.id}`)
+        router.push(`/?chat=${conversation.id}`)
     }
     return (
-        <div>
-            <ListItem className='cursor-pointer my-1'>
-                {conversation.id && <UserCard 
+        <>
+                {conversation.id && <ConversationUserCard 
                 conversation={conversation}
                 id={friendId.current || "NO-ID"} 
                 getUser={conversationHandle} />}
-            </ListItem>
-        </div>
+           
+        </>
     )
 }
 

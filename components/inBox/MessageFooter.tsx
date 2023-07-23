@@ -4,7 +4,7 @@ import { GrEmoji } from 'react-icons/gr';
 import { HiOutlinePhotograph } from 'react-icons/hi';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BsMic } from 'react-icons/bs';
-import { Messages, initialMessage, initialReply } from '@/interfaces/Message';
+import { LastMessage, Messages, initialMessage, initialReply } from '@/interfaces/Message';
 
 import { RxCrossCircled } from 'react-icons/rx';
 import useReplyMessage from '@/hooks/useReply';
@@ -13,6 +13,9 @@ import useUser from '@/hooks/states/useUser';
 import { Conversation } from '@/interfaces/Conversation';
 import { CreateMessage, CreateMessageData } from '@/services/firebase/message';
 import { setLastMessageConversation } from '@/services/firebase/Conversation';
+import useConversation from '@/hooks/states/useConversation';
+import { GetUserData } from '@/services/firebase/UserDoc';
+import { User } from '@/interfaces/User';
 
 interface InputProps {
     conversation: Conversation
@@ -23,6 +26,8 @@ export const MessageFooter: React.FC<InputProps> = ({
     conversation,
     messageUserId
 }) => {
+    const currentUser = useUser()
+    const currentConversation = useConversation()
     const replyState = useReplyMessage()
     const [input, setInput] = useState<Messages>({
         id: uuid4(), // message id
@@ -40,7 +45,15 @@ export const MessageFooter: React.FC<InputProps> = ({
         CreateMessage({ ...input, conversationId: conversation.id, reply: replyState.state }, conversation.MessageDataId)
         setInput({ ...initialMessage, messageUserId: messageUserId, id: uuid4() })
         replyState.setReply(initialReply)
-        setLastMessageConversation(conversation.id, input.message)
+        const data: LastMessage = {
+            lastMessage: input.message,
+            UserId: messageUserId,
+            friendId: currentConversation.Friend.id,
+            conversationId: conversation.id
+        }
+        const returnUpdateUser = await setLastMessageConversation(data)
+        console.log(returnUpdateUser)
+        currentUser.setUser(returnUpdateUser as User)
     }
 
     const onChangeFilePicker = (event: any) => {

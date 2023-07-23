@@ -26,20 +26,17 @@ const Home = () => {
   const currentConversation = useConversation()
   const rightSideBar = useRightSideBar()
   const { id } = UserState.state // current user id
-  const router = useRouter()
   const asPath = usePathname()
 
 
   useEffect(() => {
     if (conversationID) {
-      console.log("conversation message") // TODO: remove console.log
-      const unSubscribe = onSnapshot(
-        doc(db, "conversations", conversationID),
-        { includeMetadataChanges: true },
-        (doc) => {
-          currentConversation.setConversationData({ ...doc.data() as Conversation })
-        });
-      return () => unSubscribe()
+      UserState.state.Conversations?.find((c: Conversation) => {
+        if (c.id === conversationID) {
+          currentConversation.setConversationData(c)
+          console.log("start 1") // TODO: remove console.log
+        }
+      })
     }
   }, [conversationID])
 
@@ -72,7 +69,21 @@ const Home = () => {
               <MessageBody conversation={currentConversation.conversationData} UserState={UserState} />
               <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state.id} />
             </>
-            : <ResponsiveSmall UserState={UserState} />
+            : <>
+              <div className='md:flex w-full justify-center items-center min-h-screen hidden'>
+                <div className='text-center'>
+                  <div className='p-3 border-[2px] rounded-full border-black dark:border-white w-24 h-24 justify-center flex items-center mx-auto'>
+                    <LiaFacebookMessenger size={80} />
+                  </div>
+                  <div className='text-base my-4'>Your messages</div>
+                  <div className='text-base my-4'>Send private photos and messages to a friend or group</div>
+                  <button className='bg-blue-500 hover:bg-blue-600 font-semibold text-white p-2 px-4 text-sm rounded-xl'>Send message</button>
+                </div>
+              </div>
+              <div className='md:hidden flex w-full justify-between'>
+                <LeftSideBar UserState={UserState} />
+              </div>
+            </>
           }
         </div>
       </main>
@@ -82,24 +93,3 @@ const Home = () => {
 }
 
 export default Home
-
-const ResponsiveSmall = ({ UserState }: { UserState: UserState }) => {
-
-  return <>
-    <>
-      <div className='md:flex w-full justify-center items-center min-h-screen hidden'>
-        <div className='text-center'>
-          <div className='p-3 border-[2px] rounded-full border-black dark:border-white w-24 h-24 justify-center flex items-center mx-auto'>
-            <LiaFacebookMessenger size={80} />
-          </div>
-          <div className='text-base my-4'>Your messages</div>
-          <div className='text-base my-4'>Send private photos and messages to a friend or group</div>
-          <button className='bg-blue-500 hover:bg-blue-600 font-semibold text-white p-2 px-4 text-sm rounded-xl'>Send message</button>
-        </div>
-      </div>
-    </>
-    <div className='md:hidden flex w-full justify-between'>
-      <LeftSideBar UserState={UserState} />
-    </div>
-  </>
-}

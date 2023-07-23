@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation'
 import { RemoveToken } from '@/functions/localData'
 import routesName from '@/routes'
 import { UpdateUserStatus } from '@/services/firebase/UserDoc'
-// import ConversationCard from '../../Card/ConversationCard'
 import useConversation from '@/hooks/states/useConversation'
 import dynamic from 'next/dynamic'
 
@@ -26,10 +25,10 @@ const MyUserList: React.FC<MyUserList> = ({
     onTabChange,
     UserState,
 }) => {
-    const [conversations, setConversations] = useState<string[]>([])
     const router = useRouter()
     const currentUser = useUser()
     const currentConversation = useConversation()
+    currentUser
 
     const logout = () => {
         UpdateUserStatus(currentUser.state.id, false)
@@ -38,12 +37,8 @@ const MyUserList: React.FC<MyUserList> = ({
         currentUser.setUser(initialUser)
         currentConversation.reset()
     }
-    useEffect(() => {
-        // const realtime = currentUser.state?.Conversations?.sort((a, b) => {
-        //     return b.lastMessageDate - a.lastMessageDate // sort by updateDate
-        // })
-        setConversations(UserState.state.Conversations)
-    }, [UserState.state?.Conversations])
+
+    
     const indicator = (<div className='w-2 h-2 bg-red-400 rounded-full'></div>)
 
     return (
@@ -63,9 +58,8 @@ const MyUserList: React.FC<MyUserList> = ({
                 </div>
             </div>
             <List>
-                {conversations.reverse().map((item, index) => {
-                    // console.log(item.id)
-                    return <ConversationCard key={index} conversationId={item}/>
+                {currentUser.state.Conversations.map((item, index) => {
+                    return <ConversationCard key={index} conversationId={item.id}/>
                 })}
             </List>
         </div>}</>

@@ -3,9 +3,10 @@ import { steps } from '.'
 import { BiArrowBack } from 'react-icons/bi'
 import { Typography } from '@/app/Material'
 import { UserState } from '@/interfaces/User'
-import UserCard from '@/components/Card/UserCard'
+import UserCard from '@/components/Card/conversationUserCard'
 import { BtnInstagram } from '@/components/Button/Button'
 import { RemoveFriendRequest } from '@/services/firebase/friendRequest'
+import Card from './Card'
 interface requestUserList {
     onTabChange: (value: steps) => void
     UserState: UserState
@@ -26,7 +27,7 @@ const requestUserList: React.FC<requestUserList> = ({
 
                 // receiver means the user who send the request 
                 // sender means the user who receive the request
-                return keyValue === "SENDER" && <UserCard
+                return keyValue === "SENDER" && <Card
                     key={index}
                     type={id}
                     profileImg={receiver?.image}
@@ -39,7 +40,7 @@ const requestUserList: React.FC<requestUserList> = ({
                             <BtnInstagram
                                 danger
                                 onClick={() => {
-                                    RemoveFriendRequest(id, UserState.state, receiver)
+                                    RemoveFriendRequest(id, UserState.state, receiver.id)
                                 }}
                                 label={"Cancel"} />
                         </>

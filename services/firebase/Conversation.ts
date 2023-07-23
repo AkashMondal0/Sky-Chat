@@ -3,6 +3,9 @@ import { doc, getDoc, updateDoc, arrayUnion, setDoc } from "firebase/firestore";
 import { db } from "./config";
 import uuid4 from "uuid4";
 import { CreateMessageData } from "./message";
+import { LastMessage } from "@/interfaces/Message";
+import { GetUserData } from "./UserDoc";
+import { User } from "@/interfaces/User";
 
 
 
@@ -30,11 +33,11 @@ const CreateConversation = async ({ currentUserId, FriendId }: any) => {
         setDoc(doc(db, "conversations", data.id), data)
             .then(() => {
                 updateDoc(doc(db, "users", currentUserId), {
-                    Conversations: arrayUnion(data.id)
+                    Conversations: arrayUnion(data)
                 });
 
                 updateDoc(doc(db, "users", FriendId), {
-                    Conversations: arrayUnion(data.id)
+                    Conversations: arrayUnion(data)
                 });
                 return { message: "User add ", code: 200 }
             }).then(() => {
@@ -47,13 +50,50 @@ const CreateConversation = async ({ currentUserId, FriendId }: any) => {
     }
 }
 
-const setLastMessageConversation = async (id: string, message: string) => {
+const setLastMessageConversation = async (data: LastMessage) => {
+    const d = new Date().toString()
+    const {
+        lastMessage,
+        UserId,
+        friendId,
+        conversationId,
+    } = data
     try {
-        const d = new Date().toISOString()
-        await updateDoc(doc(db, "conversations", id), {
-            lastMessage: message,
-            lastMessageDate: d
+        const getUser = await GetUserData(UserId) as User
+        const getFriend = await GetUserData(friendId) as User
+
+        const conUserUpdate = getUser.Conversations.map((item: Conversation) => {
+            if (item.id === conversationId) {
+                return {
+                    ...item,
+                    lastMessage,
+                    lastMessageDate: d
+                }
+            }
+            return item
+        })
+
+        const conUpdateFriend = getFriend.Conversations.map((item: Conversation) => {
+            if (item.id === conversationId) {
+                return {
+                    ...item,
+                    lastMessage,
+                    lastMessageDate: d
+                }
+            }
+            return item
+        })
+        // only update last message
+        await updateDoc(doc(db, "users", UserId), {
+            name: "Los Angeles",
+            Conversations: conUserUpdate
         });
+        await updateDoc(doc(db, "users", friendId), {
+            name: "Los Angeles",
+            Conversations: conUpdateFriend
+        })
+
+        return { ...getUser, Conversations: conUserUpdate }
     } catch (error) {
         console.log("Error getting document:", error);
     }

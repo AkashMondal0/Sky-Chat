@@ -35,8 +35,8 @@ const CreateUserData = async (data: User) => {
         bio: "",
         createDate: d,
         updateDate: d,
+        FriendRequest: [],
         Conversations: [],
-        FriendRequest: []
     }
     try {
         await setDoc(doc(db, "users", data.id), newUser)
@@ -57,9 +57,6 @@ const UpdateUserStatus = async (UserId: string, activeUser: boolean) => {
     }
 }
 
-const UpdateUser = async (data: User) => {
-    
-}
 
 export {
     CreateUserData,

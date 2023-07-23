@@ -3,12 +3,13 @@ import React from 'react'
 import { steps } from '.'
 import { BiArrowBack } from 'react-icons/bi'
 import { Typography } from '@/app/Material'
-import UserCard from '@/components/Card/UserCard'
+import UserCard from '@/components/Card/conversationUserCard'
 import { BtnInstagram } from '@/components/Button/Button'
 import { RemoveFriendRequest } from '@/services/firebase/friendRequest'
 import { CreateConversation } from '@/services/firebase/Conversation'
 import { Conversation } from '@/interfaces/Conversation'
 import uuid4 from 'uuid4'
+import Card from './Card'
 
 interface notification {
     onTabChange: (value: steps) => void
@@ -36,7 +37,7 @@ const Notification: React.FC<notification> = ({
         <div>
             {UserState.state.FriendRequest?.map((item, index) => {
                 const { id, receiver, keyValue } = item
-                return keyValue == "RECEIVER" && <UserCard
+                return keyValue == "RECEIVER" && <Card
                     key={index}
                     profileImg={receiver?.image}
                     name={receiver?.name}

@@ -2,12 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import MessageCard from '../Card/MessageCard'
 import { UserState } from '@/interfaces/User'
 import { timeFormat, dateFormat } from '@/functions/dateTimeFormat'
-import useConversation from '@/hooks/states/useConversation'
 import { Conversation } from '@/interfaces/Conversation'
-import uuid4 from 'uuid4'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { db } from '@/services/firebase/config'
-import { MessageData, Messages } from '@/interfaces/Message'
+import { MessageData } from '@/interfaces/Message'
+import useConversation from '@/hooks/states/useConversation'
 
 
 interface MessageBodyProps {
@@ -21,7 +20,12 @@ const MessageBody: React.FC<MessageBodyProps> = ({
   const { id, image } = UserState.state
   const messagesEndRef = useRef(null) as any
   const [selectedMessage, setSelectedMessage] = useState("")
-  const [messageData, setMessageData] = useState<MessageData>()
+  const [messageData, setMessageData] = useState<MessageData>({
+    id: "",
+    messages: [],
+    senderMessages: [],
+    receiverMessages: [],
+  })
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView()
@@ -32,13 +36,12 @@ const MessageBody: React.FC<MessageBodyProps> = ({
       doc(db, "UserMessage", conversation.MessageDataId),
       { includeMetadataChanges: true },
       (doc) => {
-        setMessageData({ ...doc.data() as MessageData })
-        // console.log("Current data: ", doc.data());
+        setMessageData(doc.data() as MessageData)
       });
     return () => unSubscribe()
-  }, [])
+  }, [conversation.MessageDataId])
 
-
+  // console.log(messageData)
   useEffect(() => {
     console.log("scrolling") // TODO: remove this
     scrollToBottom()// TODO: remove this
@@ -58,16 +61,17 @@ const MessageBody: React.FC<MessageBodyProps> = ({
 
               {/* this days messages ==> item.date */}
               <div>
-                {messageData?.messages.map((message, index) => {
-                  return dateFormat(item.date) === dateFormat(message.date) && <MessageCard
-                    key={index}
-                    Message={message}
-                    isSender={message.messageUserId === id}
-                    ProfileImageUrl={message.messageUserId === id ? image : image
-                      || '/images/user.png'}
-                    setSelectedMessage={setSelectedMessage}
-                    selectedMessage={selectedMessage}
-                  />
+                {messageData.messages?.map((message, index) => {
+                  return dateFormat(item.date) === dateFormat(message.date) &&
+                    <MessageCard
+                      key={index}
+                      Message={message}
+                      isSender={message.messageUserId === id}
+                      ProfileImageUrl={message.messageUserId === id ? image : image
+                        || '/images/user.png'}
+                      setSelectedMessage={setSelectedMessage}
+                      selectedMessage={selectedMessage}
+                    />
                 })}
               </div>
             </div>

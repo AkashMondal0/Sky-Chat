@@ -55,3 +55,11 @@ export interface MessageData {
     senderMessages: Messages[]
     receiverMessages: Messages[]
 }
+
+export interface LastMessage {
+    lastMessage: string,
+    lastMessageDate?: string,
+    UserId:string,
+    friendId:string,
+    conversationId:string
+}

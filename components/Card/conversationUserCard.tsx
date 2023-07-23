@@ -25,7 +25,7 @@ interface UserCardProps {
     conversation: Conversation
 }
 
-const UserCard: React.FC<UserCardProps> = ({
+const ConversationUserCard: React.FC<UserCardProps> = ({
     id,
     right,
     getUser,
@@ -56,7 +56,7 @@ const UserCard: React.FC<UserCardProps> = ({
     }, [])
 
     return (
-        <div className='flex justify-start items-center' onClick={() => {
+        <ListItem className='flex justify-start items-center' onClick={() => {
             getUser(user)
         }}>
             <ListItemPrefix>
@@ -86,8 +86,8 @@ const UserCard: React.FC<UserCardProps> = ({
                     {conversation?.lastMessage || ""}
                 </Typography>
             </div>
-        </div>
+        </ListItem>
     )
 }
 
-export default UserCard
+export default ConversationUserCard

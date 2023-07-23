@@ -1,4 +1,5 @@
 import { Conversation, initialConversation } from '@/interfaces/Conversation'
+import { MessageData } from '@/interfaces/Message'
 import { User, initialUser } from '@/interfaces/User'
 import { create } from 'zustand'
 
