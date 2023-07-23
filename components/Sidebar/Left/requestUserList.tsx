@@ -7,14 +7,15 @@ import UserCard from '@/components/Card/conversationUserCard'
 import { BtnInstagram } from '@/components/Button/Button'
 import { RemoveFriendRequest } from '@/services/firebase/friendRequest'
 import Card from './Card'
+import useUser from '@/hooks/states/useUser'
 interface requestUserList {
     onTabChange: (value: steps) => void
-    UserState: UserState
 }
-const requestUserList: React.FC<requestUserList> = ({
+const RequestUserList: React.FC<requestUserList> = ({
     onTabChange,
-    UserState
 }) => {
+    const currentUser = useUser()
+
 
     return <>
         <div className='flex items-center gap-2 m-4'>
@@ -22,7 +23,7 @@ const requestUserList: React.FC<requestUserList> = ({
             <Typography variant="h4">Requests</Typography>
         </div>
         <div>
-            {UserState.state.FriendRequest?.map((item, index) => {
+            {currentUser.state.FriendRequest?.map((item, index) => {
                 const { id, receiver, keyValue } = item
 
                 // receiver means the user who send the request 
@@ -40,7 +41,7 @@ const requestUserList: React.FC<requestUserList> = ({
                             <BtnInstagram
                                 danger
                                 onClick={() => {
-                                    RemoveFriendRequest(id, UserState.state, receiver.id)
+                                    RemoveFriendRequest(id, currentUser.state, receiver.id)
                                 }}
                                 label={"Cancel"} />
                         </>
@@ -51,5 +52,5 @@ const requestUserList: React.FC<requestUserList> = ({
     </>
 }
 
-export default requestUserList
+export default RequestUserList
 

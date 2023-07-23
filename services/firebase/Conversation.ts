@@ -10,6 +10,8 @@ import { User } from "@/interfaces/User";
 
 
 const CreateConversation = async ({ currentUserId, FriendId }: any) => {
+    
+    // console.log(currentUserId, FriendId)
     const d = new Date().toISOString()
     const GIDM = uuid4()
     const data: Conversation = {
@@ -84,12 +86,12 @@ const setLastMessageConversation = async (data: LastMessage) => {
             return item
         })
         // only update last message
-        await updateDoc(doc(db, "users", UserId), {
-            name: "Los Angeles",
+        await setDoc(doc(db, "users", UserId), {
+            ...getUser,
             Conversations: conUserUpdate
         });
-        await updateDoc(doc(db, "users", friendId), {
-            name: "Los Angeles",
+        await setDoc(doc(db, "users", friendId), {
+            ...getFriend,
             Conversations: conUpdateFriend
         })
 

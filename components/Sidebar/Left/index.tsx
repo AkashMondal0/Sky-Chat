@@ -7,11 +7,11 @@ import Notification from './notification'
 export type steps = "myUserList" | "requestUserList" | "searchUserList" | "notification"
 
 interface LeftSideBar {
-  UserState: UserState
+  // UserState: UserState
 }
 
 const LeftSideBar: React.FC<LeftSideBar> = ({
-  UserState
+  // UserState
 }) => {
   const [steps, setSteps] = React.useState<steps>("myUserList")
   const onTabChange = (value: steps) => {
@@ -21,16 +21,16 @@ const LeftSideBar: React.FC<LeftSideBar> = ({
   return (
     <div className='w-full'>
       <div className={`${steps !== "myUserList" && "hidden"}`}>
-        <MyUserList onTabChange={onTabChange} UserState={UserState} />
+        <MyUserList onTabChange={onTabChange} />
       </div>
       <div className={`${steps !== "searchUserList" && "hidden"}`}>
-        <SearchUserList onTabChange={onTabChange} UserState={UserState} />
+        <SearchUserList onTabChange={onTabChange} />
       </div>
       <div className={`${steps !== "requestUserList" && "hidden"}`}>
-        <RequestUserList onTabChange={onTabChange} UserState={UserState} />
+        <RequestUserList onTabChange={onTabChange} />
       </div>
       <div className={`${steps !== "notification" && "hidden"}`}>
-        <Notification onTabChange={onTabChange} UserState={UserState} />
+        <Notification onTabChange={onTabChange} />
       </div>
     </div>
   )

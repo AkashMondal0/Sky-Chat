@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { Avatar } from '@/app/Material'
-import { Message } from '@/interfaces/Message'
+import { Messages } from '@/interfaces/Message'
 import React, { useState } from 'react'
 import { GoReply } from 'react-icons/go'
 import { TbDots } from 'react-icons/tb'
@@ -10,7 +10,7 @@ import useReplyMessage from '@/hooks/useReply';
 
 
 interface MessageCardProps {
-  Message: Message
+  Message: Messages
   isSender: boolean
   ProfileImageUrl: string
   setSelectedMessage: (value: string) => void
@@ -34,7 +34,8 @@ const MessageCard: React.FC<MessageCardProps> = ({
       img: img,
       authorId: messageUserId,
       video: "",
-      messageId: id
+      messageId: id,
+      id:""
     })
   }
 

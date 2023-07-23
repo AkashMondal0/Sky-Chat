@@ -16,19 +16,15 @@ const ConversationCard = dynamic(() => import('../../Card/ConversationCard',), {
     ssr: false
 })
 
-
 interface MyUserList {
     onTabChange: (value: steps) => void
-    UserState: UserState
 }
 const MyUserList: React.FC<MyUserList> = ({
     onTabChange,
-    UserState,
 }) => {
     const router = useRouter()
     const currentUser = useUser()
     const currentConversation = useConversation()
-    currentUser
 
     const logout = () => {
         UpdateUserStatus(currentUser.state.id, false)
@@ -38,28 +34,33 @@ const MyUserList: React.FC<MyUserList> = ({
         currentConversation.reset()
     }
 
-    
+
     const indicator = (<div className='w-2 h-2 bg-red-400 rounded-full'></div>)
 
     return (
         <>{currentUser.state.id && <div>
             <div className='h-[90px] sticky top-0 z-50 px-4 bg-white my-4'>
                 <div className='justify-between items-center flex pt-1'>
-                    <Typography variant="h4">{UserState.state.name}</Typography>
-                    {UserState.state.activeUser && <div className='cursor-pointer' onClick={logout}>Logout</div>}
+                    <Typography variant="h4">{currentUser.state.name}</Typography>
+                    {currentUser.state.activeUser && <div className='cursor-pointer' onClick={logout}>Logout</div>}
                     <LuEdit size={26} className='cursor-pointer' onClick={() => { onTabChange("searchUserList") }} />
                 </div>
                 <div className='flex justify-between pt-4 mt-3'>
                     <Typography variant="h6">Message</Typography>
                     <div className='text-sm cursor-pointer flex' onClick={() => { onTabChange("notification") }}>
                         Notification
-                        {UserState.state?.FriendRequest.find(item => item.keyValue === "RECEIVER") && indicator}
+                        {currentUser.state?.FriendRequest.find(item => item.keyValue === "RECEIVER") && indicator}
                     </div>
                 </div>
             </div>
             <List>
-                {currentUser.state.Conversations.map((item, index) => {
-                    return <ConversationCard key={index} conversationId={item.id}/>
+                {currentUser.state.Conversations.sort(function (a, b) {
+                    var dateA = new Date(a.lastMessageDate).getTime();
+                    var dateB = new Date(b.lastMessageDate).getTime();
+                    return dateA > dateB ? 1 : -1;
+                })?.reverse()?.map((item, index) => {
+                    const friendId = item.personal.find((u: string) => u !== currentUser.state.id) || ""
+                    return <ConversationCard key={index} conversation={item} friendId={friendId}/>
                 })}
             </List>
         </div>}</>

@@ -3,26 +3,26 @@ import React from 'react'
 import { steps } from '.'
 import { BiArrowBack } from 'react-icons/bi'
 import { Typography } from '@/app/Material'
-import UserCard from '@/components/Card/conversationUserCard'
 import { BtnInstagram } from '@/components/Button/Button'
 import { RemoveFriendRequest } from '@/services/firebase/friendRequest'
 import { CreateConversation } from '@/services/firebase/Conversation'
 import { Conversation } from '@/interfaces/Conversation'
 import uuid4 from 'uuid4'
 import Card from './Card'
+import useUser from '@/hooks/states/useUser'
 
 interface notification {
     onTabChange: (value: steps) => void
-    UserState: UserState
 }
 const Notification: React.FC<notification> = ({
     onTabChange,
-    UserState
 }) => {
+    const currentUser = useUser()
+
     const handle = async (friendId: string, FriendRequestId: string) => {
-        RemoveFriendRequest(FriendRequestId, UserState.state, friendId)
+        RemoveFriendRequest(FriendRequestId, currentUser.state, friendId)
         CreateConversation({
-            currentUserId: UserState.state.id,
+            currentUserId: currentUser.state.id,
             FriendId: friendId
         })
     }
@@ -35,7 +35,7 @@ const Notification: React.FC<notification> = ({
             <Typography variant="h6">Send Request</Typography>
         </div>
         <div>
-            {UserState.state.FriendRequest?.map((item, index) => {
+            {currentUser.state.FriendRequest?.map((item, index) => {
                 const { id, receiver, keyValue } = item
                 return keyValue == "RECEIVER" && <Card
                     key={index}
@@ -49,7 +49,7 @@ const Notification: React.FC<notification> = ({
                         <>
                             <BtnInstagram
                                 danger
-                                onClick={() => { RemoveFriendRequest(id, UserState.state, receiver.id) }}
+                                onClick={() => { RemoveFriendRequest(id, currentUser.state, receiver.id) }}
                                 label={"Cancel"} />
                             <BtnInstagram
                                 onClick={() => { handle(receiver.id, id) }}

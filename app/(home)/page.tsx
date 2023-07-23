@@ -21,6 +21,7 @@ export default function Index() {
   const userState = useUser()
   const router = useRouter()
   const AuthLoading = useAuthLoading()
+  const [user, setUser] = useState<User | null>(null)
 
 
   useEffect(() => {
@@ -35,9 +36,7 @@ export default function Index() {
               ...doc.data() as User,
               activeUser: true
             }
-            // console.log("User", state)
-            console.log("start User fetch") // TODO: remove console.log
-            userState.setUser(state)
+            userState.setUser(doc.data() as User)
             AuthLoading.stopLoading()
             setLoading(false)
           })
@@ -51,7 +50,6 @@ export default function Index() {
       router.replace(routesName.auth)
     }
   }, [router])
-
 
   return (
     <div>

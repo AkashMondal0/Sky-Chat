@@ -59,7 +59,7 @@ const Home = () => {
   return (
     <div className="flex md:w-1/1">
       <SideContainer>
-        <LeftSideBar UserState={UserState} />
+        <LeftSideBar/>
       </SideContainer>
       <main className='w-full'>
         <div className='h-[100vh] overflow-y-scroll'>
@@ -81,7 +81,7 @@ const Home = () => {
                 </div>
               </div>
               <div className='md:hidden flex w-full justify-between'>
-                <LeftSideBar UserState={UserState} />
+                <LeftSideBar />
               </div>
             </>
           }

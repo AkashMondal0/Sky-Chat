@@ -20,6 +20,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({
   const { id, image } = UserState.state
   const messagesEndRef = useRef(null) as any
   const [selectedMessage, setSelectedMessage] = useState("")
+  const currentConversation = useConversation()
   const [messageData, setMessageData] = useState<MessageData>({
     id: "",
     messages: [],
@@ -67,7 +68,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({
                       key={index}
                       Message={message}
                       isSender={message.messageUserId === id}
-                      ProfileImageUrl={message.messageUserId === id ? image : image
+                      ProfileImageUrl={message.messageUserId === id ? image : currentConversation.Friend.image
                         || '/images/user.png'}
                       setSelectedMessage={setSelectedMessage}
                       selectedMessage={selectedMessage}

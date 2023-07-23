@@ -14,20 +14,20 @@ import { GetUsers } from '@/services/firebase/UserDoc'
 import UserCard from '@/components/Card/conversationUserCard'
 import { BtnInstagram } from '@/components/Button/Button'
 import { CreateFriendRequest } from '@/services/firebase/friendRequest'
+import useUser from '@/hooks/states/useUser'
 
 interface SearchUserList {
   onTabChange: (value: steps) => void
-  UserState: UserState
 }
 const SearchUserList: React.FC<SearchUserList> = ({
   onTabChange,
-  UserState
 }) => {
+  const currentUser = useUser()
   const [users, setUsers] = useState<User[]>([])
 
   const get = async () => {
     const users = await GetUsers() as User[]
-    const UserFilter = users.filter((item) => item.id !== UserState.state.id)
+    const UserFilter = users.filter((item) => item.id !== currentUser.state.id)
     setUsers(UserFilter)
   }
 
@@ -37,7 +37,7 @@ const SearchUserList: React.FC<SearchUserList> = ({
 
   const handle = async (friend: User) => {
     const FriendRequest: friendRequest = {
-      sender: UserState.state,
+      sender: currentUser.state,
       status: false,
       receiver: friend,
       keyValue: 'SENDER',
