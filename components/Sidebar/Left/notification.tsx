@@ -18,27 +18,12 @@ const Notification: React.FC<notification> = ({
     onTabChange,
     UserState
 }) => {
-    const handle = async (friend: User, FriendRequestId: string) => {
-        const d = new Date().toISOString()
-        const data: Conversation = {
-            id: uuid4(),
-            createDate: d,
-            updateDate: d,
-            lastMessageDate: d,
-            lastMessage: 'new conversation',
-            type: "PERSONAL",
-            isGroup: false,
-            groupName: null,
-            groupImage: null,
-            groupMembers: [],
-            messages: [],
-            personal: {
-                sender: UserState.state,
-                receiver: friend
-            },
-        }
-        RemoveFriendRequest(FriendRequestId, UserState.state, friend)
-        CreateConversation(data)
+    const handle = async (friendId: string, FriendRequestId: string) => {
+        RemoveFriendRequest(FriendRequestId, UserState.state, friendId)
+        CreateConversation({
+            currentUserId: UserState.state.id,
+            FriendId: friendId
+        })
     }
     return <>
         <div className='flex items-center gap-2 m-4'>
@@ -46,7 +31,7 @@ const Notification: React.FC<notification> = ({
             <Typography variant="h4">Notification</Typography>
         </div>
         <div className='text-sm cursor-pointer justify-end p-4 items-center flex h-4' onClick={() => { onTabChange("requestUserList") }}>
-        <Typography variant="h6">Send Request</Typography>
+            <Typography variant="h6">Send Request</Typography>
         </div>
         <div>
             {UserState.state.FriendRequest?.map((item, index) => {
@@ -63,10 +48,10 @@ const Notification: React.FC<notification> = ({
                         <>
                             <BtnInstagram
                                 danger
-                                onClick={() => { RemoveFriendRequest(id, UserState.state, receiver) }}
+                                onClick={() => { RemoveFriendRequest(id, UserState.state, receiver.id) }}
                                 label={"Cancel"} />
                             <BtnInstagram
-                                onClick={() => { handle(receiver, id) }}
+                                onClick={() => { handle(receiver.id, id) }}
                                 label={"Confirm"} /></>
                     }
                 />

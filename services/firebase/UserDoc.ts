@@ -2,6 +2,7 @@ import { arrayUnion, collection, doc, getDoc, getDocs, serverTimestamp, setDoc, 
 import { db } from "./config";
 import { User, friendRequest, initialUser } from "@/interfaces/User";
 import uuid4 from "uuid4";
+
 const GetUserData = async (id: string) => {
     try {
         const docSnap = await getDoc(doc(db, "users", id));
@@ -22,18 +23,20 @@ const GetUsers = async () => {
     }
 }
 const CreateUserData = async (data: User) => {
-    const newUser = {
-        ...initialUser,
+    const d = new Date().toISOString()
+    const newUser: User = {
         id: data.id,
         name: data.name,
         email: data.email,
         emailVerified: false,
         image: data.image,
-        create: new Date().toISOString(),
-        updateAt: new Date().toDateString(),
-        lastTimeOnline: new Date().toISOString(),
+        lastTimeOnline: d,
         activeUser: true,
-        orderDate: serverTimestamp()
+        bio: "",
+        createDate: d,
+        updateDate: d,
+        Conversations: [],
+        FriendRequest: []
     }
     try {
         await setDoc(doc(db, "users", data.id), newUser)
@@ -54,9 +57,9 @@ const UpdateUserStatus = async (UserId: string, activeUser: boolean) => {
     }
 }
 
-
-
-
+const UpdateUser = async (data: User) => {
+    
+}
 
 export {
     CreateUserData,

@@ -109,7 +109,7 @@ const AuthForm = () => {
             h-[500px]
           "
         >
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form id='auth' name='auth' className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <Typography variant="h1">Chat {variant === "REGISTER" ? "Register" : "Login"}</Typography>
             {variant === "REGISTER" && (<>
               {/* upload photo */}
@@ -144,6 +144,7 @@ const AuthForm = () => {
               <Input
                 label='name'
                 id='name'
+                type='name'
                 register={register}
                 disabled={loading.state}
                 errors={errors} />
@@ -152,12 +153,14 @@ const AuthForm = () => {
             <Input
               label='email'
               id='email'
+              type='email'
               register={register}
               disabled={loading.state}
               errors={errors} />
             <Input
               label='password'
               id='password'
+              type="password"
               register={register}
               disabled={loading.state}
               errors={errors} />

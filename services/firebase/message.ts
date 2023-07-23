@@ -1,9 +1,10 @@
-import { Message } from "@/interfaces/Message";
-import { updateDoc, doc, arrayUnion, serverTimestamp } from "firebase/firestore";
+import { MessageData, Messages } from "@/interfaces/Message";
+import { updateDoc, doc, arrayUnion, setDoc } from "firebase/firestore";
 import { db } from "./config";
 import { UploadPhoto } from "./uploadFile";
+import uuid4 from "uuid4";
 
-const CreateMessage = async (message: Message) => {
+const CreateMessage = async (message: Messages, MessageDataId: string) => {
     var imgArray: string[] = []
     try {
         if (message.img.length > 0) {
@@ -12,9 +13,9 @@ const CreateMessage = async (message: Message) => {
                 imgArray.push(url as string)
             }
         }
-        await updateDoc(doc(db, "conversations", message.conversationId), {
-            lastMessage: message.message,
-            lastMessageAt: new Date().toISOString(),
+        await updateDoc(doc(db, "UserMessage", MessageDataId), {
+            senderMessages: [],
+            receiverMessages: [],
             messages: arrayUnion({
                 id: message.id,
                 message: message.message,
@@ -33,10 +34,27 @@ const CreateMessage = async (message: Message) => {
     }
 }
 
-const UpdateMessage = async (message: Message) => { }
+const CreateMessageData = async (id: string) => await setDoc(doc(db, "UserMessage", id), {
+    id: id,
+    messages: [],
+    senderMessages: [],
+    receiverMessages: []
+}).then(() => {
+    return id
+}).catch((error) => {
+    console.log(error)
+})
 
-const DeleteMessage = async (message: Message) => { }
+
+const UpdateMessageData = async (message: MessageData) => {
+
+}
+
+// const UpdateMessage = async (message: Message) => { }
+
+// const DeleteMessage = async (message: Message) => { }
 
 export {
     CreateMessage,
+    CreateMessageData
 }

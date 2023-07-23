@@ -21,9 +21,9 @@ import SideContainer from '../Sidebar/SideContainer';
 
 
 const Home = () => {
-  const friendIdParams = useSearchParams().get("chat") as string
+  const conversationID = useSearchParams().get("chat") as string
   const UserState = useUser()
-  const conversation = useConversation()
+  const currentConversation = useConversation()
   const rightSideBar = useRightSideBar()
   const { id } = UserState.state // current user id
   const router = useRouter()
@@ -31,17 +31,17 @@ const Home = () => {
 
 
   useEffect(() => {
-    if (friendIdParams) {
+    if (conversationID) {
       console.log("conversation message") // TODO: remove console.log
       const unSubscribe = onSnapshot(
-        doc(db, "conversations", !conversation.currentConversationId ? friendIdParams : conversation.currentConversationId),
+        doc(db, "conversations", conversationID),
         { includeMetadataChanges: true },
         (doc) => {
-          conversation.setCurrentConversation({ ...doc.data() as Conversation })
+          currentConversation.setConversationData({ ...doc.data() as Conversation })
         });
       return () => unSubscribe()
     }
-  }, [friendIdParams])
+  }, [conversationID])
 
   useEffect(() => {
     window.addEventListener("beforeunload", function (e) {
@@ -66,11 +66,11 @@ const Home = () => {
       </SideContainer>
       <main className='w-full'>
         <div className='h-[100vh] overflow-y-scroll'>
-          {conversation.currentConversation.id || asPath !== "/" ?
+          {currentConversation.conversationData.id || asPath !== "/" ?
             <>
-              <MessageHeader conversation={conversation.currentConversation} UserState={UserState} />
-              <MessageBody conversation={conversation.currentConversation} UserState={UserState} />
-              <MessageFooter conversation={conversation.currentConversation} messageUserId={UserState.state.id} />
+              <MessageHeader conversation={currentConversation.conversationData} UserState={UserState} />
+              <MessageBody conversation={currentConversation.conversationData} UserState={UserState} />
+              <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state.id} />
             </>
             : <ResponsiveSmall UserState={UserState} />
           }

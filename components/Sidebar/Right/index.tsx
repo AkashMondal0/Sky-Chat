@@ -10,7 +10,7 @@ const RightSideBar: React.FC<RightSideBar> = ({
 
 }) => {
 
-    const friend = useConversation().friend
+    const friend = useConversation().Friend
 
 
     return (

@@ -5,6 +5,9 @@ import { timeFormat, dateFormat } from '@/functions/dateTimeFormat'
 import useConversation from '@/hooks/states/useConversation'
 import { Conversation } from '@/interfaces/Conversation'
 import uuid4 from 'uuid4'
+import { doc, onSnapshot } from 'firebase/firestore'
+import { db } from '@/services/firebase/config'
+import { MessageData, Messages } from '@/interfaces/Message'
 
 
 interface MessageBodyProps {
@@ -17,26 +20,35 @@ const MessageBody: React.FC<MessageBodyProps> = ({
 }) => {
   const { id, image } = UserState.state
   const messagesEndRef = useRef(null) as any
-  const { messages, personal: { receiver } } = conversation
   const [selectedMessage, setSelectedMessage] = useState("")
+  const [messageData, setMessageData] = useState<MessageData>()
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView()
   }
 
+  useEffect(() => {
+    const unSubscribe = onSnapshot(
+      doc(db, "UserMessage", conversation.MessageDataId),
+      { includeMetadataChanges: true },
+      (doc) => {
+        setMessageData({ ...doc.data() as MessageData })
+        // console.log("Current data: ", doc.data());
+      });
+    return () => unSubscribe()
+  }, [])
+
 
   useEffect(() => {
     console.log("scrolling") // TODO: remove this
-    scrollToBottom()
-    // setRef()
-    // currentConversation.setRef(uuid4()) // TODO: remove this
-  }, [messages]);
+    scrollToBottom()// TODO: remove this
+  }, [messageData?.messages]);
 
 
   return (
     <div>
       <div className='h-[85vh] overflow-y-scroll pt-3 px-2'>
-        <>{messages.filter((value, index, dateArr) => index === dateArr.findIndex((t) => (dateFormat(t.date) === dateFormat(value.date)))) // this is dateARRAY day by day 
+        <>{messageData?.messages.filter((value, index, dateArr) => index === dateArr.findIndex((t) => (dateFormat(t.date) === dateFormat(value.date)))) // this is dateARRAY day by day 
           .map((item, index) => {
             return <div className='' key={index}>
               <div className='flex gap-3 w-full justify-center'>
@@ -46,12 +58,12 @@ const MessageBody: React.FC<MessageBodyProps> = ({
 
               {/* this days messages ==> item.date */}
               <div>
-                {messages.map((message, index) => {
+                {messageData?.messages.map((message, index) => {
                   return dateFormat(item.date) === dateFormat(message.date) && <MessageCard
                     key={index}
                     Message={message}
                     isSender={message.messageUserId === id}
-                    ProfileImageUrl={message.messageUserId === id ? image : receiver?.image
+                    ProfileImageUrl={message.messageUserId === id ? image : image
                       || '/images/user.png'}
                     setSelectedMessage={setSelectedMessage}
                     selectedMessage={selectedMessage}

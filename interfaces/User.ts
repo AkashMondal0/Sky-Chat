@@ -5,23 +5,24 @@ export const initialUser: User = {
     email: '',
     emailVerified: false,
     image: '',
-    create: new Date(),
-    update: new Date(),
+    createDate: new Date(),
+    updateDate: new Date(),
     Conversations: [],
     FriendRequest: [],
     activeUser: false,
+    bio: ""
 }
 
 export interface User {
     id: string
     name: string
     email: string
-    bio?: string
+    bio: string
     emailVerified: boolean
     image: string
-    create: any
-    update: any
-    Conversations: Conversation[]
+    updateDate: any
+    createDate: any
+    Conversations: string[]
     FriendRequest: friendRequest[]
     activeUser: boolean
     lastTimeOnline?: any

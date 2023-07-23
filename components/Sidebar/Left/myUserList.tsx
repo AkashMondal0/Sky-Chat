@@ -26,49 +26,46 @@ const MyUserList: React.FC<MyUserList> = ({
     onTabChange,
     UserState,
 }) => {
-    const [conversations, setConversations] = useState(UserState.state.Conversations)
+    const [conversations, setConversations] = useState<string[]>([])
     const router = useRouter()
-    const userState = useUser()
+    const currentUser = useUser()
     const currentConversation = useConversation()
 
     const logout = () => {
-        UpdateUserStatus(userState.state.id, false)
+        UpdateUserStatus(currentUser.state.id, false)
         RemoveToken()
         router.replace(routesName.auth)
-        userState.setUser(initialUser)
+        currentUser.setUser(initialUser)
         currentConversation.reset()
     }
     useEffect(() => {
-        const realtime = userState.state?.Conversations?.sort((a, b) => {
-            return b.lastMessageDate - a.lastMessageDate // sort by updateDate
-        })
-        setConversations(realtime)
-    }, [userState.state?.Conversations])
+        // const realtime = currentUser.state?.Conversations?.sort((a, b) => {
+        //     return b.lastMessageDate - a.lastMessageDate // sort by updateDate
+        // })
+        setConversations(UserState.state.Conversations)
+    }, [UserState.state?.Conversations])
     const indicator = (<div className='w-2 h-2 bg-red-400 rounded-full'></div>)
 
     return (
-        <>{userState.state.id && <div>
+        <>{currentUser.state.id && <div>
             <div className='h-[90px] sticky top-0 z-50 px-4 bg-white my-4'>
                 <div className='justify-between items-center flex pt-1'>
-                    <Typography variant="h4">{userState.state.name}</Typography>
-                    {userState.state.activeUser && <div className='cursor-pointer' onClick={logout}>Logout</div>}
+                    <Typography variant="h4">{UserState.state.name}</Typography>
+                    {UserState.state.activeUser && <div className='cursor-pointer' onClick={logout}>Logout</div>}
                     <LuEdit size={26} className='cursor-pointer' onClick={() => { onTabChange("searchUserList") }} />
                 </div>
                 <div className='flex justify-between pt-4 mt-3'>
                     <Typography variant="h6">Message</Typography>
                     <div className='text-sm cursor-pointer flex' onClick={() => { onTabChange("notification") }}>
                         Notification
-                        {userState.state?.FriendRequest.find(item => item.keyValue === "RECEIVER") && indicator}
+                        {UserState.state?.FriendRequest.find(item => item.keyValue === "RECEIVER") && indicator}
                     </div>
                 </div>
             </div>
             <List>
                 {conversations.reverse().map((item, index) => {
                     // console.log(item.id)
-                    return item.type === "PERSONAL" && <ConversationCard
-                        key={index} conversation={item}
-
-                    />
+                    return <ConversationCard key={index} conversationId={item}/>
                 })}
             </List>
         </div>}</>

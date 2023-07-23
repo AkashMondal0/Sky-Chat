@@ -1,4 +1,4 @@
-import { Message } from "./Message"
+import { MessageData } from "./Message"
 import { User } from "./User"
 
 type chatType = "PRIVATE" | "GROUP" | "CHANNEL" | "PERSONAL"
@@ -13,13 +13,9 @@ export interface Conversation {
     groupName: string | null
     groupImage: string | null
     groupMembers: User[]
-    messages: Message[]
-    personal: {
-        sender: User
-        receiver: User
-    }
+    MessageDataId: string // real time
+    personal: string[]
 }
-
 
 export const initialConversation: Conversation = {
     id: "",
@@ -32,9 +28,6 @@ export const initialConversation: Conversation = {
     type: "PERSONAL",
     groupImage: "",
     groupMembers: [],
-    messages: [],
-    personal: {
-        sender: {} as User,
-        receiver: {} as User
-    }
+    MessageDataId: "",
+    personal: []
 }

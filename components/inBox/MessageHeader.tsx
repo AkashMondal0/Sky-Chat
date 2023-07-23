@@ -32,8 +32,6 @@ const MessageHeader: React.FC<MessageHeader> = ({
   const CurrentUser = useUser()
   const RightSideBar = useRightSideBar()
   const router = useRouter()
-  const { messages, personal: { receiver, sender } } = conversation
-  const friend = CurrentUser.state.id === receiver.id ? sender : receiver
   const currentConversation = useConversation()
 
   return (
@@ -45,19 +43,19 @@ const MessageHeader: React.FC<MessageHeader> = ({
       <div className='flex items-center p-2 cursor-pointer'>
         <BiArrowBack className='mr-2 md:hidden' size={28} onClick={() => {
           router.replace(routesName.home)
-          currentConversation.exitCurrentConversation()
+          // currentConversation.exitCurrentConversation()
         }} />
         <ListItemPrefix>
           <img className='w-12 h-12 rounded-full object-cover border-[1px] border-black'
             alt="not found"
-            src={friend.image || "/images/user.png"} />
+            src={currentConversation.Friend.image || "/images/user.png"} />
         </ListItemPrefix>
         <div>
           <Typography variant="h6" color="blue-gray">
-            {friend.name}
+            {currentConversation.Friend.name}
           </Typography>
           <Typography variant="small" color="gray" className="font-normal">
-            {timeAgoFormat(friend.lastTimeOnline)|| "offline"}
+            {timeAgoFormat(currentConversation.Friend.lastTimeOnline) || "offline"}
           </Typography>
         </div>
       </div>

@@ -37,14 +37,14 @@ const CreateFriendRequest = async (data: friendRequest) => {
     }
 }
 
-const RemoveFriendRequest = async (friendRequestId: string, Uid: User, FUid: User) => {
+const RemoveFriendRequest = async (friendRequestId: string, currentUserId: User, friendId: string) => {
 
     try {
-        await updateDoc(doc(db, "users", Uid.id), {
-            FriendRequest: Uid.FriendRequest.filter((FR) => FR?.id !== friendRequestId)
+        await updateDoc(doc(db, "users", currentUserId.id), {
+            FriendRequest: currentUserId.FriendRequest.filter((FR) => FR?.id !== friendRequestId)
         });
-        const FriendData = await GetUserData(FUid.id) as User
-        await updateDoc(doc(db, "users", FUid.id), {
+        const FriendData = await GetUserData(friendId) as User
+        await updateDoc(doc(db, "users", friendId), {
             FriendRequest: FriendData.FriendRequest.filter((FR) => FR?.id !== friendRequestId)
         });
     } catch (error) {
