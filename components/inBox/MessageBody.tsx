@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import MessageCard from '../Card/MessageCard'
+import MessageCard from './components/MessageCard'
 import { UserState } from '@/interfaces/User'
 import { timeFormat, dateFormat } from '@/functions/dateTimeFormat'
 import { Conversation } from '@/interfaces/Conversation'
@@ -21,6 +21,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({
   const messagesEndRef = useRef(null) as any
   const [selectedMessage, setSelectedMessage] = useState("")
   const currentConversation = useConversation()
+  
   const [messageData, setMessageData] = useState<MessageData>({
     id: "",
     messages: [],
@@ -33,18 +34,20 @@ const MessageBody: React.FC<MessageBodyProps> = ({
   }
 
   useEffect(() => {
+    // fetch messages
     const unSubscribe = onSnapshot(
       doc(db, "UserMessage", conversation.MessageDataId),
       { includeMetadataChanges: true },
       (doc) => {
         setMessageData(doc.data() as MessageData)
       });
+    // fetch user from state
     return () => unSubscribe()
   }, [conversation.MessageDataId])
 
   // console.log(messageData)
   useEffect(() => {
-    console.log("scrolling") // TODO: remove this
+    // console.log("scrolling") // TODO: remove this
     scrollToBottom()// TODO: remove this
   }, [messageData?.messages]);
 
@@ -56,8 +59,8 @@ const MessageBody: React.FC<MessageBodyProps> = ({
           .map((item, index) => {
             return <div className='' key={index}>
               <div className='flex gap-3 w-full justify-center'>
-                <p> {dateFormat(item.date)}</p>
-                <p>{timeFormat(item.date)}</p>
+                <p className='bg-gray-200 px-1 rounded-md'>{dateFormat(item.date)}</p>
+                {/* <p>{timeFormat(item.date)}</p> */}
               </div>
 
               {/* this days messages ==> item.date */}

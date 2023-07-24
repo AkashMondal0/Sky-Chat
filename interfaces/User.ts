@@ -24,7 +24,7 @@ export interface User {
     image: string
     updateDate: any
     createDate: any
-    Conversations:Conversation[]
+    Conversations: Conversation[]
     FriendRequest: friendRequest[]
     activeUser: boolean
     lastTimeOnline?: any
@@ -50,12 +50,13 @@ export interface UserState {
 }
 
 export interface friendRequest {
-    receiver: User
-    sender: User
+    receiverId: string
+    senderId: string
     id: string
-    createDate?: any
+    createDate: any
     status: boolean
     keyValue: idValue
+    UsersIds: string[]
 }
 
 type idValue = "SENDER" | "RECEIVER"

@@ -9,6 +9,7 @@ import {
     Textarea,
     Radio,
     Card,
+    Badge,
     List,
     ListItem,
     ListItemPrefix,
@@ -57,5 +58,6 @@ export {
     CardFooter,
     Tooltip,
     IconButton,
-    Checkbox
+    Checkbox,
+    Badge
 };

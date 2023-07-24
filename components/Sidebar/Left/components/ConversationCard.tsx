@@ -12,12 +12,10 @@ import {
 } from "@/app/Material"
 import { useRouter } from 'next/navigation'
 import useConversation from '@/hooks/states/useConversation';
-import { Conversation, initialConversation } from '@/interfaces/Conversation';
+import { Conversation } from '@/interfaces/Conversation';
 import { db } from '@/services/firebase/config'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { User, initialUser } from '@/interfaces/User';
-import useUser from '@/hooks/states/useUser';
-import uuid4 from 'uuid4';
 interface ConversationCardProps {
     conversation: Conversation
     friendId: string
@@ -37,10 +35,12 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
             doc(db, "users", friendId), // friend id
             { includeMetadataChanges: true },
             (doc) => {
+                console.log("set friend list")
                 setUser(doc.data() as User)
+                currentConversation.setFriendList(doc.data() as User)
             })
         return () => unSubscribeUser()
-    }, [friendId])
+    }, [currentConversation, friendId])
 
     const conversationHandle = () => {
         currentConversation.setFriend(user)

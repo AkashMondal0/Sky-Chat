@@ -9,10 +9,10 @@ import { User } from "@/interfaces/User";
 
 
 
-const CreateConversation = async ({ currentUserId, FriendId }: any) => {
-
+const CreateConversation = async (currentUser: User, FriendData: User) => {
     const d = new Date().toISOString()
     const GIDM = uuid4()
+
     const data: Conversation = {
         id: uuid4(),
         createDate: d,
@@ -25,23 +25,26 @@ const CreateConversation = async ({ currentUserId, FriendId }: any) => {
         groupImage: null,
         groupMembers: [],
         personal: [
-            currentUserId,
-            FriendId
+            currentUser.id,
+            FriendData.id
         ],
-        MessageDataId: GIDM
+        MessageDataId: GIDM,
+        FriendData: FriendData
     }
+
+    const setFriendConversation = { ...data, FriendData: currentUser }
     try {
-        updateDoc(doc(db, "users", currentUserId), {
+        updateDoc(doc(db, "users", currentUser.id), {
             Conversations: arrayUnion(data)
         });
 
-        updateDoc(doc(db, "users", FriendId), {
-            Conversations: arrayUnion(data)
+        updateDoc(doc(db, "users", FriendData.id), {
+            Conversations: arrayUnion(setFriendConversation)
         })
             .then(() => {
                 CreateMessageData(GIDM)
             })
-
+        return true
     } catch (error) {
         console.log(error)
         return { message: error, code: 400 }

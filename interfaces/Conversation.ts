@@ -15,6 +15,7 @@ export interface Conversation {
     groupMembers: User[]
     personal: string[]
     MessageDataId: string // real time
+    FriendData: User
 }
 
 export const initialConversation: Conversation = {
@@ -29,7 +30,34 @@ export const initialConversation: Conversation = {
     groupImage: "",
     groupMembers: [],
     MessageDataId: "",
-    personal: []
+    personal: [],
+    FriendData: {
+        id: "",
+        name: "",
+        email: "",
+        bio: "",
+        emailVerified: false,
+        image: "",
+        updateDate: undefined,
+        createDate: undefined,
+        Conversations: [],
+        FriendRequest: [],
+        activeUser: false
+    }
 }
 
 // export interface LastMe
+
+// export interface Contact {
+//     id: string
+//     createDate: Date | any
+//     updateDate: Date | any
+//     lastMessageDate: Date | any
+//     lastMessage: string
+//     type: chatType
+//     isGroup: Boolean | false
+//     groupName: string | null
+//     groupImage: string | null
+//     groupMembers: User[]
+//     Friends: User
+// }

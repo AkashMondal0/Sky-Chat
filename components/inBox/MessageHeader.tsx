@@ -26,8 +26,6 @@ interface MessageHeader {
 }
 
 const MessageHeader: React.FC<MessageHeader> = ({
-  UserState,
-  conversation
 }) => {
   const CurrentUser = useUser()
   const RightSideBar = useRightSideBar()
@@ -48,14 +46,14 @@ const MessageHeader: React.FC<MessageHeader> = ({
         <ListItemPrefix>
           <img className='w-12 h-12 rounded-full object-cover border-[1px] border-black'
             alt="not found"
-            src={currentConversation.Friend.image || "/images/user.png"} />
+            src={currentConversation.conversationData.FriendData.image || "/images/user.png"} />
         </ListItemPrefix>
         <div>
           <Typography variant="h6" color="blue-gray">
-            {currentConversation.Friend.name}
+            {currentConversation.conversationData.FriendData.name}
           </Typography>
           <Typography variant="small" color="gray" className="font-normal">
-            {timeAgoFormat(currentConversation.Friend.lastTimeOnline) || "offline"}
+            {timeAgoFormat(currentConversation.conversationData.FriendData.lastTimeOnline) || "offline"}
           </Typography>
         </div>
       </div>

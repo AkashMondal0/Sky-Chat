@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-import MyUserList from './myUserList'
-import SearchUserList from './searchUserList'
-import { UserState } from '@/interfaces/User'
-import RequestUserList from './requestUserList'
-import Notification from './notification'
+import MyConversationList from './Tabs/myConversationList'
+import SearchUserList from './Tabs/searchUserList'
+import RequestUserList from './Tabs/requestUserList'
+import Notification from './Tabs/notification'
+import useUser from '@/hooks/states/useUser'
 export type steps = "myUserList" | "requestUserList" | "searchUserList" | "notification"
 
 interface LeftSideBar {
@@ -14,14 +14,15 @@ const LeftSideBar: React.FC<LeftSideBar> = ({
   // UserState
 }) => {
   const [steps, setSteps] = React.useState<steps>("myUserList")
+  const currentUser = useUser()
   const onTabChange = (value: steps) => {
     setSteps(value)
   }
 
   return (
-    <div className='w-full'>
+    <>{currentUser.state?.id && <div className='w-full'>
       <div className={`${steps !== "myUserList" && "hidden"}`}>
-        <MyUserList onTabChange={onTabChange} />
+        <MyConversationList onTabChange={onTabChange} />
       </div>
       <div className={`${steps !== "searchUserList" && "hidden"}`}>
         <SearchUserList onTabChange={onTabChange} />
@@ -32,7 +33,7 @@ const LeftSideBar: React.FC<LeftSideBar> = ({
       <div className={`${steps !== "notification" && "hidden"}`}>
         <Notification onTabChange={onTabChange} />
       </div>
-    </div>
+    </div>}</>
   )
 }
 

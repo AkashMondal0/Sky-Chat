@@ -7,14 +7,15 @@ import {
   Avatar,
   Typography,
 } from "@/app/Material"
-import { steps } from '.'
+import { steps } from '..'
 import { BiArrowBack } from 'react-icons/bi'
 import { User, UserState, friendRequest } from '@/interfaces/User'
 import { GetUsers } from '@/services/firebase/UserDoc'
 import { BtnInstagram } from '@/components/Button/Button'
 import { CreateFriendRequest, RemoveFriendRequest } from '@/services/firebase/friendRequest'
 import useUser from '@/hooks/states/useUser'
-import Card from './Card'
+import Card from '../components/Search.UserCard'
+import SearchUserCard from '../components/Search.UserCard'
 
 interface SearchUserList {
   onTabChange: (value: steps) => void
@@ -23,14 +24,15 @@ const SearchUserList: React.FC<SearchUserList> = ({
   onTabChange,
 }) => {
   const currentUser = useUser()
-  const [users, setUsers] = useState<User[]>([])
   const [input, setInput] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
 
+  const [users, setUsers] = useState<User[]>([])
   const get = async () => {
     const users = await GetUsers() as User[]
     const UserFilter = users.filter((item) => item.id !== currentUser.state.id)
-    setUsers(UserFilter)
-    // console.log("users", users)
+    const alreadyConnected = UserFilter.filter(({ id }) => !currentUser.state.Conversations.some((i) => i.FriendData.id === id));
+    setUsers(alreadyConnected)
   }
 
   useEffect(() => {
@@ -38,22 +40,35 @@ const SearchUserList: React.FC<SearchUserList> = ({
   }, [])
 
   const handle = async (friend: User) => {
-    // setIsFriend(true)
+    setLoading(true)
     const FriendRequest: friendRequest = {
-      sender: currentUser.state,
+      senderId: currentUser.state.id,
+      receiverId: friend.id,
       status: false,
-      receiver: friend,
       keyValue: 'SENDER',
-      id: ''
+      id: '',
+      UsersIds: [
+        currentUser.state.id,
+        friend.id
+      ],
+      createDate: undefined
     }
-    CreateFriendRequest(FriendRequest).finally(() => {
+    CreateFriendRequest(FriendRequest).then(() => {
       get()
+    }).catch((err) => {
+      console.log("err", err)
     })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
-  const handleRemove = async (FriendRequestId: string, friend: User) => {
-    await RemoveFriendRequest(FriendRequestId, currentUser.state, friend.id).then(() => {
+  const handleRemove = async (FriendRequestId: string, friendId: string) => {
+    setLoading(true)
+    await RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId).then(() => {
       get()
+    }).finally(() => {
+      setLoading(false)
     })
   }
 
@@ -82,8 +97,8 @@ const SearchUserList: React.FC<SearchUserList> = ({
           return item;
         }
       }).map((item, index: number) => {
-        const findId = item.FriendRequest.find((i) => i.sender.id === currentUser.state.id || i.receiver.id === currentUser.state.id)
-        return <Card key={index}
+        const findId = item.FriendRequest.find((User) => User?.UsersIds.includes(item.id))
+        return <SearchUserCard key={index}
           profileImg={item.image || "/images/user.png"}
           name={item.name || "No Name"}
           activeUser={item.activeUser}
@@ -93,12 +108,13 @@ const SearchUserList: React.FC<SearchUserList> = ({
             <div className='flex gap-1'>
               {findId ? <BtnInstagram
                 danger
-                onClick={() => handleRemove(findId.id, item)}
-                label={"Cancel"} /> : <BtnInstagram
-                onClick={() => {
-                  handle(item)
-                }}
-                label={"Add"} />}
+                disabled={loading}
+                onClick={() => handleRemove(findId.id, item.id)}
+                label={"Cancel"} /> :
+                <BtnInstagram
+                  disabled={loading}
+                  onClick={() => handle(item)}
+                  label={"Connect"} />}
             </div>
           }
         />

@@ -72,7 +72,7 @@ export const MessageFooter: React.FC<InputProps> = ({
     }
     return (
         <React.Fragment>
-            <div className='fixed bottom-0 bg-white width-available p-3 pt-1 '>
+            <div className='fixed bottom-0 bg-white p-3 pt-1 w-full'>
                 <div className='rounded-3xl border-[1px]'>
                     {/* Action Show */}
                     <div className='w-full flex gap-3 m-1 mt-0 items-center'>

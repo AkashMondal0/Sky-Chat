@@ -43,9 +43,9 @@ const RegisterFireBase = async (Data: FieldValues) => createUserWithEmailAndPass
                     id: user.uid,
                 } as User
                 CreateUserData(loginData)
-                SetToken(user.uid)
             })
         })
+        return { message: "Success", status: 200 };
     } else {
         updateProfile(user, {
             displayName: Data.name,
@@ -60,9 +60,9 @@ const RegisterFireBase = async (Data: FieldValues) => createUserWithEmailAndPass
             } as User
             CreateUserData(loginData)
         })
+        return { message: "Success", status: 200 };
     }
 
-    return { message: "Success", status: 200 };
 }).catch((error) => {
     return { message: error.code, status: 400 }
 });

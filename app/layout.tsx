@@ -16,9 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ToasterContext />
-      
           {children}
-    
       </body>
     </html>
   )

@@ -1,34 +1,20 @@
-'use client'
-import { MessageData } from '@/interfaces/Message'
-import { db } from '@/services/firebase/config'
-import { data } from 'autoprefixer'
-import { setDoc, doc, onSnapshot } from 'firebase/firestore'
-import React, { useEffect } from 'react'
-import { ref, set } from "firebase/database";
+import React from 'react'
 
 const Page = () => {
-    const t = async () => {
-        await setDoc(doc(db, "List", "ConversationId"), {
-            id: "asjio",
-            date: new Date().toString(),
-            User:[{date:"assd"},{date:"assd"},{date:"olivia"}]
-        })
-    }
-    useEffect(() => {
-        const unSubscribe = onSnapshot(
-            doc(db, "List", "ConversationId"),
-            { includeMetadataChanges: true },
-            (doc) => {
-                // setMessageData(doc.data() as MessageData)
-                console.log(doc.data())
-            });
-        return () => unSubscribe()
-    }, [])
-    return (
-        <div onClick={t}>
-            run
+  return (
+    <div className='w-full h-screen
+    bg-gray-200'>
+        <div className='bg-black w-full h-10'>
+            Header 
         </div>
-    )
+        <div className='bg-white w-full h-3/5'>
+            Message
+        </div>
+        <div className='bg-black w-full h-'>
+            Footer
+        </div>
+    </div>
+  )
 }
 
 export default Page

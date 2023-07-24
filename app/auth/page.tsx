@@ -5,7 +5,7 @@ import { FieldValues, RegisterOptions, SubmitHandler, UseFormRegisterReturn, use
 import { BsGithub, BsGoogle } from "react-icons/bs"
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import Input from '@/components/Input/Input';
+import Input from '@/components/Input';
 import Button from '@/components/Button/Button';
 import AuthSocialButton from '@/components/Button/AuthSocialButton';
 import { Typography } from '../Material';

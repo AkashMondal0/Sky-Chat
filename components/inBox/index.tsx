@@ -6,8 +6,6 @@ import MessageHeader from './MessageHeader'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import MessageBody from './MessageBody'
 import LeftSideBar from '../Sidebar/Left'
-import { doc, onSnapshot } from 'firebase/firestore'
-import { db } from '@/services/firebase/config'
 import { Conversation, initialConversation } from '@/interfaces/Conversation'
 import { MessageFooter } from './MessageFooter'
 import { LiaFacebookMessenger } from 'react-icons/lia'
@@ -16,16 +14,16 @@ import useRightSideBar from '@/hooks/useRightSideBar'
 import { UpdateUserStatus } from '@/services/firebase/UserDoc'
 import useConversation from '@/hooks/states/useConversation'
 import useUser from '@/hooks/states/useUser'
-import { UserState } from '@/interfaces/User'
 import SideContainer from '../Sidebar/SideContainer';
+import { auth } from '@/services/firebase/config';
+import { GetToken } from '@/functions/localData';
 
 
 const Home = () => {
   const conversationID = useSearchParams().get("chat") as string
   const UserState = useUser()
   const currentConversation = useConversation()
-  const rightSideBar = useRightSideBar()
-  const { id } = UserState.state // current user id
+  const rightSideBar = useRightSideBar()// current user id
   const asPath = usePathname()
 
 
@@ -42,7 +40,9 @@ const Home = () => {
 
   useEffect(() => {
     window.addEventListener("beforeunload", function (e) {
-      UpdateUserStatus(id, false)
+      if (UserState.state?.id) {
+        UpdateUserStatus(UserState.state.id, false)
+      }
     })
     return () => {
       window.removeEventListener('beforeunload', () => {
@@ -53,21 +53,27 @@ const Home = () => {
 
   useEffect(() => {
     console.log("start 2") // TODO: remove console.log
-    UpdateUserStatus(id, true)
+    if (UserState.state?.id) {
+      UpdateUserStatus(UserState.state.id, true)
+    }
   }, [])
 
   return (
     <div className="flex md:w-1/1">
       <SideContainer>
-        <LeftSideBar/>
+        <LeftSideBar />
       </SideContainer>
       <main className='w-full'>
-        <div className='h-[100vh] overflow-y-scroll'>
+        <div className='h-[100vh] w-full overflow-y-scroll'>
           {currentConversation.conversationData.id || asPath !== "/" ?
             <>
+            <div className='sticky top-0'>
               <MessageHeader conversation={currentConversation.conversationData} UserState={UserState} />
+            </div>
               <MessageBody conversation={currentConversation.conversationData} UserState={UserState} />
-              <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state.id} />
+              <div className='w-full'>
+              <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state?.id} />
+              </div>
             </>
             : <>
               <div className='md:flex w-full justify-center items-center min-h-screen hidden'>

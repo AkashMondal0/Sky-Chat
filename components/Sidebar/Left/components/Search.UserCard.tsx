@@ -3,13 +3,9 @@
 "use client";
 import React from 'react'
 import {
-    List,
-    ListItem,
     ListItemPrefix,
-    Avatar,
     Typography,
 } from "@/app/Material"
-import { useRouter } from 'next/navigation'
 
 interface UserCardProps {
     profileImg: string
@@ -21,7 +17,7 @@ interface UserCardProps {
     right?: React.ReactNode
 }
 
-const Card: React.FC<UserCardProps> = ({
+const SearchUserCard: React.FC<UserCardProps> = ({
     name,
     profileImg,
     activeUser,
@@ -30,9 +26,6 @@ const Card: React.FC<UserCardProps> = ({
     type,
     right
 }) => {
-    const router = useRouter()
-
-    // router.push(`/?chat=${id}`) // TODO push to change clicked function or method
     return (
         <div onClick={() => {
 
@@ -63,4 +56,4 @@ const Card: React.FC<UserCardProps> = ({
     )
 }
 
-export default Card
+export default SearchUserCard

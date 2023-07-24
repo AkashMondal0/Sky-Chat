@@ -18,11 +18,10 @@ type loading = true | false
 
 export default function Index() {
   const [loading, setLoading] = useState<loading>(true)
-  const userState = useUser()
+  const currentUser = useUser()
   const router = useRouter()
   const AuthLoading = useAuthLoading()
-  const [user, setUser] = useState<User | null>(null)
-
+  // console.log(userFirebase?.uid)
 
   useEffect(() => {
     const token = GetToken()
@@ -32,11 +31,7 @@ export default function Index() {
           doc(db, "users", token),
           { includeMetadataChanges: true },
           (doc) => {
-            const state: User = {
-              ...doc.data() as User,
-              activeUser: true
-            }
-            userState.setUser(doc.data() as User)
+            currentUser.setUser(doc.data() as User)
             AuthLoading.stopLoading()
             setLoading(false)
           })
