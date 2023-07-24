@@ -3,15 +3,9 @@
 "use client";
 import React from 'react'
 import {
-    List,
-    ListItem,
     ListItemPrefix,
-    Avatar,
-    Card,
     Typography,
 } from "@/app/Material"
-import { useRouter } from 'next/navigation'
-import { BtnInstagram } from '../Button/Button';
 
 interface UserCardProps {
     profileImg: string
@@ -23,7 +17,7 @@ interface UserCardProps {
     right?: React.ReactNode
 }
 
-const UserCard: React.FC<UserCardProps> = ({
+const SearchUserCard: React.FC<UserCardProps> = ({
     name,
     profileImg,
     activeUser,
@@ -32,9 +26,6 @@ const UserCard: React.FC<UserCardProps> = ({
     type,
     right
 }) => {
-    const router = useRouter()
-
-    // router.push(`/?chat=${id}`) // TODO push to change clicked function or method
     return (
         <div onClick={() => {
 
@@ -43,18 +34,18 @@ const UserCard: React.FC<UserCardProps> = ({
              px-2 rounded-xl hover:bg-gray-100'>
                 <div className='flex justify-between items-center'>
                     <ListItemPrefix>
-                      
+
                         <img className='w-14 h-14 rounded-full object-cover border-[1px]'
                             alt="not found"
                             src={profileImg || "/images/user.png"} />
                     </ListItemPrefix>
-                    <div>
-                        <Typography variant="h6" color="blue-gray">
+                    <div className='break-all'>
+                        <p className="break-all font-semibold text-base">
                             {name || "No Name"}
-                        </Typography>
-                        {/* <Typography variant="small" color="gray" className="font-normal">
+                        </p>
+                        <p className="break-all text-sm">
                             {email || "No Email"}
-                        </Typography> */}
+                        </p>
                     </div>
                 </div>
                 <div className='flex gap-1'>
@@ -65,4 +56,4 @@ const UserCard: React.FC<UserCardProps> = ({
     )
 }
 
-export default UserCard
+export default SearchUserCard

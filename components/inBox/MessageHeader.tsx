@@ -26,38 +26,33 @@ interface MessageHeader {
 }
 
 const MessageHeader: React.FC<MessageHeader> = ({
-  UserState,
-  conversation
 }) => {
   const CurrentUser = useUser()
   const RightSideBar = useRightSideBar()
   const router = useRouter()
-  const { messages, personal: { receiver, sender } } = conversation
-  const friend = CurrentUser.state.id === receiver.id ? sender : receiver
   const currentConversation = useConversation()
 
   return (
-    <div className='h-[60px] w-1/1 
+    <div className='h-[60px] w-1/1 w-full
     border-[1px] border-l-[0px] 
     bg-white
     flex justify-between sticky top-0 py-3'>
-
       <div className='flex items-center p-2 cursor-pointer'>
         <BiArrowBack className='mr-2 md:hidden' size={28} onClick={() => {
           router.replace(routesName.home)
-          currentConversation.exitCurrentConversation()
+          currentConversation.reset()
         }} />
         <ListItemPrefix>
           <img className='w-12 h-12 rounded-full object-cover border-[1px] border-black'
             alt="not found"
-            src={friend.image || "/images/user.png"} />
+            src={currentConversation.conversationData.FriendData.image || "/images/user.png"} />
         </ListItemPrefix>
         <div>
           <Typography variant="h6" color="blue-gray">
-            {friend.name}
+            {currentConversation.conversationData.FriendData.name}
           </Typography>
           <Typography variant="small" color="gray" className="font-normal">
-            {timeAgoFormat(friend.lastTimeOnline)|| "offline"}
+            {timeAgoFormat(currentConversation.conversationData.FriendData.lastTimeOnline) || "offline"}
           </Typography>
         </div>
       </div>

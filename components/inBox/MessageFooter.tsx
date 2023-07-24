@@ -4,14 +4,18 @@ import { GrEmoji } from 'react-icons/gr';
 import { HiOutlinePhotograph } from 'react-icons/hi';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BsMic } from 'react-icons/bs';
-import { Message, initialMessage, initialReply } from '@/interfaces/Message';
+import { LastMessage, Messages, initialMessage, initialReply } from '@/interfaces/Message';
 
-import { CreateMessage } from '@/services/firebase/message';
 import { RxCrossCircled } from 'react-icons/rx';
-import useReplyMessage from '@/hooks/useReply';
+import useReplyMessage from '@/hooks/message/useReply';
 import uuid4 from 'uuid4';
 import useUser from '@/hooks/states/useUser';
 import { Conversation } from '@/interfaces/Conversation';
+import { CreateMessage, CreateMessageData } from '@/services/firebase/message';
+import { setLastMessageConversation } from '@/services/firebase/Conversation';
+import useConversation from '@/hooks/states/useConversation';
+import { GetUserData } from '@/services/firebase/UserDoc';
+import { User } from '@/interfaces/User';
 
 interface InputProps {
     conversation: Conversation
@@ -22,8 +26,10 @@ export const MessageFooter: React.FC<InputProps> = ({
     conversation,
     messageUserId
 }) => {
+    const currentUser = useUser()
+    const currentConversation = useConversation()
     const replyState = useReplyMessage()
-    const [input, setInput] = useState<Message>({
+    const [input, setInput] = useState<Messages>({
         id: uuid4(), // message id
         message: '',
         img: [],
@@ -32,12 +38,20 @@ export const MessageFooter: React.FC<InputProps> = ({
         messageUserId: messageUserId, // user id
         createdAt: undefined,
         updateAt: undefined,
-        conversationId: conversation.id // conversation id
+        conversationId: conversation.id,// conversation id
+        seen: [],
     })
     const handleSend = async () => {
-        CreateMessage({ ...input, conversationId: conversation.id, reply: replyState.state })
+        CreateMessage({ ...input, conversationId: conversation.id, reply: replyState.state }, conversation.MessageDataId)
         setInput({ ...initialMessage, messageUserId: messageUserId, id: uuid4() })
         replyState.setReply(initialReply)
+        const data: LastMessage = {
+            lastMessage: input.message,
+            UserId: messageUserId,
+            friendId: currentConversation.Friend.id,
+            conversationId: conversation.id
+        }
+        setLastMessageConversation(data)
     }
 
     const onChangeFilePicker = (event: any) => {
@@ -57,8 +71,8 @@ export const MessageFooter: React.FC<InputProps> = ({
         setInput({ ...input, img: newImage })
     }
     return (
-        <React.Fragment>
-            <div className='fixed bottom-0 bg-white width-available p-3 pt-1 '>
+        <div>
+            <div className='bg-white p-3 pt-1 w-full'>
                 <div className='rounded-3xl border-[1px]'>
                     {/* Action Show */}
                     <div className='w-full flex gap-3 m-1 mt-0 items-center'>
@@ -140,6 +154,6 @@ export const MessageFooter: React.FC<InputProps> = ({
                     onChangeFilePicker(event)
                 }}
             />
-        </React.Fragment>
+        </div>
     )
 }

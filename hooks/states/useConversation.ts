@@ -1,51 +1,32 @@
 import { Conversation, initialConversation } from '@/interfaces/Conversation'
+import { MessageData } from '@/interfaces/Message'
 import { User, initialUser } from '@/interfaces/User'
 import { create } from 'zustand'
 
 interface ConversationState {
-    conversations: Conversation[]
-    currentConversation: Conversation
-    friend: User
-    isInbox: boolean
-    ref: string
-    currentConversationId: string
-    setCurrentConversation: (conversation: Conversation) => void
-    setConversations: (conversation: Conversation) => void
-    setFriendConversation: (friend: User, conversationId: string) => void
-    exitCurrentConversation: () => void
-    setRef: (ref: string) => void
-    reset(): void
+    conversationData: Conversation
+    Friend: User
+    FriendList: User[]
+    setConversationData: (conversationData: Conversation) => void
+    setFriend: (friend: User) => void
+    setFriendList: (friend: User) => void
+    reset: () => void
 }
 
 const useConversation = create<ConversationState>((set) => ({
-    conversations: [],
-    ref: "ref",
-    isInbox: false,
-    currentConversation: initialConversation,
-    friend: initialUser,
-    currentConversationId: '',
+    conversationData: initialConversation,
+    Friend: initialUser,
+    FriendList: [],
+    setFriend: (friend: User) => set(() => ({ Friend: friend })),
+    setConversationData: (conversationData: Conversation) => set(() => ({ conversationData: conversationData })),
+    reset: () => set(() => ({ conversationData: initialConversation, Friend: initialUser })),
 
-    setCurrentConversation: (conversation: Conversation) => set((state) => ({
-        currentConversation: conversation,
-        isInbox: true
-    })),
-
-    setFriendConversation: (friend: User, conversationId: string) => set((state) => ({
-        currentConversationId: conversationId,
-        friend: friend,
-    })),
-
-    setConversations: (conversation: Conversation) => set((state) => ({
-        conversations: [...state.conversations, conversation]
-    })),
-
-    exitCurrentConversation: () => set((state) => ({
-        currentConversation: initialConversation,
-        isInbox: false,
-        currentConversationId: '',
-    })),
-    setRef: (Ref: string) => set({ ref: Ref }),
-    reset: () => set({ conversations: [], currentConversation: initialConversation, friend: initialUser, isInbox: false, currentConversationId: '', ref: "ref" })
+    setFriendList: (friend: User) => set((state) => {
+        if (state.FriendList.find((item) => item.id === friend.id)) {
+            return state
+        }
+        return { FriendList: [...state.FriendList, friend] }
+    })
 }))
 
 

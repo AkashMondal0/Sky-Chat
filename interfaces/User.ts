@@ -5,22 +5,25 @@ export const initialUser: User = {
     email: '',
     emailVerified: false,
     image: '',
-    create: new Date(),
-    update: new Date(),
-    Conversations: [],
+    createDate: new Date(),
+    updateDate: new Date(),
     FriendRequest: [],
     activeUser: false,
+    bio: "",
+    Conversations: [],
 }
+
+
 
 export interface User {
     id: string
     name: string
     email: string
-    bio?: string
+    bio: string
     emailVerified: boolean
     image: string
-    create: any
-    update: any
+    updateDate: any
+    createDate: any
     Conversations: Conversation[]
     FriendRequest: friendRequest[]
     activeUser: boolean
@@ -47,12 +50,13 @@ export interface UserState {
 }
 
 export interface friendRequest {
-    receiver: User
-    sender: User
+    receiverId: string
+    senderId: string
     id: string
-    createDate?: any
+    createDate: any
     status: boolean
     keyValue: idValue
+    UsersIds: string[]
 }
 
 type idValue = "SENDER" | "RECEIVER"

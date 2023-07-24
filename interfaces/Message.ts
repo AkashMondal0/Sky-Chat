@@ -1,5 +1,6 @@
 
 export interface reply {
+    id: string
     message: string
     img: [] | null
     video: string | null
@@ -18,8 +19,9 @@ export const initialReply: reply = {
     video: null,
     messageId: null,
     authorId: "",
+    id: ""
 }
-export interface Message {
+export interface Messages {
     id: string
     message: string | ""
     img: img | [] | false | any
@@ -30,9 +32,10 @@ export interface Message {
     date?: any
     conversationId: string
     messageUserId: string
+    seen: string[]
 }
 
-export const initialMessage: Message = {
+export const initialMessage: Messages = {
     id: "",
     message: "",
     img: [],
@@ -42,6 +45,21 @@ export const initialMessage: Message = {
     updateAt: undefined,
     conversationId: "",
     messageUserId: "",
-    date: ""
+    date: "",
+    seen: []
 }
 
+export interface MessageData {
+    id: string
+    messages: Messages[]
+    senderMessages: Messages[]
+    receiverMessages: Messages[]
+}
+
+export interface LastMessage {
+    lastMessage: string,
+    lastMessageDate?: string,
+    UserId:string,
+    friendId:string,
+    conversationId:string
+}
