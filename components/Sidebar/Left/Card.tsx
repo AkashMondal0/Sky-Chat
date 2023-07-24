@@ -50,9 +50,9 @@ const Card: React.FC<UserCardProps> = ({
                         <Typography variant="h6" color="blue-gray">
                             {name || "No Name"}
                         </Typography>
-                        {/* <Typography variant="small" color="gray" className="font-normal">
+                        <Typography variant="small" color="gray" className="font-normal">
                             {email || "No Email"}
-                        </Typography> */}
+                        </Typography>
                     </div>
                 </div>
                 <div className='flex gap-1'>

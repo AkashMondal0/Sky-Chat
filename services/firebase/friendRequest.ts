@@ -7,8 +7,9 @@ import uuid4 from "uuid4"
 const CreateFriendRequest = async (data: friendRequest) => {
     const GID = uuid4()
     try {
-        const UserData = await GetUserData(data.sender.id) as User // send it me
-        const findMyIdInFriendSenderList = UserData.FriendRequest.find((User) => User?.sender.id === data.receiver.id)
+        const UserData = await GetUserData(data.receiver.id) as User // send it me
+        const findMyIdInFriendSenderList = UserData.FriendRequest.find((User) => User?.sender.id === data.sender.id || User?.sender.id === data.receiver.id)
+        // console.log(findMyIdInFriendSenderList)
         if (!findMyIdInFriendSenderList) {
             await updateDoc(doc(db, "users", data.receiver.id), {
                 FriendRequest: arrayUnion({
@@ -32,13 +33,13 @@ const CreateFriendRequest = async (data: friendRequest) => {
                 })
             });
         }
+        return true
     } catch (error) {
         console.log(error)
     }
 }
 
 const RemoveFriendRequest = async (friendRequestId: string, currentUserId: User, friendId: string) => {
-
     try {
         await updateDoc(doc(db, "users", currentUserId.id), {
             FriendRequest: currentUserId.FriendRequest.filter((FR) => FR?.id !== friendRequestId)
@@ -47,6 +48,7 @@ const RemoveFriendRequest = async (friendRequestId: string, currentUserId: User,
         await updateDoc(doc(db, "users", friendId), {
             FriendRequest: FriendData.FriendRequest.filter((FR) => FR?.id !== friendRequestId)
         });
+        return true
     } catch (error) {
         console.log(error)
     }

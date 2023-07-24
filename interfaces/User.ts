@@ -1,4 +1,4 @@
-import { Conversation, ConversationsList, initialConversation } from "./Conversation"
+import { Conversation, initialConversation } from "./Conversation"
 export const initialUser: User = {
     id: "",
     name: '',

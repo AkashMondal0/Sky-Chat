@@ -1,6 +1,7 @@
 import React from 'react'
 import "../../style/input.search.css"
 const SearchInput = () => {
+    
     return (
         <div>
             <div className="searchbar">

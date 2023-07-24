@@ -10,8 +10,7 @@ import { User } from "@/interfaces/User";
 
 
 const CreateConversation = async ({ currentUserId, FriendId }: any) => {
-    
-    // console.log(currentUserId, FriendId)
+
     const d = new Date().toISOString()
     const GIDM = uuid4()
     const data: Conversation = {
@@ -32,17 +31,14 @@ const CreateConversation = async ({ currentUserId, FriendId }: any) => {
         MessageDataId: GIDM
     }
     try {
-        setDoc(doc(db, "conversations", data.id), data)
-            .then(() => {
-                updateDoc(doc(db, "users", currentUserId), {
-                    Conversations: arrayUnion(data)
-                });
+        updateDoc(doc(db, "users", currentUserId), {
+            Conversations: arrayUnion(data)
+        });
 
-                updateDoc(doc(db, "users", FriendId), {
-                    Conversations: arrayUnion(data)
-                });
-                return { message: "User add ", code: 200 }
-            }).then(() => {
+        updateDoc(doc(db, "users", FriendId), {
+            Conversations: arrayUnion(data)
+        })
+            .then(() => {
                 CreateMessageData(GIDM)
             })
 
@@ -94,8 +90,6 @@ const setLastMessageConversation = async (data: LastMessage) => {
             ...getFriend,
             Conversations: conUpdateFriend
         })
-
-        return { ...getUser, Conversations: conUserUpdate }
     } catch (error) {
         console.log("Error getting document:", error);
     }

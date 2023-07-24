@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { List, Typography } from '@/app/Material'
+import { Button, Card, List, ListItem, Menu, MenuHandler, MenuItem, MenuList, Typography } from '@/app/Material'
 import { LuEdit } from 'react-icons/lu'
 import { steps } from '.'
 import { UserState, initialUser } from '@/interfaces/User'
@@ -10,6 +10,8 @@ import routesName from '@/routes'
 import { UpdateUserStatus } from '@/services/firebase/UserDoc'
 import useConversation from '@/hooks/states/useConversation'
 import dynamic from 'next/dynamic'
+import { HiOutlineDotsVertical } from 'react-icons/hi'
+import { AiOutlineSearch } from 'react-icons/ai'
 
 const ConversationCard = dynamic(() => import('../../Card/ConversationCard',), {
     loading: () => <div>Loading</div>,
@@ -25,6 +27,7 @@ const MyUserList: React.FC<MyUserList> = ({
     const router = useRouter()
     const currentUser = useUser()
     const currentConversation = useConversation()
+    const [input, setInput] = useState<string>('')
 
     const logout = () => {
         UpdateUserStatus(currentUser.state.id, false)
@@ -39,13 +42,33 @@ const MyUserList: React.FC<MyUserList> = ({
 
     return (
         <>{currentUser.state.id && <div>
-            <div className='h-[90px] sticky top-0 z-50 px-4 bg-white my-4'>
+            <div className='h-[100px] sticky top-0 z-50 px-4 bg-white my-4'>
                 <div className='justify-between items-center flex pt-1'>
                     <Typography variant="h4">{currentUser.state.name}</Typography>
-                    {currentUser.state.activeUser && <div className='cursor-pointer' onClick={logout}>Logout</div>}
-                    <LuEdit size={26} className='cursor-pointer' onClick={() => { onTabChange("searchUserList") }} />
+                    <div className='flex items-center gap-3'>
+                        <LuEdit size={24} className='cursor-pointer' onClick={() => { onTabChange("searchUserList") }} />
+                        <Menu placement="left-end">
+                            <MenuHandler>
+                                <div><HiOutlineDotsVertical size={24} /></div>
+                            </MenuHandler>
+                            <MenuList>
+                                <MenuItem>Profile</MenuItem>
+                                <MenuItem>Setting</MenuItem>
+                                <MenuItem onClick={logout}>Logout</MenuItem>
+                            </MenuList>
+                        </Menu>
+                    </div>
                 </div>
-                <div className='flex justify-between pt-4 mt-3'>
+                {/* search */}
+                <div className='flex my-3 items-center w-full p-2 border-gray-300
+                       border-[1px]  rounded-xl'>
+                    <AiOutlineSearch size={20}/>
+                    <input className='px-2 focus:disabled:outline-none 
+                       focus:outline-none w-full'
+                        type="text" placeholder='Search' value={input}
+                        onChange={(e) => setInput(e.target.value)} />
+                </div>
+                <div className='flex justify-between'>
                     <Typography variant="h6">Message</Typography>
                     <div className='text-sm cursor-pointer flex' onClick={() => { onTabChange("notification") }}>
                         Notification
@@ -53,17 +76,29 @@ const MyUserList: React.FC<MyUserList> = ({
                     </div>
                 </div>
             </div>
-            <List>
+
+            <div className='pt-5 px-1'>
                 {currentUser.state.Conversations.sort(function (a, b) {
+                    // sort by date
                     var dateA = new Date(a.lastMessageDate).getTime();
                     var dateB = new Date(b.lastMessageDate).getTime();
                     return dateA > dateB ? 1 : -1;
-                })?.reverse()?.map((item, index) => {
+                })?.reverse()?.filter((item) => {
+                    // filter by name
+                    const friendId = item.personal.find((u: string) => u !== currentUser.state.id)
+                    if (friendId === "") {
+                        return item;
+                    } else if (friendId?.toLowerCase().includes(input.toLowerCase())) {
+                        return item;
+                    }
+                }).map((item, index) => {
+                    // get friend id
                     const friendId = item.personal.find((u: string) => u !== currentUser.state.id) || ""
-                    return <ConversationCard key={index} conversation={item} friendId={friendId}/>
+                    return <ConversationCard key={index} conversation={item} friendId={friendId} />
                 })}
-            </List>
-        </div>}</>
+            </div>
+        </div>}
+        </>
     )
 }
 

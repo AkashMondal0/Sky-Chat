@@ -51,9 +51,7 @@ export const MessageFooter: React.FC<InputProps> = ({
             friendId: currentConversation.Friend.id,
             conversationId: conversation.id
         }
-        await setLastMessageConversation(data)
-        // console.log(returnUpdateUser)
-        // currentUser.setUser(returnUpdateUser as User)
+        setLastMessageConversation(data)
     }
 
     const onChangeFilePicker = (event: any) => {
