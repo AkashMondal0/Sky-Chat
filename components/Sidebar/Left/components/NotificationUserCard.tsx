@@ -6,8 +6,8 @@ import { GetUserData } from '@/services/firebase/UserDoc'
 import React, { useEffect, useState } from 'react'
 import { RemoveFriendRequest } from '@/services/firebase/friendRequest'
 import { BtnInstagram } from '@/components/Button/Button'
-import { Conversation } from '@/interfaces/Conversation'
 import { CreateConversation } from '@/services/firebase/Conversation'
+
 
 interface UserCardProps {
     UserId: string
@@ -32,11 +32,11 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
 
     const handle = async (friendId: string, FriendRequestId: string) => {
         // console.log(FriendRequestId, currentUser.state.id, friendId)
-       await CreateConversation(
+        await CreateConversation(
             currentUser.state, // currentUser id
             user // friend data
         )
-        RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId)
+        await RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId)
     }
 
 

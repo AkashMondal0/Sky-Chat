@@ -16,6 +16,9 @@ import { CreateFriendRequest, RemoveFriendRequest } from '@/services/firebase/fr
 import useUser from '@/hooks/states/useUser'
 import Card from '../components/Search.UserCard'
 import SearchUserCard from '../components/Search.UserCard'
+import callbackRef from '@/hooks/callbackRef'
+import { collection, onSnapshot } from 'firebase/firestore'
+import { db } from '@/services/firebase/config'
 
 interface SearchUserList {
   onTabChange: (value: steps) => void
@@ -26,17 +29,33 @@ const SearchUserList: React.FC<SearchUserList> = ({
   const currentUser = useUser()
   const [input, setInput] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
-
   const [users, setUsers] = useState<User[]>([])
-  const get = async () => {
-    const users = await GetUsers() as User[]
-    const UserFilter = users.filter((item) => item.id !== currentUser.state.id)
-    const alreadyConnected = UserFilter.filter(({ id }) => !currentUser.state.Conversations.some((i) => i.FriendData.id === id));
-    setUsers(alreadyConnected)
-  }
+
+  // const get = async () => {
+  //   const users = await GetUsers() as User[]
+  //   const UserFilter = users.filter((item) => item.id !== currentUser.state.id)
+  //   const alreadyConnected = UserFilter.filter(({ id }) => !currentUser.state.Conversations.some((i) => i.FriendData.id === id));
+  //   setUsers(alreadyConnected)
+  // }
 
   useEffect(() => {
-    get()
+    const unsubscribe = onSnapshot(
+      collection(db, "users"),
+      (snapshot) => {
+        const users = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        })) as User[]
+        // console.log("search")
+        const UserFilter = users.filter((item) => item.id !== currentUser.state.id)
+        const alreadyConnected = UserFilter.filter(({ id }) => !currentUser.state.Conversations.some((i) => i.FriendData.id === id));
+        setUsers(alreadyConnected)
+      },
+      (error) => {
+        // ...
+      });
+
+    return () => unsubscribe()
   }, [])
 
   const handle = async (friend: User) => {
@@ -53,8 +72,8 @@ const SearchUserList: React.FC<SearchUserList> = ({
       ],
       createDate: undefined
     }
-    CreateFriendRequest(FriendRequest).then(() => {
-      get()
+    await CreateFriendRequest(FriendRequest).then(() => {
+      // get()
     }).catch((err) => {
       console.log("err", err)
     })
@@ -66,7 +85,7 @@ const SearchUserList: React.FC<SearchUserList> = ({
   const handleRemove = async (FriendRequestId: string, friendId: string) => {
     setLoading(true)
     await RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId).then(() => {
-      get()
+      // get()
     }).finally(() => {
       setLoading(false)
     })
@@ -97,7 +116,7 @@ const SearchUserList: React.FC<SearchUserList> = ({
           return item;
         }
       }).map((item, index: number) => {
-        const findId = item.FriendRequest.find((User) => User?.UsersIds.includes(item.id))
+        const findId = item.FriendRequest.find((User) => User?.UsersIds.includes(currentUser.state.id))
         return <SearchUserCard key={index}
           profileImg={item.image || "/images/user.png"}
           name={item.name || "No Name"}

@@ -7,7 +7,7 @@ import { BsMic } from 'react-icons/bs';
 import { LastMessage, Messages, initialMessage, initialReply } from '@/interfaces/Message';
 
 import { RxCrossCircled } from 'react-icons/rx';
-import useReplyMessage from '@/hooks/useReply';
+import useReplyMessage from '@/hooks/message/useReply';
 import uuid4 from 'uuid4';
 import useUser from '@/hooks/states/useUser';
 import { Conversation } from '@/interfaces/Conversation';
@@ -71,8 +71,8 @@ export const MessageFooter: React.FC<InputProps> = ({
         setInput({ ...input, img: newImage })
     }
     return (
-        <React.Fragment>
-            <div className='fixed bottom-0 bg-white p-3 pt-1 w-full'>
+        <div>
+            <div className='bg-white p-3 pt-1 w-full'>
                 <div className='rounded-3xl border-[1px]'>
                     {/* Action Show */}
                     <div className='w-full flex gap-3 m-1 mt-0 items-center'>
@@ -154,6 +154,6 @@ export const MessageFooter: React.FC<InputProps> = ({
                     onChangeFilePicker(event)
                 }}
             />
-        </React.Fragment>
+        </div>
     )
 }

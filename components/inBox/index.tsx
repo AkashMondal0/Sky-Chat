@@ -57,42 +57,38 @@ const Home = () => {
       UpdateUserStatus(UserState.state.id, true)
     }
   }, [])
+  // console.log(UserState.state)
 
   return (
-    <div className="flex md:w-1/1">
+    <div className="flex md:w-full max-h-[100vh]">
       <SideContainer>
         <LeftSideBar />
       </SideContainer>
-      <main className='w-full'>
-        <div className='h-[100vh] w-full overflow-y-scroll'>
-          {currentConversation.conversationData.id || asPath !== "/" ?
-            <>
-            <div className='sticky top-0'>
-              <MessageHeader conversation={currentConversation.conversationData} UserState={UserState} />
-            </div>
-              <MessageBody conversation={currentConversation.conversationData} UserState={UserState} />
-              <div className='w-full'>
+      <>
+        {currentConversation.conversationData.id || asPath !== "/" ?
+          <div className='w-full overflow-y-scroll'>
+            <MessageHeader conversation={currentConversation.conversationData} UserState={UserState} />
+            <MessageBody conversation={currentConversation.conversationData} UserState={UserState} />
+            <div className='bottom-0 sticky'>
               <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state?.id} />
-              </div>
-            </>
-            : <>
-              <div className='md:flex w-full justify-center items-center min-h-screen hidden'>
-                <div className='text-center'>
-                  <div className='p-3 border-[2px] rounded-full border-black dark:border-white w-24 h-24 justify-center flex items-center mx-auto'>
-                    <LiaFacebookMessenger size={80} />
-                  </div>
-                  <div className='text-base my-4'>Your messages</div>
-                  <div className='text-base my-4'>Send private photos and messages to a friend or group</div>
-                  <button className='bg-blue-500 hover:bg-blue-600 font-semibold text-white p-2 px-4 text-sm rounded-xl'>Send message</button>
+            </div>
+          </div> :
+          <>
+            <div className='md:flex w-full justify-center items-center min-h-screen hidden'>
+              <div className='text-center'>
+                <div className='p-3 border-[2px] rounded-full border-black dark:border-white w-24 h-24 justify-center flex items-center mx-auto'>
+                  <LiaFacebookMessenger size={80} />
                 </div>
+                <div className='text-base my-4'>Your messages</div>
+                <div className='text-base my-4'>Send private photos and messages to a friend or group</div>
+                <button className='bg-blue-500 hover:bg-blue-600 font-semibold text-white p-2 px-4 text-sm rounded-xl'>Send message</button>
               </div>
-              <div className='md:hidden flex w-full justify-between'>
-                <LeftSideBar />
-              </div>
-            </>
-          }
-        </div>
-      </main>
+            </div>
+            <div className='md:hidden flex w-full justify-between'>
+              <LeftSideBar />
+            </div>
+          </>
+        } </>
       {rightSideBar.sideBar && <RightSideBar />}
     </div>
   )

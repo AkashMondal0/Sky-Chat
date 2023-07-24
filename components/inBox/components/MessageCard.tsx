@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import { GoReply } from 'react-icons/go'
 import { TbDots } from 'react-icons/tb'
 import { CiFaceSmile } from 'react-icons/ci'
-import useReplyMessage from '@/hooks/useReply';
+import useReplyMessage from '@/hooks/message/useReply';
 import { timeFormat } from '@/functions/dateTimeFormat';
 
 

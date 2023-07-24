@@ -33,11 +33,10 @@ const MessageHeader: React.FC<MessageHeader> = ({
   const currentConversation = useConversation()
 
   return (
-    <div className='h-[60px] w-1/1 
+    <div className='h-[60px] w-1/1 w-full
     border-[1px] border-l-[0px] 
     bg-white
     flex justify-between sticky top-0 py-3'>
-
       <div className='flex items-center p-2 cursor-pointer'>
         <BiArrowBack className='mr-2 md:hidden' size={28} onClick={() => {
           router.replace(routesName.home)

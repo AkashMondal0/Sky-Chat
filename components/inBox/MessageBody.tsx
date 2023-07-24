@@ -7,6 +7,8 @@ import { doc, onSnapshot } from 'firebase/firestore'
 import { db } from '@/services/firebase/config'
 import { MessageData } from '@/interfaces/Message'
 import useConversation from '@/hooks/states/useConversation'
+import { MessageFooter } from './MessageFooter'
+import MessageHeader from './MessageHeader'
 
 
 interface MessageBodyProps {
@@ -21,7 +23,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({
   const messagesEndRef = useRef(null) as any
   const [selectedMessage, setSelectedMessage] = useState("")
   const currentConversation = useConversation()
-  
+
   const [messageData, setMessageData] = useState<MessageData>({
     id: "",
     messages: [],
@@ -54,8 +56,9 @@ const MessageBody: React.FC<MessageBodyProps> = ({
 
   return (
     <div>
-      <div className='h-[85vh] overflow-y-scroll pt-3 px-2'>
-        <>{messageData?.messages.filter((value, index, dateArr) => index === dateArr.findIndex((t) => (dateFormat(t.date) === dateFormat(value.date)))) // this is dateARRAY day by day 
+
+      <div className='min-h-[83vh] mt-5'>
+        {messageData?.messages.filter((value, index, dateArr) => index === dateArr.findIndex((t) => (dateFormat(t.date) === dateFormat(value.date)))) // this is dateARRAY day by day 
           .map((item, index) => {
             return <div className='' key={index}>
               <div className='flex gap-3 w-full justify-center'>
@@ -65,7 +68,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({
 
               {/* this days messages ==> item.date */}
               <div>
-                {messageData.messages?.map((message, index) => {
+              {messageData.messages?.map((message, index) => {
                   return dateFormat(item.date) === dateFormat(message.date) &&
                     <MessageCard
                       key={index}
@@ -79,9 +82,9 @@ const MessageBody: React.FC<MessageBodyProps> = ({
                 })}
               </div>
             </div>
-          })}</>
-        <div className='h-8' ref={messagesEndRef} ></div>
+          })}
       </div>
+      <div className='h-8' ref={messagesEndRef} ></div>
     </div>
   )
 }
