@@ -89,14 +89,14 @@ const MyConversationList: React.FC<MyUserList> = ({
                     var dateB = new Date(b.lastMessageDate).getTime();
                     return dateA > dateB ? 1 : -1;
                 })?.reverse()?.filter((item) => {
-                    if (item.FriendData.name == "") {
-                    } else if (item.FriendData.name?.toLowerCase().includes(input.toLowerCase())) {
+                    if (item.friendData.name == "") {
+                    } else if (item.friendData.name?.toLowerCase().includes(input.toLowerCase())) {
                         return item;
                     }
                 }).map((item, index) => {
                     // get friend id
-                    const friendId = item.personal.find((u: string) => u !== currentUser.state.id) || ""
-                    return <ConversationCard key={index} conversation={item} friendId={friendId} />
+                    const friendId = item.friendData.id
+                    return <ConversationCard key={index} conversationData={item} friendId={friendId} />
                 })}
             </div>
         </div>}

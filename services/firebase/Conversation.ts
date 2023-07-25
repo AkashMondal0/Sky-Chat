@@ -24,12 +24,12 @@ const CreateConversation = async (currentUser: User, FriendData: User) => {
         groupName: null,
         groupImage: null,
         groupMembers: [],
-        personal: [
-            currentUser.id,
-            FriendData.id
-        ],
         MessageDataId: GIDM,
-        FriendData: FriendData
+        friendData: {
+            id: FriendData.id,
+            name: FriendData.name,
+            email: FriendData.email,
+        }
     }
 
     const setFriendConversation = { ...data, FriendData: currentUser }

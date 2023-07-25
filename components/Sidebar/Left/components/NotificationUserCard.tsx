@@ -11,34 +11,33 @@ import { CreateConversation } from '@/services/firebase/Conversation'
 
 interface UserCardProps {
     UserId: string
-    item: friendRequest
+    FriendRequestData: friendRequest
 }
 const NotificationUserCard: React.FC<UserCardProps> = ({
     UserId,
-    item
+    FriendRequestData
 }) => {
     const currentUser = useUser()
     const [loading, setLoading] = useState<boolean>(false)
 
-    const [user, setUsers] = useState<User>(initialUser)
+    const [user, setUser] = useState<User>(initialUser)
 
     const get = async () => {
         const user = await GetUserData(UserId) as User
-        setUsers(user)
+        setUser(user)
     }
 
     useEffect(() => {
         get()
     }, [])
 
-    const handle = async (friendId: string, FriendRequestId: string) => {
+    const handle = async (friendId: string) => {
         setLoading(true)
-        // console.log(FriendRequestId, currentUser.state.id, friendId)
         await CreateConversation(
             currentUser.state, // currentUser id
             user // friend data
         )
-        await RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId)
+        await RemoveFriendRequest(FriendRequestData.id, currentUser.state.id, friendId)
         setLoading(false)
     }
 
@@ -67,11 +66,13 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
                         <BtnInstagram
                             disabled={loading}
                             danger
-                            onClick={() => { RemoveFriendRequest(item.id, currentUser.state.id, user.id) }}
+                            onClick={() => {
+                                RemoveFriendRequest(FriendRequestData.id, currentUser.state.id, user.id)
+                            }}
                             label={"Cancel"} />
                         <BtnInstagram
                             disabled={loading}
-                            onClick={() => { handle(user.id, item.id) }}
+                            onClick={() => { handle(user.id) }}
                             label={"Confirm"} />
 
                     </div>

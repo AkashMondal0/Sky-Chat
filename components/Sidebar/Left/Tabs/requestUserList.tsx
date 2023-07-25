@@ -22,14 +22,14 @@ const RequestUserList: React.FC<requestUserList> = ({
         </div>
         <div>
             {currentUser.state?.FriendRequest?.map((item, index) => {
-                const { id, receiverId, keyValue } = item
+                const { id, keyValue,friendId } = item
                 // receiver means the user who send the request to the current user
-                return keyValue === "SENDER" && <RequestUserCard key={receiverId} UserId={receiverId}
+                return keyValue === "SENDER" && <RequestUserCard key={friendId} UserId={friendId}
                     right={<>
                         <BtnInstagram
                             danger
                             onClick={() => {
-                                RemoveFriendRequest(id, currentUser.state.id, receiverId)
+                                RemoveFriendRequest(id, currentUser.state.id, friendId)
                             }}
                             label={"Cancel"} />
                     </>} />

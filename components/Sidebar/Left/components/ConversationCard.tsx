@@ -10,22 +10,23 @@ import {
     Card,
     Typography,
 } from "@/app/Material"
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import useConversation from '@/hooks/states/useConversation';
 import { Conversation } from '@/interfaces/Conversation';
 import { db } from '@/services/firebase/config'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { User, initialUser } from '@/interfaces/User';
 interface ConversationCardProps {
-    conversation: Conversation
+    conversationData: Conversation
     friendId: string
 }
 
 const ConversationCard: React.FC<ConversationCardProps> = ({
-    conversation,
+    conversationData,
     friendId
 }) => {
     const router = useRouter()
+    const ParamsConversationId = useSearchParams().get("chat") as string
     const currentConversation = useConversation()
     const [user, setUser] = useState<User>(initialUser)
 
@@ -36,15 +37,17 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
             { includeMetadataChanges: true },
             (doc) => {
                 console.log("set friend list")
-                setUser(doc.data() as User)
-                currentConversation.setFriendList(doc.data() as User)
+                const friend = doc.data() as User
+                setUser(friend)
+                friend.Conversations.find((friendConversation) => friendConversation.id === ParamsConversationId)
+                currentConversation.setFriend(friend)
             })
         return () => unSubscribeUser()
-    }, [currentConversation, friendId])
+    }, [])
 
     const conversationHandle = () => {
         currentConversation.setFriend(user)
-        router.push(`/?chat=${conversation.id}`)
+        router.push(`/?chat=${conversationData.id}`)
     }
     return (
         <>
@@ -64,7 +67,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
                         {user?.name || "User"}
                     </Typography>
                     <Typography variant="small" color="gray" className="font-normal">
-                        {conversation?.lastMessage || ""}
+                        {conversationData?.lastMessage || ""}
                     </Typography>
                 </div>
             </ListItem>

@@ -31,13 +31,6 @@ const SearchUserList: React.FC<SearchUserList> = ({
   const [loading, setLoading] = useState<boolean>(false)
   const [users, setUsers] = useState<User[]>([])
 
-  // const get = async () => {
-  //   const users = await GetUsers() as User[]
-  //   const UserFilter = users.filter((item) => item.id !== currentUser.state.id)
-  //   const alreadyConnected = UserFilter.filter(({ id }) => !currentUser.state.Conversations.some((i) => i.FriendData.id === id));
-  //   setUsers(alreadyConnected)
-  // }
-
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(db, "users"),
@@ -48,7 +41,7 @@ const SearchUserList: React.FC<SearchUserList> = ({
         })) as User[]
         // console.log("search")
         const UserFilter = users.filter((item) => item.id !== currentUser.state.id)
-        const alreadyConnected = UserFilter.filter(({ id }) => !currentUser.state.Conversations.some((i) => i.FriendData.id === id));
+        const alreadyConnected = UserFilter.filter(({ id }) => !currentUser.state.Conversations.some((i) => i.friendData.id === id));
         setUsers(alreadyConnected)
       },
       (error) => {
@@ -58,34 +51,16 @@ const SearchUserList: React.FC<SearchUserList> = ({
     return () => unsubscribe()
   }, [])
 
-  const handle = async (friend: User) => {
+  const handle = async (friendId: string) => {
     setLoading(true)
-    const FriendRequest: friendRequest = {
-      senderId: currentUser.state.id,
-      receiverId: friend.id,
-      status: false,
-      keyValue: 'SENDER',
-      id: '',
-      UsersIds: [
-        currentUser.state.id,
-        friend.id
-      ],
-      createDate: undefined
-    }
-    await CreateFriendRequest(FriendRequest).then(() => {
-      // get()
-    }).catch((err) => {
-      console.log("err", err)
+    await CreateFriendRequest(currentUser.state.id, friendId).then(() => {
+      setLoading(false)
     })
-      .finally(() => {
-        setLoading(false)
-      })
   }
 
   const handleRemove = async (FriendRequestId: string, friendId: string) => {
     setLoading(true)
     await RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId).then(() => {
-      // get()
     }).finally(() => {
       setLoading(false)
     })
@@ -116,7 +91,7 @@ const SearchUserList: React.FC<SearchUserList> = ({
           return item;
         }
       }).map((item, index: number) => {
-        const findId = item.FriendRequest.find((User) => User?.UsersIds.includes(currentUser.state.id))
+        const findId = item.FriendRequest.find((User) => User?.friendId === currentUser.state.id)
         return <SearchUserCard key={item.id}
           profileImg={item.image || "/images/user.png"}
           name={item.name || "No Name"}
@@ -132,7 +107,7 @@ const SearchUserList: React.FC<SearchUserList> = ({
                 label={"Cancel"} /> :
                 <BtnInstagram
                   disabled={loading}
-                  onClick={() => handle(item)}
+                  onClick={() => handle(item.id)}
                   label={"Connect"} />}
             </div>
           }
