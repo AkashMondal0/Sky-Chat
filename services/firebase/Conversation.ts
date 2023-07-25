@@ -13,7 +13,7 @@ const CreateConversation = async (currentUser: User, FriendData: User) => {
     const d = new Date().toISOString()
     const GIDM = uuid4()
 
-    const data: Conversation = {
+    var data: Conversation = {
         id: uuid4(),
         createDate: d,
         updateDate: d,

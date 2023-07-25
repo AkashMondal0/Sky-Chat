@@ -117,7 +117,7 @@ const SearchUserList: React.FC<SearchUserList> = ({
         }
       }).map((item, index: number) => {
         const findId = item.FriendRequest.find((User) => User?.UsersIds.includes(currentUser.state.id))
-        return <SearchUserCard key={index}
+        return <SearchUserCard key={item.id}
           profileImg={item.image || "/images/user.png"}
           name={item.name || "No Name"}
           activeUser={item.activeUser}
