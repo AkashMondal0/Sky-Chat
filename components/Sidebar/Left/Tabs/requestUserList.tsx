@@ -15,8 +15,8 @@ const RequestUserList: React.FC<requestUserList> = ({
     const currentUser = useUser()
     return <>
         <div className='flex items-center gap-2 m-4'>
-            <BiArrowBack className='cursor-pointer' size={30} 
-            onClick={() => { onTabChange("notification") }} 
+            <BiArrowBack className='cursor-pointer' size={30}
+                onClick={() => { onTabChange("notification") }}
             />
             <Typography variant="h4">Requests</Typography>
         </div>
@@ -24,7 +24,7 @@ const RequestUserList: React.FC<requestUserList> = ({
             {currentUser.state?.FriendRequest?.map((item, index) => {
                 const { id, receiverId, keyValue } = item
                 // receiver means the user who send the request to the current user
-                return keyValue ==="SENDER" && <RequestUserCard key={index} UserId={receiverId}
+                return keyValue === "SENDER" && <RequestUserCard key={receiverId} UserId={receiverId}
                     right={<>
                         <BtnInstagram
                             danger

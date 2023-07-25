@@ -16,11 +16,12 @@ const CreateFriendRequest = async (data: friendRequest) => {
         UsersIds: data.UsersIds,
         createDate: d
     }
+    // console.log(newFriendRequest)
     const Receiver = { ...newFriendRequest, keyValue: "RECEIVER" }
     try {
         const UserData = await GetUserData(newFriendRequest.receiverId) as User // send it me
-        const findMyIdInFriendSenderList = UserData.FriendRequest.find((User) => User?.UsersIds.includes(newFriendRequest.receiverId))
-        if (!findMyIdInFriendSenderList) {
+        // const findMyIdInFriendSenderList = UserData.FriendRequest.find((User) => User?.UsersIds.includes(newFriendRequest.receiverId))
+        
             //  receiver set friend request
             await updateDoc(doc(db, "users", newFriendRequest.receiverId), {
                 FriendRequest: arrayUnion(Receiver)
@@ -29,7 +30,7 @@ const CreateFriendRequest = async (data: friendRequest) => {
             await updateDoc(doc(db, "users", newFriendRequest.senderId), {
                 FriendRequest: arrayUnion(newFriendRequest)
             });
-        }
+        
         return true
     } catch (error) {
         console.log(error)

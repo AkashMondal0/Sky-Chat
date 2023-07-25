@@ -80,7 +80,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
 
             {/* reply image */}
             {reply.img && reply?.img.map((image: string, index: number) =>
-              <img key={index} src={image} alt="cascac"
+              <img key={image} src={image} alt="cascac"
                 className='object-cover h-60 w-48 rounded-3xl mb-2 opacity-40' />)}
 
           </div>
@@ -101,7 +101,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
 
           {/* image */}
           {img.length > 0 && img.map((image: string, index: number) => {
-            return <img key={index} src={image || // TODO: remove this
+            return <img key={image} src={image || // TODO: remove this
               "/images/user.png"} alt="" className='object-cover h-60 w-48 rounded-3xl mb-2' />
           })}
         </div>

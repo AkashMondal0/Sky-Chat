@@ -60,7 +60,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({
       <div className='min-h-[83vh] mt-5'>
         {messageData?.messages.filter((value, index, dateArr) => index === dateArr.findIndex((t) => (dateFormat(t.date) === dateFormat(value.date)))) // this is dateARRAY day by day 
           .map((item, index) => {
-            return <div className='' key={index}>
+            return <div className='' key={item.id}>
               <div className='flex gap-3 w-full justify-center'>
                 <p className='bg-gray-200 px-1 rounded-md'>{dateFormat(item.date)}</p>
                 {/* <p>{timeFormat(item.date)}</p> */}
@@ -71,7 +71,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({
               {messageData.messages?.map((message, index) => {
                   return dateFormat(item.date) === dateFormat(message.date) &&
                     <MessageCard
-                      key={index}
+                      key={message.id}
                       Message={message}
                       isSender={message.messageUserId === id}
                       ProfileImageUrl={message.messageUserId === id ? image : currentConversation.Friend.image

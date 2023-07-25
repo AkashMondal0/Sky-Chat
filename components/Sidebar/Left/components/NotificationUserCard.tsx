@@ -18,6 +18,7 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
     item
 }) => {
     const currentUser = useUser()
+    const [loading, setLoading] = useState<boolean>(false)
 
     const [user, setUsers] = useState<User>(initialUser)
 
@@ -31,12 +32,14 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
     }, [])
 
     const handle = async (friendId: string, FriendRequestId: string) => {
+        setLoading(true)
         // console.log(FriendRequestId, currentUser.state.id, friendId)
         await CreateConversation(
             currentUser.state, // currentUser id
             user // friend data
         )
         await RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId)
+        setLoading(false)
     }
 
 
@@ -60,15 +63,17 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
                         </div>
                     </div>
                     <div className='flex gap-1'>
-                        <>
-                            <BtnInstagram
-                                danger
-                                onClick={() => { RemoveFriendRequest(item.id, currentUser.state.id, user.id) }}
-                                label={"Cancel"} />
-                            <BtnInstagram
-                                onClick={() => { handle(user.id, item.id) }}
-                                label={"Confirm"} />
-                        </>
+
+                        <BtnInstagram
+                            disabled={loading}
+                            danger
+                            onClick={() => { RemoveFriendRequest(item.id, currentUser.state.id, user.id) }}
+                            label={"Cancel"} />
+                        <BtnInstagram
+                            disabled={loading}
+                            onClick={() => { handle(user.id, item.id) }}
+                            label={"Confirm"} />
+
                     </div>
                 </div>
             </div>
