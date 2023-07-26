@@ -17,6 +17,7 @@ import { Conversation } from '@/interfaces/Conversation';
 import { db } from '@/services/firebase/config'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { User, initialUser } from '@/interfaces/User';
+import { truncate } from '@/functions/app';
 interface ConversationCardProps {
     conversation: Conversation
     friendId: string
@@ -55,7 +56,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
 
     return (
         <>
-            <ListItem className='flex justify-start items-center my-2' onClick={conversationHandle}>
+            <ListItem className='flex justify-start items-center my-2  text-ellipsis' onClick={conversationHandle}>
                 <ListItemPrefix>
                     <div className="relative flex justify-center items-center border-[2px] rounded-full">
                         <div className={`absolute right-0 bottom-1 w-3 h-3 rounded-full 
@@ -68,11 +69,11 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">
-                        {user?.name || "User"}
+                        {truncate(user?.name) || "User"}
                     </Typography>
-                    <Typography variant="small" color="gray" className="font-normal">
-                        {conversation?.lastMessage || ""}
-                    </Typography>
+                    <p className="font-normal text-ellipsis">
+                        {truncate(conversation?.lastMessage)}
+                    </p>
                 </div>
             </ListItem>
 

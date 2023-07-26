@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { RemoveFriendRequest } from '@/services/firebase/friendRequest'
 import { BtnInstagram } from '@/components/Button/Button'
 import { CreateConversation } from '@/services/firebase/Conversation'
+import { truncate } from '@/functions/app'
 
 
 interface UserCardProps {
@@ -50,10 +51,10 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
                         </ListItemPrefix>
                         <div>
                             <Typography variant="h6" color="blue-gray">
-                                {user.name || "No Name"}
+                                {truncate(user.name) || "No Name"}
                             </Typography>
                             <Typography variant="small" color="gray" className="font-normal">
-                                {user.email || "No Email"}
+                                {truncate(user.email) || "No Email"}
                             </Typography>
                         </div>
                     </div>

@@ -57,9 +57,8 @@ const MessageBody: React.FC<MessageBodyProps> = ({
 
 
   return (
-    <div className='p-2'>
-
-      <div className='h-[70vh] flex justify-center items-center'>
+    <div className='pt-32 p-2'>
+      <div className='flex justify-center items-center'>
         <div className='text-center'>
           <div className='my-5 flex justify-center items-center'>
             <Avatar img={currentConversation.friend.image} />
@@ -98,9 +97,8 @@ const MessageBody: React.FC<MessageBodyProps> = ({
             </div>
           </div>
         })}
-      <div className='h-8' ref={messagesEndRef} ></div>
+      <div className='h-16' ref={messagesEndRef} ></div>
     </div>
-
   )
 }
 

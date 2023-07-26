@@ -6,6 +6,7 @@ import {
     ListItemPrefix,
     Typography,
 } from "@/app/Material"
+import { truncate } from '@/functions/app';
 
 interface UserCardProps {
     profileImg: string
@@ -39,10 +40,10 @@ const SearchUserCard: React.FC<UserCardProps> = ({
                     </ListItemPrefix>
                     <div className='break-all'>
                         <p className="break-all font-semibold text-base">
-                            {name || "No Name"}
+                            {truncate(name) || "No Name"}
                         </p>
                         <p className="break-all text-sm">
-                            {email || "No Email"}
+                            {truncate(email) || "No Email"}
                         </p>
                     </div>
                 </div>
