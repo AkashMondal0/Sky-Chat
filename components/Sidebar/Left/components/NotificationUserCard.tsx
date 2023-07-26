@@ -3,7 +3,7 @@ import { ListItemPrefix, Typography } from '@/app/Material'
 import useUser from '@/hooks/states/useUser'
 import { User, friendRequest, initialUser } from '@/interfaces/User'
 import { GetUserData } from '@/services/firebase/UserDoc'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { RemoveFriendRequest } from '@/services/firebase/friendRequest'
 import { BtnInstagram } from '@/components/Button/Button'
 import { CreateConversation } from '@/services/firebase/Conversation'
@@ -18,10 +18,7 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
     item
 }) => {
     const currentUser = useUser()
-    const [loading, setLoading] = useState<boolean>(false)
-
     const [user, setUsers] = useState<User>(initialUser)
-
     const get = async () => {
         const user = await GetUserData(UserId) as User
         setUsers(user)
@@ -31,16 +28,14 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
         get()
     }, [])
 
-    const handle = async (friendId: string, FriendRequestId: string) => {
-        setLoading(true)
-        // console.log(FriendRequestId, currentUser.state.id, friendId)
-        await CreateConversation(
+    const acceptConversation = useCallback(async (friendId: string, FriendRequestId: string) => {
+        console.log("callback")
+        RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId)
+        CreateConversation(
             currentUser.state, // currentUser id
             user // friend data
         )
-        await RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId)
-        setLoading(false)
-    }
+    }, [currentUser.state, user])
 
 
     return (
@@ -65,13 +60,13 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
                     <div className='flex gap-1'>
 
                         <BtnInstagram
-                            disabled={loading}
+                            // disabled={loading}
                             danger
                             onClick={() => { RemoveFriendRequest(item.id, currentUser.state.id, user.id) }}
                             label={"Cancel"} />
                         <BtnInstagram
-                            disabled={loading}
-                            onClick={() => { handle(user.id, item.id) }}
+                            // disabled={loading}
+                            onClick={() => { acceptConversation(user.id, item.id) }}
                             label={"Confirm"} />
 
                     </div>

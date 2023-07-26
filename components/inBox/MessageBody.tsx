@@ -9,6 +9,8 @@ import { MessageData } from '@/interfaces/Message'
 import useConversation from '@/hooks/states/useConversation'
 import { MessageFooter } from './MessageFooter'
 import MessageHeader from './MessageHeader'
+import Avatar from '../Avatar'
+import { Typography } from '@/app/Material'
 
 
 interface MessageBodyProps {
@@ -55,37 +57,50 @@ const MessageBody: React.FC<MessageBodyProps> = ({
 
 
   return (
-    <div>
+    <div className='p-2'>
 
-      <div className='min-h-[83vh] mt-5'>
-        {messageData?.messages.filter((value, index, dateArr) => index === dateArr.findIndex((t) => (dateFormat(t.date) === dateFormat(value.date)))) // this is dateARRAY day by day 
-          .map((item, index) => {
-            return <div className='' key={item.id}>
-              <div className='flex gap-3 w-full justify-center'>
-                <p className='bg-gray-200 px-1 rounded-md'>{dateFormat(item.date)}</p>
-                {/* <p>{timeFormat(item.date)}</p> */}
-              </div>
-
-              {/* this days messages ==> item.date */}
-              <div>
-              {messageData.messages?.map((message, index) => {
-                  return dateFormat(item.date) === dateFormat(message.date) &&
-                    <MessageCard
-                      key={message.id}
-                      Message={message}
-                      isSender={message.messageUserId === id}
-                      ProfileImageUrl={message.messageUserId === id ? image : currentConversation.Friend.image
-                        || '/images/user.png'}
-                      setSelectedMessage={setSelectedMessage}
-                      selectedMessage={selectedMessage}
-                    />
-                })}
-              </div>
-            </div>
-          })}
+      <div className='h-[70vh] flex justify-center items-center'>
+        <div className='text-center'>
+          <div className='my-5 flex justify-center items-center'>
+            <Avatar img={currentConversation.friend.image} />
+          </div>
+          <Typography variant="h3" color="blue-gray">
+           {currentConversation.friend.name}
+          </Typography>
+          <Typography variant="h6" color="gray" className="font-normal">
+           {currentConversation.friend.email}
+          </Typography>
+        </div>
       </div>
+      
+      {messageData?.messages.filter((value, index, dateArr) => index === dateArr.findIndex((t) => (dateFormat(t.date) === dateFormat(value.date)))) // this is dateARRAY day by day 
+        .map((item, index) => {
+          return <div className='' key={item.id}>
+            <div className='flex gap-3 w-full justify-center'>
+              <p className='bg-gray-200 px-1 rounded-md'>{dateFormat(item.date)}</p>
+              {/* <p>{timeFormat(item.date)}</p> */}
+            </div>
+
+            {/* this days messages ==> item.date */}
+            <div>
+              {messageData.messages?.map((message, index) => {
+                return dateFormat(item.date) === dateFormat(message.date) &&
+                  <MessageCard
+                    key={message.id}
+                    Message={message}
+                    isSender={message.messageUserId === id}
+                    ProfileImageUrl={message.messageUserId === id ? image : currentConversation.friend.image
+                      || '/images/user.png'}
+                    setSelectedMessage={setSelectedMessage}
+                    selectedMessage={selectedMessage}
+                  />
+              })}
+            </div>
+          </div>
+        })}
       <div className='h-8' ref={messagesEndRef} ></div>
     </div>
+
   )
 }
 

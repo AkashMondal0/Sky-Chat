@@ -4,33 +4,28 @@ import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore"
 import { db } from "./config"
 import uuid4 from "uuid4"
 
-const CreateFriendRequest = async (data: friendRequest) => {
+const CreateFriendRequest = async (userId: string, friendId: string) => {
     const GID = uuid4()
     const d = new Date().toISOString()
-    const newFriendRequest: friendRequest = {
-        receiverId: data.receiverId,
-        senderId: data.senderId,
+    const newFriendRequestForUser: friendRequest = {
         id: GID,
         status: false,
         keyValue: "SENDER",
-        UsersIds: data.UsersIds,
-        createDate: d
+        createDate: d,
+        friendId: friendId,
     }
     // console.log(newFriendRequest)
-    const Receiver = { ...newFriendRequest, keyValue: "RECEIVER" }
+    const newFriendRequestForUserFriend = { ...newFriendRequestForUser, keyValue: "RECEIVER", friendId: userId }
     try {
-        const UserData = await GetUserData(newFriendRequest.receiverId) as User // send it me
-        // const findMyIdInFriendSenderList = UserData.FriendRequest.find((User) => User?.UsersIds.includes(newFriendRequest.receiverId))
-        
-            //  receiver set friend request
-            await updateDoc(doc(db, "users", newFriendRequest.receiverId), {
-                FriendRequest: arrayUnion(Receiver)
-            });
-            //  user set friend request
-            await updateDoc(doc(db, "users", newFriendRequest.senderId), {
-                FriendRequest: arrayUnion(newFriendRequest)
-            });
-        
+        //  receiver set friend request
+        await updateDoc(doc(db, "users", friendId), {
+            FriendRequest: arrayUnion(newFriendRequestForUserFriend)
+        });
+        //  user set friend request
+        await updateDoc(doc(db, "users", userId), {
+            FriendRequest: arrayUnion(newFriendRequestForUser)
+        });
+
         return true
     } catch (error) {
         console.log(error)

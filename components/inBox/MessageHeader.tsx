@@ -31,7 +31,6 @@ const MessageHeader: React.FC<MessageHeader> = ({
   const RightSideBar = useRightSideBar()
   const router = useRouter()
   const currentConversation = useConversation()
-
   return (
     <div className='h-[60px] w-1/1 w-full
     border-[1px] border-l-[0px] 
@@ -45,14 +44,14 @@ const MessageHeader: React.FC<MessageHeader> = ({
         <ListItemPrefix>
           <img className='w-12 h-12 rounded-full object-cover border-[1px] border-black'
             alt="not found"
-            src={currentConversation.conversationData.FriendData.image || "/images/user.png"} />
+            src={currentConversation.friend.image || "/images/user.png"} />
         </ListItemPrefix>
         <div>
           <Typography variant="h6" color="blue-gray">
-            {currentConversation.conversationData.FriendData.name}
+            {currentConversation.friend.name}
           </Typography>
           <Typography variant="small" color="gray" className="font-normal">
-            {timeAgoFormat(currentConversation.conversationData.FriendData.lastTimeOnline) || "offline"}
+            {timeAgoFormat(currentConversation.friend.lastTimeOnline) || "offline"}
           </Typography>
         </div>
       </div>

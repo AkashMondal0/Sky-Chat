@@ -27,9 +27,7 @@ const SearchUserCard: React.FC<UserCardProps> = ({
     right
 }) => {
     return (
-        <div onClick={() => {
-
-        }}>
+        <div >
             <div className='cursor-pointer flex justify-between items-center py-3 mx-1
              px-2 rounded-xl hover:bg-gray-100'>
                 <div className='flex justify-between items-center'>

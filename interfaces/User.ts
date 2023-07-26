@@ -50,13 +50,11 @@ export interface UserState {
 }
 
 export interface friendRequest {
-    receiverId: string
-    senderId: string
     id: string
     createDate: any
     status: boolean
     keyValue: idValue
-    UsersIds: string[]
+    friendId:string
 }
 
 type idValue = "SENDER" | "RECEIVER"

@@ -1,8 +1,13 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react'
 
-const Avatar: React.FC = () => {
+const Avatar = ({img}:{img:string}) =>{
     return (
-        <div>Avatar</div>
+        <> 
+            <img className='w-40 h-40 rounded-full object-cover'
+        alt="not found"
+        src={img||"/images/user.png"} />
+        </>
     )
 }
 

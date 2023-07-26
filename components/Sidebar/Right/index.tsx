@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import SideContainer from '../SideContainer'
 import { Avatar, ListItem, ListItemPrefix, Typography } from '@/app/Material'
@@ -22,14 +23,14 @@ const RightSideBar: React.FC<RightSideBar> = ({
                 <ListItemPrefix>
                    <img className='w-14 h-14 rounded-full object-cover border-[1px] border-black'
             alt="not found"
-            src={currentConversation.conversationData.FriendData.image|| "/images/user.png"} />
+            src={currentConversation.friend.image|| "/images/user.png"} />
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">
-                        {currentConversation.conversationData.FriendData.name || "Loading..."}
+                        {currentConversation.friend.name || "Loading..."}
                     </Typography>
                     <Typography variant="small" color="gray" className="font-normal">
-                        {currentConversation.conversationData.FriendData.email || "Loading..."}
+                        {currentConversation.friend.email || "Loading..."}
                     </Typography>
                 </div>
             </div>

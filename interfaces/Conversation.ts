@@ -13,9 +13,12 @@ export interface Conversation {
     groupName: string | null
     groupImage: string | null
     groupMembers: User[]
-    personal: string[]
     MessageDataId: string // real time
-    FriendData: User
+    friendData: {
+        id: string
+        name: string
+        email: string
+    }
 }
 
 export const initialConversation: Conversation = {
@@ -30,19 +33,10 @@ export const initialConversation: Conversation = {
     groupImage: "",
     groupMembers: [],
     MessageDataId: "",
-    personal: [],
-    FriendData: {
+    friendData: {
         id: "",
         name: "",
         email: "",
-        bio: "",
-        emailVerified: false,
-        image: "",
-        updateDate: undefined,
-        createDate: undefined,
-        Conversations: [],
-        FriendRequest: [],
-        activeUser: false
     }
 }
 

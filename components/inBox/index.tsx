@@ -15,8 +15,6 @@ import { UpdateUserStatus } from '@/services/firebase/UserDoc'
 import useConversation from '@/hooks/states/useConversation'
 import useUser from '@/hooks/states/useUser'
 import SideContainer from '../Sidebar/SideContainer';
-import { auth } from '@/services/firebase/config';
-import { GetToken } from '@/functions/localData';
 
 
 const Home = () => {
@@ -69,9 +67,7 @@ const Home = () => {
           <div className='w-full overflow-y-scroll'>
             <MessageHeader conversation={currentConversation.conversationData} UserState={UserState} />
             <MessageBody conversation={currentConversation.conversationData} UserState={UserState} />
-            <div className='bottom-0 sticky'>
-              <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state?.id} />
-            </div>
+            <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state?.id} />
           </div> :
           <>
             <div className='md:flex w-full justify-center items-center min-h-screen hidden'>

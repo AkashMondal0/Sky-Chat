@@ -16,6 +16,7 @@ import { setLastMessageConversation } from '@/services/firebase/Conversation';
 import useConversation from '@/hooks/states/useConversation';
 import { GetUserData } from '@/services/firebase/UserDoc';
 import { User } from '@/interfaces/User';
+import { useSearchParams } from 'next/navigation';
 
 interface InputProps {
     conversation: Conversation
@@ -27,6 +28,8 @@ export const MessageFooter: React.FC<InputProps> = ({
     messageUserId
 }) => {
     const currentUser = useUser()
+    const conversationID = useSearchParams().get("chat") as string
+
     const currentConversation = useConversation()
     const replyState = useReplyMessage()
     const [input, setInput] = useState<Messages>({
@@ -38,18 +41,18 @@ export const MessageFooter: React.FC<InputProps> = ({
         messageUserId: messageUserId, // user id
         createdAt: undefined,
         updateAt: undefined,
-        conversationId: conversation.id,// conversation id
+        conversationId: conversationID,// conversation id
         seen: [],
     })
     const handleSend = async () => {
-        CreateMessage({ ...input, conversationId: conversation.id, reply: replyState.state }, conversation.MessageDataId)
+        CreateMessage({ ...input, conversationId: conversationID, reply: replyState.state }, conversation.MessageDataId)
         setInput({ ...initialMessage, messageUserId: messageUserId, id: uuid4() })
         replyState.setReply(initialReply)
         const data: LastMessage = {
             lastMessage: input.message,
             UserId: messageUserId,
-            friendId: currentConversation.Friend.id,
-            conversationId: conversation.id
+            friendId: currentConversation.friend.id,
+            conversationId: conversationID
         }
         setLastMessageConversation(data)
     }
@@ -71,8 +74,8 @@ export const MessageFooter: React.FC<InputProps> = ({
         setInput({ ...input, img: newImage })
     }
     return (
-        <div>
-            <div className='bg-white p-3 pt-1 w-full'>
+        <>
+            <div className='bg-white p-3 pt-1 w-full bottom-0 sticky'>
                 <div className='rounded-3xl border-[1px]'>
                     {/* Action Show */}
                     <div className='w-full flex gap-3 m-1 mt-0 items-center'>
@@ -154,6 +157,6 @@ export const MessageFooter: React.FC<InputProps> = ({
                     onChangeFilePicker(event)
                 }}
             />
-        </div>
+        </>
     )
 }
