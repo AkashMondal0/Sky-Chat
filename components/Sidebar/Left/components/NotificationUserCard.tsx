@@ -12,21 +12,17 @@ import { truncate } from '@/functions/app'
 
 interface UserCardProps {
     UserId: string
-    FriendRequestData: friendRequest
+    item: friendRequest
 }
 const NotificationUserCard: React.FC<UserCardProps> = ({
     UserId,
-    FriendRequestData
+    item
 }) => {
     const currentUser = useUser()
     const [user, setUsers] = useState<User>(initialUser)
-    const [loading, setLoading] = useState<boolean>(false)
-
-    const [user, setUser] = useState<User>(initialUser)
-
     const get = async () => {
         const user = await GetUserData(UserId) as User
-        setUser(user)
+        setUsers(user)
     }
 
     useEffect(() => {
@@ -41,15 +37,6 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
             user // friend data
         )
     }, [currentUser.state, user])
-    const handle = async (friendId: string) => {
-        setLoading(true)
-        await CreateConversation(
-            currentUser.state, // currentUser id
-            user // friend data
-        )
-        await RemoveFriendRequest(FriendRequestData.id, currentUser.state.id, friendId)
-        setLoading(false)
-    }
 
 
     return (
@@ -76,15 +63,11 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
                         <BtnInstagram
                             // disabled={loading}
                             danger
-                            onClick={() => {
-                                RemoveFriendRequest(FriendRequestData.id, currentUser.state.id, user.id)
-                            }}
+                            onClick={() => { RemoveFriendRequest(item.id, currentUser.state.id, user.id) }}
                             label={"Cancel"} />
                         <BtnInstagram
                             // disabled={loading}
                             onClick={() => { acceptConversation(user.id, item.id) }}
-                            disabled={loading}
-                            onClick={() => { handle(user.id) }}
                             label={"Confirm"} />
 
                     </div>

@@ -32,11 +32,7 @@ const Notification: React.FC<notification> = ({
             {currentUser.state.FriendRequest?.map((item, index) => {
                 const { friendId, keyValue } = item
                 return keyValue == "RECEIVER" && <UserCardNotification
-
                  key={friendId} UserId={friendId} item={item}/>
-
-                    key={friendId} UserId={friendId} FriendRequestData={item} />
-
             })}
         </div>
     </>

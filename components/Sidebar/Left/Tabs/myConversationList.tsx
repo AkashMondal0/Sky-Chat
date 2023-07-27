@@ -96,11 +96,7 @@ const MyConversationList: React.FC<MyUserList> = ({
                 }).map((item, index) => {
                     // get friend id
                     const friendId = item.friendData.id
-
                     return <ConversationCard key={index} conversation={item} friendId={friendId} />
-
-                    return <ConversationCard key={index} conversationData={item} friendId={friendId} />
-
                 })}
             </div>
         </div>}

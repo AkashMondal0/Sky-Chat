@@ -24,9 +24,6 @@ const RightSideBar: React.FC<RightSideBar> = ({
                    <img className='w-14 h-14 rounded-full object-cover border-[1px] border-black'
             alt="not found"
             src={currentConversation.friend.image|| "/images/user.png"} />
-                    <img className='w-14 h-14 rounded-full object-cover border-[1px] border-black'
-                        alt="not found"
-                        src={currentConversation.friend.image || "/images/user.png"} />
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">

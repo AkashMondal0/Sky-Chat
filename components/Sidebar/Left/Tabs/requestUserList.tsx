@@ -33,9 +33,6 @@ const RequestUserList: React.FC<requestUserList> = ({
                 const { id, friendId, keyValue } = item
                 // receiver means the user who send the request to the current user
                 return keyValue === "SENDER" && <RequestUserCard key={id} UserId={friendId}
-                const { id, keyValue,friendId } = item
-                // receiver means the user who send the request to the current user
-                return keyValue === "SENDER" && <RequestUserCard key={friendId} UserId={friendId}
                     right={<>
                         <BtnInstagram
                             danger

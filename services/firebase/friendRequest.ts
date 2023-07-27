@@ -1,17 +1,12 @@
 import { User, friendRequest } from "@/interfaces/User"
 import { GetUserData } from "./UserDoc"
-import { arrayUnion, doc, updateDoc } from "firebase/firestore"
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore"
 import { db } from "./config"
 import uuid4 from "uuid4"
 
 const CreateFriendRequest = async (userId: string, friendId: string) => {
     const GID = uuid4()
     const d = new Date().toISOString()
-    
-const CreateFriendRequest = async (currentUserId:string,friendId:string) => {
-    const GID = uuid4()
-    const d = new Date().toISOString()
-
     const newFriendRequestForUser: friendRequest = {
         id: GID,
         status: false,
@@ -28,23 +23,6 @@ const CreateFriendRequest = async (currentUserId:string,friendId:string) => {
         });
         //  user set friend request
         await updateDoc(doc(db, "users", userId), {
-
-        friendId: friendId // friend id
-    }
-    const newFriendRequestForFriend: friendRequest = {
-        id: GID,
-        status: false,
-        keyValue: "RECEIVER",
-        createDate: d,
-        friendId: currentUserId // currentUser id
-    }
-    try {
-        //  receiver set friend request
-        await updateDoc(doc(db, "users", friendId), {
-            FriendRequest: arrayUnion(newFriendRequestForFriend)
-        });
-        //  user set friend request
-        await updateDoc(doc(db, "users", currentUserId), {
             FriendRequest: arrayUnion(newFriendRequestForUser)
         });
 

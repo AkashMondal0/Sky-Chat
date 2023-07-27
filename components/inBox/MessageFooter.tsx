@@ -11,7 +11,7 @@ import useReplyMessage from '@/hooks/message/useReply';
 import uuid4 from 'uuid4';
 import useUser from '@/hooks/states/useUser';
 import { Conversation } from '@/interfaces/Conversation';
-import { CreateMessage } from '@/services/firebase/message';
+import { CreateMessage, CreateMessageData } from '@/services/firebase/message';
 import { setLastMessageConversation } from '@/services/firebase/Conversation';
 import useConversation from '@/hooks/states/useConversation';
 import { GetUserData } from '@/services/firebase/UserDoc';
@@ -76,10 +76,9 @@ export const MessageFooter: React.FC<InputProps> = ({
     return (
         <>
             <div className='bg-white p-3 pt-1 w-full'>
-            <div className='bg-white p-3 pt-1 w-full bottom-0 sticky'>
                 <div className='rounded-3xl border-[1px]'>
                     {/* Action Show */}
-                    <div className='w-full flex gap-3 m-1 mt-0 items-center px-3'>
+                    <div className='w-full flex gap-3 m-1 mt-0 items-center'>
                         {/* file */}
                         {input.img.map((item: any, index: any) =>
                             <div key={index}>
@@ -111,7 +110,7 @@ export const MessageFooter: React.FC<InputProps> = ({
                         {/*  ////////////*/}
                         {input.img.length > 0 && <label htmlFor='myImage'
                             className='cursor-pointer w-16
-                             h-16 bg-gray-100 rounded-2xl mt-3
+                             h-16 bg-gray-100 rounded-2xl
                              flex justify-center items-center'>
                             <HiOutlinePhotograph size={40} />
                         </label>}
