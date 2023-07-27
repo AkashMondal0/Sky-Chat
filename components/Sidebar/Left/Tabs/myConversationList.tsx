@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react'
+import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react'
 import { Menu, MenuHandler, MenuItem, MenuList, Typography } from '@/app/Material'
 import { LuEdit } from 'react-icons/lu'
 import { steps } from '..'
@@ -32,14 +32,14 @@ const MyConversationList: React.FC<MyUserList> = ({
     const currentConversation = useConversation()
     const [input, setInput] = useState<string>('')
 
-    const logout = () => {
+    const logout = useCallback(() => {
         var uid = currentUser.state.id
         RemoveToken()
         currentUser.setUser(initialUser)
         currentConversation.reset()
         router.replace(routesName.auth)
         UpdateUserStatus(uid, false)
-    }
+    },[currentConversation, currentUser, router])
 
     const NotificationCount = currentUser.state.FriendRequest?.filter((item) => item.keyValue == "RECEIVER").length
 
@@ -96,7 +96,11 @@ const MyConversationList: React.FC<MyUserList> = ({
                 }).map((item, index) => {
                     // get friend id
                     const friendId = item.friendData.id
+
+                    return <ConversationCard key={index} conversation={item} friendId={friendId} />
+
                     return <ConversationCard key={index} conversationData={item} friendId={friendId} />
+
                 })}
             </div>
         </div>}

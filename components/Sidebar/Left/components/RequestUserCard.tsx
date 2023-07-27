@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { ListItemPrefix, Typography } from '@/app/Material'
+import { truncate } from '@/functions/app'
 import useUser from '@/hooks/states/useUser'
 import { User, initialUser } from '@/interfaces/User'
 import { GetUserData } from '@/services/firebase/UserDoc'
@@ -39,10 +40,10 @@ const RequestUserCard: React.FC<UserCardProps> = ({
                         </ListItemPrefix>
                         <div>
                             <Typography variant="h6" color="blue-gray">
-                                {users.name || "No Name"}
+                                {truncate(users.name) || "No Name"}
                             </Typography>
                             <Typography variant="small" color="gray" className="font-normal">
-                                {users.email || "No Email"}
+                                {truncate(users.email) || "No Email"}
                             </Typography>
                         </div>
                     </div>

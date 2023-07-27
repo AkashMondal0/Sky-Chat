@@ -54,7 +54,9 @@ export interface friendRequest {
     createDate: any
     status: boolean
     keyValue: idValue
+    friendId:string
     friendId: string
+
 }
 
 type idValue = "SENDER" | "RECEIVER"

@@ -65,8 +65,17 @@ const Home = () => {
       <>
         {currentConversation.conversationData.id || asPath !== "/" ?
           <div className='w-full overflow-y-scroll'>
-            <MessageHeader conversation={currentConversation.conversationData} UserState={UserState} />
+            <div className='md:sticky w-full fixed top-0'>
+              <MessageHeader conversation={currentConversation.conversationData} UserState={UserState} />
+            </div>
             <MessageBody conversation={currentConversation.conversationData} UserState={UserState} />
+
+            <div className='md:sticky w-full fixed bottom-0'>
+              <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state?.id} />
+            </div>
+          </div>
+          :
+
             <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state?.id} />
           </div> :
           <>
@@ -85,6 +94,10 @@ const Home = () => {
             </div>
           </>
         } </>
+
+
+
+
       {rightSideBar.sideBar && <RightSideBar />}
     </div>
   )

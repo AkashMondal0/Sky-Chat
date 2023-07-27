@@ -4,6 +4,10 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore"
 import { db } from "./config"
 import uuid4 from "uuid4"
 
+const CreateFriendRequest = async (userId: string, friendId: string) => {
+    const GID = uuid4()
+    const d = new Date().toISOString()
+    
 const CreateFriendRequest = async (currentUserId:string,friendId:string) => {
     const GID = uuid4()
     const d = new Date().toISOString()
@@ -13,6 +17,18 @@ const CreateFriendRequest = async (currentUserId:string,friendId:string) => {
         status: false,
         keyValue: "SENDER",
         createDate: d,
+        friendId: friendId,
+    }
+    // console.log(newFriendRequest)
+    const newFriendRequestForUserFriend = { ...newFriendRequestForUser, keyValue: "RECEIVER", friendId: userId }
+    try {
+        //  receiver set friend request
+        await updateDoc(doc(db, "users", friendId), {
+            FriendRequest: arrayUnion(newFriendRequestForUserFriend)
+        });
+        //  user set friend request
+        await updateDoc(doc(db, "users", userId), {
+
         friendId: friendId // friend id
     }
     const newFriendRequestForFriend: friendRequest = {

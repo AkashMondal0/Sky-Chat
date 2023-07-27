@@ -21,6 +21,9 @@ const RightSideBar: React.FC<RightSideBar> = ({
             </div>
             <div className='cursor-pointer flex p-4 border-t-[1px] border-b-[1px] border-gray-300 my-5 items-center hover:bg-gray-100'>
                 <ListItemPrefix>
+                   <img className='w-14 h-14 rounded-full object-cover border-[1px] border-black'
+            alt="not found"
+            src={currentConversation.friend.image|| "/images/user.png"} />
                     <img className='w-14 h-14 rounded-full object-cover border-[1px] border-black'
                         alt="not found"
                         src={currentConversation.friend.image || "/images/user.png"} />

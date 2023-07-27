@@ -3,10 +3,11 @@ import { ListItemPrefix, Typography } from '@/app/Material'
 import useUser from '@/hooks/states/useUser'
 import { User, friendRequest, initialUser } from '@/interfaces/User'
 import { GetUserData } from '@/services/firebase/UserDoc'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { RemoveFriendRequest } from '@/services/firebase/friendRequest'
 import { BtnInstagram } from '@/components/Button/Button'
 import { CreateConversation } from '@/services/firebase/Conversation'
+import { truncate } from '@/functions/app'
 
 
 interface UserCardProps {
@@ -18,6 +19,7 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
     FriendRequestData
 }) => {
     const currentUser = useUser()
+    const [user, setUsers] = useState<User>(initialUser)
     const [loading, setLoading] = useState<boolean>(false)
 
     const [user, setUser] = useState<User>(initialUser)
@@ -31,6 +33,14 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
         get()
     }, [])
 
+    const acceptConversation = useCallback(async (friendId: string, FriendRequestId: string) => {
+        console.log("callback")
+        RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId)
+        CreateConversation(
+            currentUser.state, // currentUser id
+            user // friend data
+        )
+    }, [currentUser.state, user])
     const handle = async (friendId: string) => {
         setLoading(true)
         await CreateConversation(
@@ -54,23 +64,25 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
                         </ListItemPrefix>
                         <div>
                             <Typography variant="h6" color="blue-gray">
-                                {user.name || "No Name"}
+                                {truncate(user.name) || "No Name"}
                             </Typography>
                             <Typography variant="small" color="gray" className="font-normal">
-                                {user.email || "No Email"}
+                                {truncate(user.email) || "No Email"}
                             </Typography>
                         </div>
                     </div>
                     <div className='flex gap-1'>
 
                         <BtnInstagram
-                            disabled={loading}
+                            // disabled={loading}
                             danger
                             onClick={() => {
                                 RemoveFriendRequest(FriendRequestData.id, currentUser.state.id, user.id)
                             }}
                             label={"Cancel"} />
                         <BtnInstagram
+                            // disabled={loading}
+                            onClick={() => { acceptConversation(user.id, item.id) }}
                             disabled={loading}
                             onClick={() => { handle(user.id) }}
                             label={"Confirm"} />

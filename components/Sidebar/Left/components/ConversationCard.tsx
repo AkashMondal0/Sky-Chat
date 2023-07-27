@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
     List,
     ListItem,
@@ -16,6 +17,7 @@ import { Conversation } from '@/interfaces/Conversation';
 import { db } from '@/services/firebase/config'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { User, initialUser } from '@/interfaces/User';
+import { truncate } from '@/functions/app';
 interface ConversationCardProps {
     conversationData: Conversation
     friendId: string
@@ -29,6 +31,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
     const ParamsConversationId = useSearchParams().get("chat") as string
     const currentConversation = useConversation()
     const [user, setUser] = useState<User>(initialUser)
+    const conversationID = useSearchParams().get("chat") as string
 
 
     useEffect(() => {
@@ -36,7 +39,15 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
             doc(db, "users", friendId), // friend id
             { includeMetadataChanges: true },
             (doc) => {
+                const friendData = doc.data() as User
+                if (friendData.Conversations.find((i) => i.id === conversationID)) {
+                    currentConversation.setFriend(friendData)
+                }
                 console.log("set friend list")
+                setUser(friendData)
+            })
+        return () => unSubscribeUser()
+    }, [friendId]) // this most important useEffect don't change it
                 const friend = doc.data() as User
                 setUser(friend)
                 friend.Conversations.find((friendConversation) => friendConversation.id === ParamsConversationId)
@@ -46,12 +57,15 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
     }, [])
 
     const conversationHandle = () => {
+        console.log("inbox")
         currentConversation.setFriend(user)
+        router.replace(`/?chat=${conversation.id}`)
         router.push(`/?chat=${conversationData.id}`)
     }
+
     return (
         <>
-            <ListItem className='flex justify-start items-center' onClick={conversationHandle}>
+            <ListItem className='flex justify-start items-center my-2  text-ellipsis' onClick={conversationHandle}>
                 <ListItemPrefix>
                     <div className="relative flex justify-center items-center border-[2px] rounded-full">
                         <div className={`absolute right-0 bottom-1 w-3 h-3 rounded-full 
@@ -64,11 +78,15 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">
+                        {truncate(user?.name) || "User"}
                         {user?.name || "User"}
                     </Typography>
                     <Typography variant="small" color="gray" className="font-normal">
                         {conversationData?.lastMessage || ""}
                     </Typography>
+                    <p className="font-normal text-ellipsis">
+                        {truncate(conversation?.lastMessage)}
+                    </p>
                 </div>
             </ListItem>
 

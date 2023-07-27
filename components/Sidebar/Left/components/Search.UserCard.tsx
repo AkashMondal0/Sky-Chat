@@ -6,6 +6,7 @@ import {
     ListItemPrefix,
     Typography,
 } from "@/app/Material"
+import { truncate } from '@/functions/app';
 
 interface UserCardProps {
     profileImg: string
@@ -27,9 +28,7 @@ const SearchUserCard: React.FC<UserCardProps> = ({
     right
 }) => {
     return (
-        <div onClick={() => {
-
-        }}>
+        <div >
             <div className='cursor-pointer flex justify-between items-center py-3 mx-1
              px-2 rounded-xl hover:bg-gray-100'>
                 <div className='flex justify-between items-center'>
@@ -41,10 +40,10 @@ const SearchUserCard: React.FC<UserCardProps> = ({
                     </ListItemPrefix>
                     <div className='break-all'>
                         <p className="break-all font-semibold text-base">
-                            {name || "No Name"}
+                            {truncate(name) || "No Name"}
                         </p>
                         <p className="break-all text-sm">
-                            {email || "No Email"}
+                            {truncate(email) || "No Email"}
                         </p>
                     </div>
                 </div>

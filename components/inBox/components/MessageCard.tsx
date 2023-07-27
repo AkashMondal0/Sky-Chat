@@ -51,7 +51,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
       <div className={`w-full flex items-center ${isSender ? "justify-end" : "justify-start"} my-2`}>
 
         {/* hover */}
-        {isHover === id && isSender && <div className='flex gap-2 mx-2'>
+        {isHover === id && isSender && <div className='flex gap-2'>
           <TbDots size={20} />
           <GoReply className='text-black cursor-pointer' size={20} onClick={replyHandle} />
           <CiFaceSmile size={20} />

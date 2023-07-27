@@ -13,7 +13,7 @@ const CreateConversation = async (currentUser: User, FriendData: User) => {
     const d = new Date().toISOString()
     const GIDM = uuid4()
 
-    var data: Conversation = {
+    const data: Conversation = {
         id: uuid4(),
         createDate: d,
         updateDate: d,
@@ -32,7 +32,13 @@ const CreateConversation = async (currentUser: User, FriendData: User) => {
         }
     }
 
-    const setFriendConversation = { ...data, FriendData: currentUser }
+    const setFriendConversation = { 
+        ...data,
+         friendData: {
+        id: currentUser.id,
+        name: currentUser.name,
+        email: currentUser.email,
+    } }
     try {
         updateDoc(doc(db, "users", currentUser.id), {
             Conversations: arrayUnion(data)
