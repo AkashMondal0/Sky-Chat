@@ -61,6 +61,20 @@ const SearchUserList: React.FC<SearchUserList> = ({
     console.log("remove")
     RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId)
   }, [currentUser.state.id])
+  const handle = async (friendId: string) => {
+    setLoading(true)
+    await CreateFriendRequest(currentUser.state.id, friendId).then(() => {
+      setLoading(false)
+    })
+  }
+
+  const handleRemove = async (FriendRequestId: string, friendId: string) => {
+    setLoading(true)
+    await RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId).then(() => {
+    }).finally(() => {
+      setLoading(false)
+    })
+  }
 
   return <>
     <div className='flex items-center gap-2 m-4'>
@@ -107,6 +121,15 @@ const SearchUserList: React.FC<SearchUserList> = ({
                     // disabled={loading}
                     onClick={() => handle(item.id)}
                     label={"Connect"} />}</>}
+              {findId ? <BtnInstagram
+                danger
+                disabled={loading}
+                onClick={() => handleRemove(findId.id, item.id)}
+                label={"Cancel"} /> :
+                <BtnInstagram
+                  disabled={loading}
+                  onClick={() => handle(item.id)}
+                  label={"Connect"} />}
             </div>
           }
         />

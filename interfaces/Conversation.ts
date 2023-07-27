@@ -12,7 +12,15 @@ export interface Conversation {
     isGroup: Boolean | false
     groupName: string | null
     groupImage: string | null
+
     groupMembers: User[]
+
+    groupMembers: {
+        id: string
+        name: string
+        email: string
+    }[]
+
     MessageDataId: string // real time
     friendData: {
         id: string
@@ -39,19 +47,3 @@ export const initialConversation: Conversation = {
         email: "",
     }
 }
-
-// export interface LastMe
-
-// export interface Contact {
-//     id: string
-//     createDate: Date | any
-//     updateDate: Date | any
-//     lastMessageDate: Date | any
-//     lastMessage: string
-//     type: chatType
-//     isGroup: Boolean | false
-//     groupName: string | null
-//     groupImage: string | null
-//     groupMembers: User[]
-//     Friends: User
-// }

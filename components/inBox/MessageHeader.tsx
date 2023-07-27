@@ -49,6 +49,7 @@ const MessageHeader: React.FC<MessageHeader> = ({
         <div>
           <Typography variant="h6" color="blue-gray">
             {currentConversation.friend.name}
+            {currentConversation.conversationData.friendData.name}
           </Typography>
           <Typography variant="small" color="gray" className="font-normal">
             {timeAgoFormat(currentConversation.friend.lastTimeOnline) || "offline"}

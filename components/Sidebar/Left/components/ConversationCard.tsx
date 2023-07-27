@@ -19,15 +19,16 @@ import { doc, onSnapshot } from 'firebase/firestore'
 import { User, initialUser } from '@/interfaces/User';
 import { truncate } from '@/functions/app';
 interface ConversationCardProps {
-    conversation: Conversation
+    conversationData: Conversation
     friendId: string
 }
 
 const ConversationCard: React.FC<ConversationCardProps> = ({
-    conversation,
+    conversationData,
     friendId
 }) => {
     const router = useRouter()
+    const ParamsConversationId = useSearchParams().get("chat") as string
     const currentConversation = useConversation()
     const [user, setUser] = useState<User>(initialUser)
     const conversationID = useSearchParams().get("chat") as string
@@ -47,11 +48,19 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
             })
         return () => unSubscribeUser()
     }, [friendId]) // this most important useEffect don't change it
+                const friend = doc.data() as User
+                setUser(friend)
+                friend.Conversations.find((friendConversation) => friendConversation.id === ParamsConversationId)
+                currentConversation.setFriend(friend)
+            })
+        return () => unSubscribeUser()
+    }, [])
 
     const conversationHandle = () => {
         console.log("inbox")
         currentConversation.setFriend(user)
         router.replace(`/?chat=${conversation.id}`)
+        router.push(`/?chat=${conversationData.id}`)
     }
 
     return (
@@ -70,6 +79,10 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
                 <div>
                     <Typography variant="h6" color="blue-gray">
                         {truncate(user?.name) || "User"}
+                        {user?.name || "User"}
+                    </Typography>
+                    <Typography variant="small" color="gray" className="font-normal">
+                        {conversationData?.lastMessage || ""}
                     </Typography>
                     <p className="font-normal text-ellipsis">
                         {truncate(conversation?.lastMessage)}

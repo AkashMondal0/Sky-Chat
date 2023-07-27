@@ -69,11 +69,15 @@ const Home = () => {
               <MessageHeader conversation={currentConversation.conversationData} UserState={UserState} />
             </div>
             <MessageBody conversation={currentConversation.conversationData} UserState={UserState} />
+
             <div className='md:sticky w-full fixed bottom-0'>
               <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state?.id} />
             </div>
           </div>
           :
+
+            <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state?.id} />
+          </div> :
           <>
             <div className='md:flex w-full justify-center items-center min-h-screen hidden'>
               <div className='text-center'>
