@@ -1,12 +1,11 @@
 "use client";
-
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react'
 import MessageHeader from './MessageHeader'
-import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+import { useSearchParams, usePathname } from 'next/navigation'
 import MessageBody from './MessageBody'
 import LeftSideBar from '../Sidebar/Left'
-import { Conversation, initialConversation } from '@/interfaces/Conversation'
+import { Conversation } from '@/interfaces/Conversation'
 import { MessageFooter } from './MessageFooter'
 import { LiaFacebookMessenger } from 'react-icons/lia'
 import RightSideBar from '../Sidebar/Right'
@@ -19,7 +18,7 @@ import SideContainer from '../Sidebar/SideContainer';
 
 const Home = () => {
   const conversationID = useSearchParams().get("chat") as string
-  const UserState = useUser()
+  const currentUser = useUser()
   const currentConversation = useConversation()
   const rightSideBar = useRightSideBar()// current user id
   const asPath = usePathname()
@@ -27,7 +26,7 @@ const Home = () => {
 
   useEffect(() => {
     if (conversationID) {
-      UserState.state.Conversations?.find((c: Conversation) => {
+      currentUser.state.Conversations?.find((c: Conversation) => {
         if (c.id === conversationID) {
           currentConversation.setConversationData(c)
           console.log("start 1") // TODO: remove console.log
@@ -38,8 +37,8 @@ const Home = () => {
 
   useEffect(() => {
     window.addEventListener("beforeunload", function (e) {
-      if (UserState.state?.id) {
-        UpdateUserStatus(UserState.state.id, false)
+      if (currentUser.state?.id) {
+        UpdateUserStatus(currentUser.state.id, false)
       }
     })
     return () => {
@@ -51,8 +50,8 @@ const Home = () => {
 
   useEffect(() => {
     console.log("start 2") // TODO: remove console.log
-    if (UserState.state?.id) {
-      UpdateUserStatus(UserState.state.id, true)
+    if (currentUser.state?.id) {
+      UpdateUserStatus(currentUser.state.id, true)
     }
   }, [])
   // console.log(UserState.state)
@@ -66,11 +65,11 @@ const Home = () => {
         {currentConversation.conversationData.id || asPath !== "/" ?
           <div className='w-full overflow-y-scroll'>
             <div className='md:sticky w-full fixed top-0'>
-              <MessageHeader conversation={currentConversation.conversationData} UserState={UserState} />
+              <MessageHeader conversation={currentConversation.conversationData} UserState={currentUser} />
             </div>
-            <MessageBody conversation={currentConversation.conversationData} UserState={UserState} />
+            <MessageBody conversation={currentConversation.conversationData} UserState={currentUser} />
             <div className='md:sticky w-full fixed bottom-0'>
-              <MessageFooter conversation={currentConversation.conversationData} messageUserId={UserState.state?.id} />
+              <MessageFooter conversation={currentConversation.conversationData} messageUserId={currentUser.state?.id} />
             </div>
           </div>
           :

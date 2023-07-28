@@ -43,7 +43,7 @@ const RequestUserCard: React.FC<UserCardProps> = ({
                                 {truncate(users.name) || "No Name"}
                             </Typography>
                             <Typography variant="small" color="gray" className="font-normal">
-                                {truncate(users.email) || "No Email"}
+                                {users.email || "No Email"}
                             </Typography>
                         </div>
                     </div>

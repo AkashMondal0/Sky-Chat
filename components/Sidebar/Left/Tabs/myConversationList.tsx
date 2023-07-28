@@ -39,7 +39,7 @@ const MyConversationList: React.FC<MyUserList> = ({
         currentConversation.reset()
         router.replace(routesName.auth)
         UpdateUserStatus(uid, false)
-    },[currentConversation, currentUser, router])
+    }, [currentConversation, currentUser, router])
 
     const NotificationCount = currentUser.state.FriendRequest?.filter((item) => item.keyValue == "RECEIVER").length
 
@@ -78,6 +78,12 @@ const MyConversationList: React.FC<MyUserList> = ({
                         onclick={() => { onTabChange("notification") }}
                         content={NotificationCount}>
                         <div className=''>Notification</div>
+                    </Badge>
+                    <Badge
+                        disabled={NotificationCount <= 0}
+                        onclick={() => { onTabChange("groupConversation") }}
+                        content={NotificationCount}>
+                        <div className=''>Group</div>
                     </Badge>
                 </div>
             </div>

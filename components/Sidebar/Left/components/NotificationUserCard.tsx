@@ -51,7 +51,7 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
                         </ListItemPrefix>
                         <div>
                             <Typography variant="h6" color="blue-gray">
-                                {truncate(user.name) || "No Name"}
+                                {user.name || "No Name"}
                             </Typography>
                             <Typography variant="small" color="gray" className="font-normal">
                                 {truncate(user.email) || "No Email"}

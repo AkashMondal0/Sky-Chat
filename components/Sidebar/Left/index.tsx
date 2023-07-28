@@ -4,7 +4,8 @@ import SearchUserList from './Tabs/searchUserList'
 import RequestUserList from './Tabs/requestUserList'
 import Notification from './Tabs/notification'
 import useUser from '@/hooks/states/useUser'
-export type steps = "myUserList" | "requestUserList" | "searchUserList" | "notification"
+import GroupConversation from './Tabs/groupConversation'
+export type steps = "myUserList" | "requestUserList" | "searchUserList" | "notification" | "groupConversation"
 
 interface LeftSideBar {
   // UserState: UserState
@@ -32,6 +33,9 @@ const LeftSideBar: React.FC<LeftSideBar> = ({
       </div>
       <div className={`${steps !== "notification" && "hidden"}`}>
         <Notification onTabChange={onTabChange} />
+      </div>
+      <div className={`${steps !== "groupConversation" && "hidden"}`}>
+        <GroupConversation onTabChange={onTabChange} />
       </div>
     </div>}</>
   )

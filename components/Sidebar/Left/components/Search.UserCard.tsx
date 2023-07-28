@@ -43,7 +43,7 @@ const SearchUserCard: React.FC<UserCardProps> = ({
                             {truncate(name) || "No Name"}
                         </p>
                         <p className="break-all text-sm">
-                            {truncate(email) || "No Email"}
+                            {email || "No Email"}
                         </p>
                     </div>
                 </div>

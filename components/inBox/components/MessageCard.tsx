@@ -41,21 +41,21 @@ const MessageCard: React.FC<MessageCardProps> = ({
   }
 
   return (
-    <div
+    <div className={`w-4/6 ${isSender && "ml-auto"} my-2`}
       // className={`${selectedMessage===id && "bg-gray-100 rounded-2xl"}`}
       onClick={() => setSelectedMessage(id)}
       onMouseOut={() => setIsHover("")}
       onMouseOver={() => {
         setIsHover(id)
       }}>
-      <div className={`w-full flex items-center ${isSender ? "justify-end" : "justify-start"} my-2`}>
+      <div className={`flex items-center  ${isSender ? "justify-end" : "justify-start"} my-2`}>
 
-        {/* hover */}
-        {isHover === id && isSender && <div className='flex gap-2'>
+        {!isSender ? <></> : <div className={`flex gap-2 mx-2 ${isHover === id && isSender ? "" : "opacity-0"}`}>
           <TbDots size={20} />
           <GoReply className='text-black cursor-pointer' size={20} onClick={replyHandle} />
           <CiFaceSmile size={20} />
         </div>}
+        {/* hover */}
 
         {/* profile image */}
         {!isSender &&
@@ -68,12 +68,10 @@ const MessageCard: React.FC<MessageCardProps> = ({
 
             {/* reply message */}
             {reply.message && <>
-              <div className={`p-1 px-4
-       break-words
-       flex rounded-2xl  
-       max-w-[70vw]
+              <div className={`p-1 px-4 break-all
+       flex rounded-2xl
        bg-gray-200 text-black
-       md:max-w-[30vw] my-[2px]`}>
+       my-[2px]`}>
                 {reply.message}
               </div>
             </>}
@@ -86,18 +84,18 @@ const MessageCard: React.FC<MessageCardProps> = ({
           </div>
 
           {/* Message */}
-          {message && <div className={`p-1 px-4 
-       ${!isSender ? "bg-gray-200 text-black" : `bg-blue-400 text-white`}
-       ${img.length > 0 ? "rounded-2xl rounded-br mt-2" : ""}
-       break-words
-       flex rounded-2xl  
-       max-w-[70vw]
-       md:max-w-[30vw] my-[2px]`}>
-            <div>
-              <div className='text-base'>{message}</div>
-              <p className='text-xs'>{timeFormat(date)}</p>
-            </div>
-          </div>}
+          {message &&
+            <div className={`p-1 px-4 
+                ${!isSender ? "bg-gray-200 text-black" : `bg-blue-400 text-white`}
+                ${img.length > 0 ? "rounded-2xl rounded-br mt-2" : ""}
+                break-all
+                flex rounded-2xl
+                my-[2px]`}>
+              <div>
+                <div className='text-base'>{message}</div>
+                <p className='text-xs'>{timeFormat(date)}</p>
+              </div>
+            </div>}
 
           {/* image */}
           {img.length > 0 && img.map((image: string, index: number) => {
@@ -105,12 +103,10 @@ const MessageCard: React.FC<MessageCardProps> = ({
               "/images/user.png"} alt="" className='object-cover h-60 w-48 rounded-3xl mb-2' />
           })}
         </div>
-
         {isHover === id && !isSender && <div className='flex gap-2 mx-2'>
           <GoReply className='text-black cursor-pointer' size={20} onClick={replyHandle} />
           <CiFaceSmile size={20} />
         </div>}
-
       </div>
     </div>
   )

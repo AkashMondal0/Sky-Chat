@@ -6,27 +6,17 @@ import { create } from 'zustand'
 interface ConversationState {
     conversationData: Conversation
     friend: User
-    FriendList: User[]
     setConversationData: (conversationData: Conversation) => void
     setFriend: (friend: User) => void
-    setFriendList: (friend: User) => void
     reset: () => void
 }
 
 const useConversation = create<ConversationState>((set) => ({
     conversationData: initialConversation,
     friend: initialUser,
-    FriendList: [],
     setFriend: (friend: User) => set(() => ({ friend: friend })),
     setConversationData: (conversationData: Conversation) => set(() => ({ conversationData: conversationData })),
     reset: () => set(() => ({ conversationData: initialConversation, Friend: initialUser })),
-
-    setFriendList: (friend: User) => set((state) => {
-        if (state.FriendList.find((item) => item.id === friend.id)) {
-            return state
-        }
-        return { FriendList: [...state.FriendList, friend] }
-    })
 }))
 
 
