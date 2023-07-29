@@ -13,8 +13,11 @@ const GroupCard: FC<GroupCardProps> = ({
     conversation, right
 }) => {
     const router = useRouter()
-    const { group, lastMessage, } = conversation
     const currentConversation = useConversation()
+    // if (currentConversation.conversationData.isGroup) {
+    const {
+        group
+    } = conversation
 
     const conversationHandle = () => {
         currentConversation.setConversationData(conversation)
@@ -28,15 +31,15 @@ const GroupCard: FC<GroupCardProps> = ({
                     <div className='mx-2'>
                         <img className='w-14 h-14 rounded-full object-cover border-[1px]'
                             alt="not found"
-                            src={group?.groupImage || "/images/user.png"} />
+                            src={group?.groupImage || "/images/noGroup.png"} />
                     </div>
                     <div>
                         <Typography variant="h6" color="blue-gray">
                             {group?.groupName}
                         </Typography>
-                        <Typography variant="small" color="gray" className="font-normal">
-                            {lastMessage}
-                        </Typography>
+                        {/* <Typography variant="small" color="gray" className="font-normal">
+                            {}
+                        </Typography> */}
                     </div>
                 </div>
                 <div className='flex gap-1'>

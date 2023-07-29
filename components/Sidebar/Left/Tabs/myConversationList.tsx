@@ -7,14 +7,14 @@ import useUser from '@/hooks/states/useUser'
 import { useRouter } from 'next/navigation'
 import { RemoveToken } from '@/functions/localData'
 import routesName from '@/routes'
-import { GetUserData, UpdateUserStatus } from '@/services/firebase/UserDoc'
+import { UpdateUserStatus } from '@/services/firebase/UserDoc'
 import useConversation from '@/hooks/states/useConversation'
 import dynamic from 'next/dynamic'
 import { HiOutlineDotsVertical } from 'react-icons/hi'
 import { AiOutlineSearch } from 'react-icons/ai'
 import Badge from '@/components/Badge'
-import {LoadingBox} from '@/components/loadingBox'
-import useGroupController from '@/hooks/modal.controller/GroupModal'
+import { LoadingBox } from '@/components/loadingBox'
+import useRightSideBar from '@/hooks/useRightSideBar'
 
 
 const ConversationCard = dynamic(() => import('../components/ConversationCard',), {
@@ -32,20 +32,21 @@ interface MyUserList {
 const MyConversationList: React.FC<MyUserList> = ({
     onTabChange,
 }) => {
-    const groupModal = useGroupController()
     const router = useRouter()
     const currentUser = useUser()
     const currentConversation = useConversation()
+    const useRightSidebar = useRightSideBar()
     const [input, setInput] = useState<string>('')
 
     const logout = useCallback(() => {
-        var uid = currentUser.state.id
         RemoveToken()
+        var uid = currentUser.state.id
+        router.replace(routesName.auth)
         currentUser.setUser(initialUser)
         currentConversation.reset()
-        router.replace(routesName.auth)
+        useRightSidebar.closeSideBar()
         UpdateUserStatus(uid, false)
-    }, [currentConversation, currentUser, router])
+    }, [currentConversation, currentUser, router, useRightSidebar])
 
     const NotificationCount = currentUser.state.FriendRequest?.filter((item) => item.keyValue == "RECEIVER").length
     // console.log(currentUser.state.Conversations)
@@ -105,7 +106,7 @@ const MyConversationList: React.FC<MyUserList> = ({
                     // get friend id
                     const friendId = item.friendData.id
                     if (item.isGroup) {
-                        return <GroupCard key={item.id} conversation={item}/>
+                        return <GroupCard key={item.id} conversation={item} />
                     }
                     return <ConversationCard key={item.id}
                         conversation={item} friendId={friendId} />

@@ -63,13 +63,14 @@ const MessageBody: React.FC<MessageBodyProps> = ({
       <div className='flex justify-center items-center'>
         <div className='text-center'>
           <div className='my-5 flex justify-center items-center'>
-            <Avatar img={currentConversation.friend.image} />
+            <Avatar img={currentConversation.conversationData.isGroup ?
+              "/images/noGroup.png" : currentConversation.friend.image} />
           </div>
           <Typography variant="h3" color="blue-gray">
-            {currentConversation.friend.name}
+            {currentConversation.conversationData.isGroup ? "Group Name" : currentConversation.friend.name}
           </Typography>
           <Typography variant="h6" color="gray" className="font-normal">
-            {currentConversation.friend.email}
+            {currentConversation.conversationData.isGroup ?"This is Group":currentConversation.friend.email}
           </Typography>
         </div>
       </div>

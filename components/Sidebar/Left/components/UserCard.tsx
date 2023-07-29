@@ -16,16 +16,6 @@ const UserCard: FC<UserCardProps> = ({
     onclick,
     user,
 }) => {
-    const currentUser = useUser()
-    // const [user, setUsers] = useState<User>(initialUser)
-
-    // const getData = () => {
-    //     setUsers(currentUser.FriendList.find((friend) => friend.id === UserId) as User)
-    // }
-
-    // useEffect(() => {
-    //     getData()
-    // }, [])
 
     return (
         <>

@@ -129,6 +129,7 @@ const CreateConversationGroup = async (groupDetails: ConversationGroup) => {
     }
 
     try { // check user has already have
+        // console.log(groupDetails.groupMembers)
         for (let index = 0; index < groupDetails.groupMembers.length; index++) {
             const user = groupDetails.groupMembers[index];
             await updateDoc(doc(db, "users", user.userId), {

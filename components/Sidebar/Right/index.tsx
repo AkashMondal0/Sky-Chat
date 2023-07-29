@@ -3,17 +3,24 @@ import React, { useEffect } from 'react'
 import SideContainer from '../SideContainer'
 import { Avatar, ListItem, ListItemPrefix, Typography } from '@/app/Material'
 import useConversation from '@/hooks/states/useConversation'
-import GroupCard from '../Left/components/GroupCard'
 import useUser from '@/hooks/states/useUser'
-import UserCard from '../Left/components/UserCard'
+import dynamic from 'next/dynamic'
+import { LoadingBox } from '@/components/loadingBox'
+import { AiOutlineSearch } from 'react-icons/ai'
 
+
+
+const RequestUserCard = dynamic(() => import('../Left/components/RequestUserCard',), {
+    loading: () => <LoadingBox className='h-20 w-full rounded-2xl my-2' />,
+    ssr: false
+})
 interface RightSideBar {
 
 }
 const RightSideBar: React.FC<RightSideBar> = ({
 
 }) => {
-
+    const [input, setInput] = React.useState('')
     const currentConversation = useConversation()
     const currentUser = useUser()
 
@@ -28,24 +35,42 @@ const RightSideBar: React.FC<RightSideBar> = ({
 
 
         return <SideContainer>
-            <div className='p-3 flex items-center gap-5 sticky top-0 z-50 px-4 py-4 bg-white'>
+            <div className='p-3 flex items-center gap-5 sticky top-0 z-40 px-4 py-4 bg-white'>
                 <Typography variant="h5">{groupName}</Typography>
             </div>
-            <div className='Input For User Search'></div>
+            <div className='Input For User Search px-2'>
+                <div className='flex my-3 items-center w-full p-2 border-gray-300
+                       border-[1px] rounded-xl'>
+                    <AiOutlineSearch size={20} />
+                    <input className='px-2 focus:disabled:outline-none 
+                       focus:outline-none w-full'
+                        type="text" placeholder='Search' value={input}
+                        onChange={(e) => setInput(e.target.value)} />
+                </div>
+            </div>
             <div className='p-1'>
-                {groupMembers.map((item) => {
-                    const UserData = currentUser.FriendList.find((friend) => friend.id === item.userId)
-                    if (item.userId !== currentUser.state.id && UserData) {
-                        return <UserCard key={item.id}
-                            user={UserData}
-                            right={<div>
+                {groupMembers
+                // .filter((item) => {
+                //     if (input === '') {
+                //         return item
+                //     } else if (item.userId.toLowerCase().includes(input.toLowerCase())) {
+                //         return item
+                //     }
+                // })
+                .map((item) => {
+                    // console.log(item.userId)
+                    return <RequestUserCard key={item.id}
+                        UserId={item.userId}
+                        right={<div>
+                            {admin[0] === item.userId && <Typography variant="small" color="gray" className="font-normal">
+                                Admin
+                            </Typography>}
+                        </div>} />
 
-                            </div>} />
-                    }
                 })}
             </div>
             <div className='m-5'>
-                <Typography variant="h6" color="red" className="font-semibold text-base my-4 cursor-pointer">
+                <Typography variant="h6" className="font-semibold text-base my-4 cursor-pointer">
                     Add Participants
                 </Typography>
                 <Typography variant="h6" color="red" className="font-semibold text-base my-4 cursor-pointer">

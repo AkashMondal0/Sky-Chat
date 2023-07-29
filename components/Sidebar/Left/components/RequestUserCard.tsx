@@ -30,7 +30,7 @@ const RequestUserCard: React.FC<UserCardProps> = ({
 
     return (
         <>
-            <div onClick={() => { }}>
+            <div>
                 <div className='cursor-pointer flex justify-between items-center py-3 px-2 rounded-xl hover:bg-gray-100'>
                     <div className='flex justify-between items-center'>
                         <ListItemPrefix>
