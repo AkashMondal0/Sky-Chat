@@ -26,11 +26,14 @@ interface MessageHeader {
 }
 
 const MessageHeader: React.FC<MessageHeader> = ({
+
 }) => {
   const CurrentUser = useUser()
   const RightSideBar = useRightSideBar()
   const router = useRouter()
   const currentConversation = useConversation()
+  const { conversationData: { isGroup } } = currentConversation
+
   return (
     <div className='h-[60px] w-1/1 w-full
     border-[1px] border-l-[0px] 
@@ -44,14 +47,15 @@ const MessageHeader: React.FC<MessageHeader> = ({
         <ListItemPrefix>
           <img className='w-12 h-12 rounded-full object-cover border-[1px] border-black'
             alt="not found"
-            src={currentConversation.friend.image || "/images/user.png"} />
+            src={!isGroup ? currentConversation.friend.image || "/images/user.png"
+              : currentConversation.conversationData.group?.groupImage || "/images/user.png"} />
         </ListItemPrefix>
         <div>
           <Typography variant="h6" color="blue-gray">
-            {currentConversation.friend.name}
+            {!isGroup ? currentConversation.friend.name : currentConversation.conversationData.group?.groupName}
           </Typography>
           <Typography variant="small" color="gray" className="font-normal">
-            {timeAgoFormat(currentConversation.friend.lastTimeOnline) || "offline"}
+            {timeAgoFormat(!isGroup ? currentConversation.friend.lastTimeOnline : currentConversation.conversationData.updateDate) || "offline"}
           </Typography>
         </div>
       </div>

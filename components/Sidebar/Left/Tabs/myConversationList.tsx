@@ -13,11 +13,16 @@ import dynamic from 'next/dynamic'
 import { HiOutlineDotsVertical } from 'react-icons/hi'
 import { AiOutlineSearch } from 'react-icons/ai'
 import Badge from '@/components/Badge'
-import LoadingBox from '@/components/loadingBox'
+import {LoadingBox} from '@/components/loadingBox'
+import useGroupController from '@/hooks/modal.controller/GroupModal'
 
 
 const ConversationCard = dynamic(() => import('../components/ConversationCard',), {
-    loading: () => <LoadingBox className='h-20 w-full rounded-2xl my-2' />,
+    loading: () => <LoadingBox className='my-2' />,
+    ssr: false
+})
+const GroupCard = dynamic(() => import('../components/GroupCard',), {
+    loading: () => <LoadingBox className='my-2' />,
     ssr: false
 })
 
@@ -27,6 +32,7 @@ interface MyUserList {
 const MyConversationList: React.FC<MyUserList> = ({
     onTabChange,
 }) => {
+    const groupModal = useGroupController()
     const router = useRouter()
     const currentUser = useUser()
     const currentConversation = useConversation()
@@ -42,10 +48,10 @@ const MyConversationList: React.FC<MyUserList> = ({
     }, [currentConversation, currentUser, router])
 
     const NotificationCount = currentUser.state.FriendRequest?.filter((item) => item.keyValue == "RECEIVER").length
-
+    // console.log(currentUser.state.Conversations)
     return (
         <>{currentUser.state?.id && <div>
-            <div className='h-[100px] sticky top-0 z-50 px-4 bg-white my-4'>
+            <div className='h-[100px] sticky top-0 z-40 px-4 bg-white my-4'>
                 <div className='justify-between items-center flex pt-1'>
                     <Typography variant="h4">{currentUser.state.name}</Typography>
                     <div className='flex items-center gap-3'>
@@ -79,12 +85,6 @@ const MyConversationList: React.FC<MyUserList> = ({
                         content={NotificationCount}>
                         <div className=''>Notification</div>
                     </Badge>
-                    <Badge
-                        disabled={NotificationCount <= 0}
-                        onclick={() => { onTabChange("groupConversation") }}
-                        content={NotificationCount}>
-                        <div className=''>Group</div>
-                    </Badge>
                 </div>
             </div>
 
@@ -95,14 +95,20 @@ const MyConversationList: React.FC<MyUserList> = ({
                     var dateB = new Date(b.lastMessageDate).getTime();
                     return dateA > dateB ? 1 : -1;
                 })?.reverse()?.filter((item) => {
-                    if (item.friendData.name == "") {
-                    } else if (item.friendData.name?.toLowerCase().includes(input.toLowerCase())) {
+                    if (item?.friendData.name == "" || item?.group?.groupName == "") {
+                        return item
+                    } else if (item.friendData.name?.toLowerCase().includes(input.toLowerCase())
+                        || item.group?.groupName?.toLowerCase().includes(input.toLowerCase())) {
                         return item;
                     }
                 }).map((item, index) => {
                     // get friend id
                     const friendId = item.friendData.id
-                    return <ConversationCard key={index} conversation={item} friendId={friendId} />
+                    if (item.isGroup) {
+                        return <GroupCard key={item.id} conversation={item}/>
+                    }
+                    return <ConversationCard key={item.id}
+                        conversation={item} friendId={friendId} />
                 })}
             </div>
         </div>}

@@ -5,7 +5,7 @@ import { BiArrowBack } from 'react-icons/bi'
 import { Typography } from '@/app/Material'
 import useUser from '@/hooks/states/useUser'
 import dynamic from 'next/dynamic'
-import LoadingBox from '@/components/loadingBox'
+import {LoadingBox} from '@/components/loadingBox'
 // import UserCardNotification from '../components/NotificationUserCard'
 const UserCardNotification = dynamic(() => import('../components/NotificationUserCard',), {
     loading: () => <LoadingBox className='h-20 w-full rounded-2xl my-2' />,
@@ -39,3 +39,5 @@ const Notification: React.FC<notification> = ({
 }
 
 export default Notification
+
+

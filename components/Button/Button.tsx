@@ -10,6 +10,7 @@ interface ButtonProps {
   danger?: boolean
   disabled?: boolean
   label?: string
+  css?: string
 }
 const Button: React.FC<ButtonProps> = ({
   type,
@@ -58,13 +59,14 @@ const BtnInstagram: React.FC<ButtonProps> = ({
   secondary,
   danger,
   disabled,
-  label
+  label,
+  css
 }) => {
   return <button
     onClick={onClick}
     type={type}
     disabled={disabled}
-    className={` 
+    className={` ${css}
     p-1 px-2 text-base
    opacity-90 font-semibold
    ${fullWidth && "w-full"}

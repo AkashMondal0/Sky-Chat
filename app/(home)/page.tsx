@@ -10,7 +10,7 @@ import Home from "@/components/inBox"
 import { doc, onSnapshot } from "firebase/firestore"
 import { db } from "@/services/firebase/config"
 import useUser from "@/hooks/states/useUser"
-import useAuthLoading from "@/hooks/authLoading"
+// import useAuthLoading from "@/hooks/authLoading"
 import PageLoading from "./pageLoading"
 
 type loading = true | false
@@ -20,8 +20,6 @@ export default function Index() {
   const [loading, setLoading] = useState<loading>(true)
   const currentUser = useUser()
   const router = useRouter()
-  const AuthLoading = useAuthLoading()
-  // console.log(userFirebase?.uid)
 
   useEffect(() => {
     const token = GetToken()
@@ -32,7 +30,7 @@ export default function Index() {
           { includeMetadataChanges: true },
           (doc) => {
             currentUser.setUser(doc.data() as User)
-            AuthLoading.stopLoading()
+            // AuthLoading.stopLoading()
             setLoading(false)
           })
         return () => {

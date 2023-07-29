@@ -12,7 +12,7 @@ import uuid4 from 'uuid4';
 import useUser from '@/hooks/states/useUser';
 import { Conversation } from '@/interfaces/Conversation';
 import { CreateMessage, CreateMessageData } from '@/services/firebase/message';
-import { setLastMessageConversation } from '@/services/firebase/Conversation';
+import { setLastMessageConversation, setLastMessageGroupConversation } from '@/services/firebase/Conversation';
 import useConversation from '@/hooks/states/useConversation';
 import { GetUserData } from '@/services/firebase/UserDoc';
 import { User } from '@/interfaces/User';
@@ -48,13 +48,18 @@ export const MessageFooter: React.FC<InputProps> = ({
         CreateMessage({ ...input, conversationId: conversationID, reply: replyState.state }, conversation.MessageDataId)
         setInput({ ...initialMessage, messageUserId: messageUserId, id: uuid4() })
         replyState.setReply(initialReply)
+
         const data: LastMessage = {
             lastMessage: input.message,
             UserId: messageUserId,
             friendId: currentConversation.friend.id,
             conversationId: conversationID
         }
-        setLastMessageConversation(data)
+        if (!currentConversation.conversationData.isGroup) {
+            setLastMessageConversation(data)
+        } else {
+            setLastMessageGroupConversation(data, currentConversation.conversationData)
+        }
     }
 
     const onChangeFilePicker = (event: any) => {

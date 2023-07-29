@@ -7,7 +7,7 @@ import { RemoveFriendRequest } from '@/services/firebase/friendRequest'
 import useUser from '@/hooks/states/useUser'
 // import RequestUserCard from '../components/RequestUserCard'
 import dynamic from 'next/dynamic'
-import LoadingBox from '@/components/loadingBox'
+import {LoadingBox} from '@/components/loadingBox'
 
 const RequestUserCard = dynamic(() => import('../components/RequestUserCard',), {
     loading: () => <LoadingBox className='h-20 w-full rounded-2xl my-2' />,

@@ -30,8 +30,8 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
 }) => {
     const router = useRouter()
     const currentConversation = useConversation()
-    const [user, setUser] = useState<User>(initialUser)
     const conversationID = useSearchParams().get("chat") as string
+    const [user, setUser] = useState<User>(initialUser)
     const currentUser = useUser()
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
 
     const conversationHandle = () => {
         console.log("inbox")
-        currentConversation.setFriend(user)
+        currentConversation.setConversationAndFriend(conversation, user)
         router.replace(`/?chat=${conversation.id}`)
     }
 

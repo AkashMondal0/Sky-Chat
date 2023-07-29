@@ -8,7 +8,8 @@ import { TbDots } from 'react-icons/tb'
 import { CiFaceSmile } from 'react-icons/ci'
 import useReplyMessage from '@/hooks/message/useReply';
 import { timeFormat } from '@/functions/dateTimeFormat';
-
+import useConversation from '@/hooks/states/useConversation';
+import useUser from '@/hooks/states/useUser';
 
 interface MessageCardProps {
   Message: Messages
@@ -26,9 +27,19 @@ const MessageCard: React.FC<MessageCardProps> = ({
   selectedMessage
 }) => {
   const { id, message, img, messageUserId, reply, date } = Message
+  const currentConversationIsGroup = useConversation()
   const [isHover, setIsHover] = useState("")
   const replyState = useReplyMessage()
+  const currentUser = useUser()
 
+  const setUserName = (userId: string) => {
+   const u = currentUser.FriendList.find((item) => {
+      if (userId === item.id){
+          return item.name
+      }
+    })
+    return u?.name || ""
+  }
   const replyHandle = () => {
     replyState.setReply({
       message: message,
@@ -78,7 +89,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
 
             {/* reply image */}
             {reply.img && reply?.img.map((image: string, index: number) =>
-              <img key={image} src={image} alt="cascac"
+              <img key={image} src={image} alt=""
                 className='object-cover h-60 w-48 rounded-3xl mb-2 opacity-40' />)}
 
           </div>
@@ -92,6 +103,8 @@ const MessageCard: React.FC<MessageCardProps> = ({
                 flex rounded-2xl
                 my-[2px]`}>
               <div>
+                {currentConversationIsGroup.conversationData.isGroup && !isSender && <p className='text-sm font-semibold'>
+                  {setUserName(Message.messageUserId)}</p>}
                 <div className='text-base'>{message}</div>
                 <p className='text-xs'>{timeFormat(date)}</p>
               </div>

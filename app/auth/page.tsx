@@ -10,10 +10,7 @@ import Button from '@/components/Button/Button';
 import AuthSocialButton from '@/components/Button/AuthSocialButton';
 import { Typography } from '../Material';
 import { LoginFireBase, RegisterFireBase } from '../../services/firebase/auth';
-import useUser from '@/hooks/states/useUser';
-import { User } from '@/interfaces/User';
-import { UploadPhoto } from '@/services/firebase/uploadFile';
-import useAuthLoading from '@/hooks/authLoading';
+
 import routesName from '@/routes';
 import { GetToken } from '@/functions/localData';
 
@@ -23,7 +20,7 @@ const AuthForm = () => {
   const [variant, setVariant] = useState<Variant>('LOGIN')
   const [isAvatar, setIsAvatar] = useState<File>()
   const router = useRouter()
-  const loading = useAuthLoading()
+  const [loading, setLoading] = useState(false)
 
   const toggleVariant = useCallback(() => {
     if (variant === "LOGIN") {
@@ -49,7 +46,7 @@ const AuthForm = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    loading.startLoading()
+    setLoading(true)
 
     if (variant === 'REGISTER') {
       const newData = { ...data, avatar: isAvatar }
@@ -57,16 +54,12 @@ const AuthForm = () => {
         .then((data) => {
           if (data?.status === 400) {
             toast.error(data.message)
-            loading.stopLoading()
-          }
-          else {
-            toast.success(data.message)
-            router.replace(routesName.home)
           }
         })
         .catch(() => {
           toast.error("Something went wrong!")
-          loading.stopLoading()
+        }).finally(() => {
+          setLoading(false)
         })
     }
 
@@ -75,16 +68,12 @@ const AuthForm = () => {
         .then((data) => {
           if (data?.status === 400) {
             toast.error(data.message)
-            loading.stopLoading()
-          }
-          else {
-            toast.success(data.message)
-            router.replace(routesName.home)
           }
         })
         .catch(() => {
           toast.error("Something went wrong!")
-          loading.stopLoading()
+        }).finally(() => {
+          setLoading(false)
         })
     }
   }
@@ -93,7 +82,7 @@ const AuthForm = () => {
     if (token) {
       router.replace(routesName.home)
     }
-  }, [router,loading.state])
+  }, [router, loading])
 
   return (
     <React.Fragment>
@@ -146,7 +135,7 @@ const AuthForm = () => {
                 id='name'
                 type='name'
                 register={register}
-                disabled={loading.state}
+                disabled={loading}
                 errors={errors} />
             </>)}
 
@@ -155,18 +144,18 @@ const AuthForm = () => {
               id='email'
               type='email'
               register={register}
-              disabled={loading.state}
+              disabled={loading}
               errors={errors} />
             <Input
               label='password'
               id='password'
               type="password"
               register={register}
-              disabled={loading.state}
+              disabled={loading}
               errors={errors} />
             <div>
               <Button
-                disabled={loading.state}
+                disabled={loading}
                 fullWidth
                 type='submit'
               >{variant === "LOGIN" ? "Sign in" : "Register"}
