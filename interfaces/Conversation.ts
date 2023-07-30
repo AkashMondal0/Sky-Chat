@@ -8,11 +8,9 @@ export interface Conversation {
     updateDate: Date | any
     lastMessageDate: Date | any
     lastMessage: string
-    type: chatType
     isGroup: Boolean | false
-    groupName: string | null
-    groupImage: string | null
-    groupMembers: User[]
+    group:ConversationGroup
+    type: chatType
     MessageDataId: string // real time
     friendData: {
         id: string
@@ -27,31 +25,40 @@ export const initialConversation: Conversation = {
     updateDate: undefined,
     lastMessageDate: undefined,
     lastMessage: "",
-    isGroup: false,
-    groupName: "",
     type: "PERSONAL",
-    groupImage: "",
-    groupMembers: [],
     MessageDataId: "",
     friendData: {
         id: "",
         name: "",
         email: "",
-    }
+    },
+    group: {
+        admin: [],
+        groupName: null,
+        groupImage: null,
+        groupMembers: [],
+        CreatedUser: ""
+    },
+    isGroup: false
 }
 
-// export interface LastMe
-
-// export interface Contact {
-//     id: string
-//     createDate: Date | any
-//     updateDate: Date | any
-//     lastMessageDate: Date | any
-//     lastMessage: string
-//     type: chatType
-//     isGroup: Boolean | false
-//     groupName: string | null
-//     groupImage: string | null
-//     groupMembers: User[]
-//     Friends: User
-// }
+type permission = "Admin" | "member"
+export interface groupMembers {
+    userId: string
+    permission: permission
+    id: string
+}
+export interface ConversationGroup {
+    admin: string[]
+    groupName: string | null
+    groupImage: string | null
+    groupMembers: groupMembers[]
+    CreatedUser: string
+}
+export const initialConversationGroup: ConversationGroup = {
+    admin: [],
+    groupName: "",
+    groupImage: "",
+    groupMembers: [],
+    CreatedUser: ''
+}

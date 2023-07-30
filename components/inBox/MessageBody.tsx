@@ -52,29 +52,32 @@ const MessageBody: React.FC<MessageBodyProps> = ({
   // console.log(messageData)
   useEffect(() => {
     // console.log("scrolling") // TODO: remove this
-    scrollToBottom()// TODO: remove this
+    if (messageData?.messages.length > 0) {
+      scrollToBottom()// TODO: remove this
+    }
   }, [messageData?.messages]);
 
 
   return (
-    <div className='pt-32 p-2'>
+    <div className='pt-32 p-2 min-h-[88vh]'>
       <div className='flex justify-center items-center'>
         <div className='text-center'>
           <div className='my-5 flex justify-center items-center'>
-            <Avatar img={currentConversation.friend.image} />
+            <Avatar img={currentConversation.conversationData.isGroup ?
+              "/images/noGroup.png" : currentConversation.friend.image} />
           </div>
           <Typography variant="h3" color="blue-gray">
-           {currentConversation.friend.name}
+            {currentConversation.conversationData.isGroup ? "Group Name" : currentConversation.friend.name}
           </Typography>
           <Typography variant="h6" color="gray" className="font-normal">
-           {currentConversation.friend.email}
+            {currentConversation.conversationData.isGroup ?"This is Group":currentConversation.friend.email}
           </Typography>
         </div>
       </div>
-      
+
       {messageData?.messages.filter((value, index, dateArr) => index === dateArr.findIndex((t) => (dateFormat(t.date) === dateFormat(value.date)))) // this is dateARRAY day by day 
         .map((item, index) => {
-          return <div className='' key={item.id}>
+          return <div className='my-5' key={item.id}>
             <div className='flex gap-3 w-full justify-center'>
               <p className='bg-gray-200 px-1 rounded-md'>{dateFormat(item.date)}</p>
               {/* <p>{timeFormat(item.date)}</p> */}

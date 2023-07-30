@@ -1,4 +1,4 @@
-import { Conversation, initialConversation } from '@/interfaces/Conversation'
+import { Conversation, ConversationGroup, initialConversation, initialConversationGroup } from '@/interfaces/Conversation'
 import { MessageData } from '@/interfaces/Message'
 import { User, initialUser } from '@/interfaces/User'
 import { create } from 'zustand'
@@ -6,27 +6,27 @@ import { create } from 'zustand'
 interface ConversationState {
     conversationData: Conversation
     friend: User
-    FriendList: User[]
+    GroupConversationData: ConversationGroup
     setConversationData: (conversationData: Conversation) => void
     setFriend: (friend: User) => void
-    setFriendList: (friend: User) => void
     reset: () => void
+    setConversationAndFriend: (conversationData: Conversation, friend: User) => void
 }
 
 const useConversation = create<ConversationState>((set) => ({
     conversationData: initialConversation,
     friend: initialUser,
-    FriendList: [],
+    GroupConversationData: initialConversationGroup,
     setFriend: (friend: User) => set(() => ({ friend: friend })),
-    setConversationData: (conversationData: Conversation) => set(() => ({ conversationData: conversationData })),
+
+    setConversationData: (conversationData: Conversation) => set(() => ({ 
+        conversationData: conversationData,GroupConversationData: conversationData.group })),
+
     reset: () => set(() => ({ conversationData: initialConversation, Friend: initialUser })),
 
-    setFriendList: (friend: User) => set((state) => {
-        if (state.FriendList.find((item) => item.id === friend.id)) {
-            return state
-        }
-        return { FriendList: [...state.FriendList, friend] }
-    })
+    setConversationAndFriend: (conversationData: Conversation, friend: User) => set(() => ({
+        conversationData: conversationData, friend: friend
+    })),
 }))
 
 

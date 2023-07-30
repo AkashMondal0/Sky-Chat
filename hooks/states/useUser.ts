@@ -5,7 +5,14 @@ import { create } from 'zustand'
 
 const useUser = create<UserState>((set) => ({
     state: initialUser,
-    setUser: (User: User) => set({ state: User })
+    FriendList: [],
+    setUser: (User: User) => set({ state: User }),
+    setFriendList: (friend: User) => set((state) => {
+        if (state.FriendList.find((item) => item.id === friend.id)) {
+            return state
+        }
+        return { FriendList: [...state.FriendList, friend] }
+    })
 }))
 
 

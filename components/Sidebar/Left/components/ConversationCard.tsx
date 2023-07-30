@@ -18,6 +18,7 @@ import { db } from '@/services/firebase/config'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { User, initialUser } from '@/interfaces/User';
 import { truncate } from '@/functions/app';
+import useUser from '@/hooks/states/useUser';
 interface ConversationCardProps {
     conversation: Conversation
     friendId: string
@@ -29,9 +30,9 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
 }) => {
     const router = useRouter()
     const currentConversation = useConversation()
-    const [user, setUser] = useState<User>(initialUser)
     const conversationID = useSearchParams().get("chat") as string
-
+    const [user, setUser] = useState<User>(initialUser)
+    const currentUser = useUser()
 
     useEffect(() => {
         const unSubscribeUser = onSnapshot(
@@ -43,14 +44,15 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
                     currentConversation.setFriend(friendData)
                 }
                 console.log("set friend list")
+                currentUser.setFriendList(friendData)
                 setUser(friendData)
             })
         return () => unSubscribeUser()
-    }, [friendId]) // this most important useEffect don't change it
+    }, [friendId]) // this is most important useEffect don't change it
 
     const conversationHandle = () => {
         console.log("inbox")
-        currentConversation.setFriend(user)
+        currentConversation.setConversationAndFriend(conversation, user)
         router.replace(`/?chat=${conversation.id}`)
     }
 
@@ -69,7 +71,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
                 </ListItemPrefix>
                 <div>
                     <Typography variant="h6" color="blue-gray">
-                        {truncate(user?.name) || "User"}
+                        {user?.name || "User"}
                     </Typography>
                     <p className="font-normal text-ellipsis">
                         {truncate(conversation?.lastMessage)}

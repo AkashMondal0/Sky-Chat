@@ -46,6 +46,8 @@ export interface UserLogin {
 
 export interface UserState {
     state: User
+    FriendList: User[]
+    setFriendList: (friend: User) => void
     setUser: (User: User) => void
 }
 

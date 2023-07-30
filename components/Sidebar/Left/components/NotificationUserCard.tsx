@@ -41,20 +41,20 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
 
     return (
         <>
-            <div onClick={() => { }}>
+            <div>
                 <div className='cursor-pointer flex justify-between items-center py-3 px-2 rounded-xl hover:bg-gray-100'>
                     <div className='flex justify-between items-center'>
                         <ListItemPrefix>
                             <img className='w-14 h-14 rounded-full object-cover border-[1px]'
                                 alt="not found"
-                                src={user.image || "/images/user.png"} />
+                                src={user?.image || "/images/user.png"} />
                         </ListItemPrefix>
                         <div>
                             <Typography variant="h6" color="blue-gray">
-                                {truncate(user.name) || "No Name"}
+                                {user?.name || "No Name"}
                             </Typography>
                             <Typography variant="small" color="gray" className="font-normal">
-                                {truncate(user.email) || "No Email"}
+                                {truncate(user?.email||"") || "No Email"}
                             </Typography>
                         </div>
                     </div>

@@ -9,16 +9,17 @@ import {
 } from "@/app/Material"
 import { steps } from '..'
 import { BiArrowBack } from 'react-icons/bi'
-import { User, UserState, friendRequest } from '@/interfaces/User'
+import { User } from '@/interfaces/User'
 import { BtnInstagram } from '@/components/Button/Button'
 import { CreateFriendRequest, RemoveFriendRequest } from '@/services/firebase/friendRequest'
 import useUser from '@/hooks/states/useUser'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '@/services/firebase/config'
+import { CreateGroupBox, LoadingBox } from '@/components/loadingBox'
 import dynamic from 'next/dynamic'
-import LoadingBox from '@/components/loadingBox'
-const SearchUserCard = dynamic(() => import('../components/Search.UserCard',), {
-  loading: () => <LoadingBox className='h-20 w-full rounded-2xl my-2' />,
+import useGroupController from '@/hooks/modal.controller/GroupModal'
+const UserCard = dynamic(() => import('../components/UserCard',), {
+  loading: () => <LoadingBox className='my-2' />,
   ssr: false
 })
 interface SearchUserList {
@@ -28,6 +29,7 @@ const SearchUserList: React.FC<SearchUserList> = ({
   onTabChange,
 }) => {
   const currentUser = useUser()
+  const GroupModal = useGroupController()
   const [input, setInput] = useState<string>('')
   const [users, setUsers] = useState<User[]>([])
 
@@ -76,6 +78,12 @@ const SearchUserList: React.FC<SearchUserList> = ({
         onChange={(e) => setInput(e.target.value)} />
     </div>
 
+    {/*  */}
+    <div onClick={() => {
+      GroupModal.open()
+    }}>
+      <CreateGroupBox className={'h-20 m-1'} />
+    </div>
 
     <div className='p-1'>
       {users.filter((item) => {
@@ -88,15 +96,10 @@ const SearchUserList: React.FC<SearchUserList> = ({
       }).map((item, index: number) => {
         const findId = item.FriendRequest.find((User) => User?.friendId === currentUser.state.id)
         const alreadyConnected = currentUser.state.Conversations.find((al) => al.friendData.id === item.id)
-        return <SearchUserCard key={item.id}
-          profileImg={item.image || "/images/user.png"}
-          name={item.name || "No Name"}
-          activeUser={item.activeUser}
-          email={item.email || "No Email"}
-          id={item.id}
+        return <UserCard key={item.id} user={item}
           right={
             <div className='flex gap-1'>
-              {alreadyConnected ? <>Connected</> : <>
+              {alreadyConnected ? <p>Connected</p> : <>
                 {findId ? <BtnInstagram
                   danger
                   // disabled={loading}

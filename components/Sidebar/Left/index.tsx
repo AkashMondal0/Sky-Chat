@@ -4,7 +4,7 @@ import SearchUserList from './Tabs/searchUserList'
 import RequestUserList from './Tabs/requestUserList'
 import Notification from './Tabs/notification'
 import useUser from '@/hooks/states/useUser'
-export type steps = "myUserList" | "requestUserList" | "searchUserList" | "notification"
+export type steps = "myUserList" | "requestUserList" | "searchUserList" | "notification" | "groupConversation"
 
 interface LeftSideBar {
   // UserState: UserState
