@@ -29,7 +29,7 @@ const Home = () => {
       currentUser.state.Conversations?.find((c: Conversation) => {
         if (c.id === conversationID) {
           currentConversation.setConversationData(c)
-          console.log("start 1") // TODO: remove console.log
+          // console.log("start 1") // TODO: remove console.log
         }
       })
     }
@@ -49,7 +49,7 @@ const Home = () => {
   })
 
   useEffect(() => {
-    console.log("start 2") // TODO: remove console.log
+    // console.log("start 2") // TODO: remove console.log
     if (currentUser.state?.id) {
       UpdateUserStatus(currentUser.state.id, true)
     }

@@ -1,9 +1,9 @@
-# Full Stack Real Time Chat App with Next.js · Node.js · Tailwind CSS · MySQL
+# Full Stack Real Time Chat App with Next.js · Node.js · Tailwind CSS · Firebase
 
 <!-- ![Copy of Fullstack Chat App with Next.js (8)]() -->
 
 
-Description for a Next.js Quiz App using TypeScript, Firebase, Tailwind CSS, and GitHub:
+Description for a Next.js RealTime Chat App using TypeScript, Firebase, Tailwind CSS, and GitHub:
 
 
 <!-- - [Live Project](link here) -->

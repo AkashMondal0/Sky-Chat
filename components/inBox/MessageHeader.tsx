@@ -47,8 +47,8 @@ const MessageHeader: React.FC<MessageHeader> = ({
         <ListItemPrefix>
           <img className='w-12 h-12 rounded-full object-cover border-[1px] border-black'
             alt="not found"
-            src={!isGroup ? currentConversation.friend.image || "/images/user.png"
-              : currentConversation.conversationData.group?.groupImage || "/images/user.png"} />
+            src={!isGroup ? currentConversation.friend.image || "/user.png"
+              : currentConversation.conversationData.group?.groupImage || "/user.png"} />
         </ListItemPrefix>
         <div>
           <Typography variant="h6" color="blue-gray">

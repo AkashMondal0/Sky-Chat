@@ -51,7 +51,8 @@ const MyConversationList: React.FC<MyUserList> = ({
     const NotificationCount = currentUser.state.FriendRequest?.filter((item) => item.keyValue == "RECEIVER").length
     // console.log(currentUser.state.Conversations)
     return (
-        <>{currentUser.state?.id && <div>
+        <>{!currentUser.state?.id ?  <div className='w-full h-24 my-2 rounded-2xl bg-gray-300 mb-1'></div>
+        :<div>
             <div className='h-[100px] sticky top-0 z-40 px-4 bg-white my-4'>
                 <div className='justify-between items-center flex pt-1'>
                     <Typography variant="h4">{currentUser.state.name}</Typography>

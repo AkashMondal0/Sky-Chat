@@ -25,7 +25,7 @@ const UserCard: FC<UserCardProps> = ({
                         <div className='mx-2'>
                             <img className='w-14 h-14 rounded-full object-cover border-[1px]'
                                 alt="not found"
-                                src={user?.image || "/images/user.png"} />
+                                src={user?.image || "/user.png"} />
                         </div>
                         <div>
                             <Typography variant="h6" color="blue-gray">

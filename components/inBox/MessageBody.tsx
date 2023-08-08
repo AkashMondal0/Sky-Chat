@@ -64,7 +64,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({
         <div className='text-center'>
           <div className='my-5 flex justify-center items-center'>
             <Avatar img={currentConversation.conversationData.isGroup ?
-              "/images/noGroup.png" : currentConversation.friend.image} />
+              "/noGroup.png" : currentConversation.friend.image} />
           </div>
           <Typography variant="h3" color="blue-gray">
             {currentConversation.conversationData.isGroup ? "Group Name" : currentConversation.friend.name}
@@ -92,7 +92,7 @@ const MessageBody: React.FC<MessageBodyProps> = ({
                     Message={message}
                     isSender={message.messageUserId === id}
                     ProfileImageUrl={message.messageUserId === id ? image : currentConversation.friend.image
-                      || '/images/user.png'}
+                      || '/user.png'}
                     setSelectedMessage={setSelectedMessage}
                     selectedMessage={selectedMessage}
                   />

@@ -36,7 +36,7 @@ const RequestUserCard: React.FC<UserCardProps> = ({
                         <ListItemPrefix>
                             <img className='w-14 h-14 rounded-full object-cover border-[1px]'
                                 alt="not found"
-                                src={users.image || "/images/user.png"} />
+                                src={users.image || "/user.png"} />
                         </ListItemPrefix>
                         <div>
                             <Typography variant="h6" color="blue-gray">

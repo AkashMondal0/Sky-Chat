@@ -31,7 +31,7 @@ const GroupCard: FC<GroupCardProps> = ({
                     <div className='mx-2'>
                         <img className='w-14 h-14 rounded-full object-cover border-[1px]'
                             alt="not found"
-                            src={group?.groupImage || "/images/noGroup.png"} />
+                            src={group?.groupImage || "/noGroup.png"} />
                     </div>
                     <div>
                         <Typography variant="h6" color="blue-gray">

@@ -1,6 +1,4 @@
 'use client'
-import { Button } from '@material-tailwind/react'
-import { on } from 'events'
 import React, { useCallback, useEffect, useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
 import { BtnInstagram } from '../Button/Button'

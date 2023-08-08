@@ -6,7 +6,7 @@ const Avatar = ({img}:{img:string}) =>{
         <> 
             <img className='w-40 h-40 rounded-full object-cover'
         alt="not found"
-        src={img||"/images/user.png"} />
+        src={img||"/user.png"} />
         </>
     )
 }

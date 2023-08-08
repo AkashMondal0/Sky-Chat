@@ -72,7 +72,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
         {!isSender &&
           <img className='w-10 h-10 rounded-full object-cover mr-1'
             alt="not found"
-            src={ProfileImageUrl || "/images/user.png"} />}
+            src={ProfileImageUrl || "/user.png"} />}
 
         <div>
           <div className='reply'>
@@ -113,7 +113,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
           {/* image */}
           {img.length > 0 && img.map((image: string, index: number) => {
             return <img key={image} src={image || // TODO: remove this
-              "/images/user.png"} alt="" className='object-cover h-60 w-48 rounded-3xl mb-2' />
+              "/user.png"} alt="" className='object-cover h-60 w-48 rounded-3xl mb-2' />
           })}
         </div>
         {isHover === id && !isSender && <div className='flex gap-2 mx-2'>

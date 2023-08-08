@@ -55,11 +55,11 @@ const SearchUserList: React.FC<SearchUserList> = ({
 
   const handle = useCallback(async (friendId: string) => {
     CreateFriendRequest(currentUser.state.id, friendId)
-    console.log("add")
+    // console.log("add")
   }, [currentUser.state.id])
 
   const handleRemove = useCallback(async (FriendRequestId: string, friendId: string) => {
-    console.log("remove")
+    // console.log("remove")
     RemoveFriendRequest(FriendRequestId, currentUser.state.id, friendId)
   }, [currentUser.state.id])
 

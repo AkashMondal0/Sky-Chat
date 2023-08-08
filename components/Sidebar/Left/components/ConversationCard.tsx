@@ -43,7 +43,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
                 if (friendData.Conversations.find((i) => i.id === conversationID)) {
                     currentConversation.setFriend(friendData)
                 }
-                console.log("set friend list")
+                // console.log("set friend list")
                 currentUser.setFriendList(friendData)
                 setUser(friendData)
             })
@@ -51,7 +51,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
     }, [friendId]) // this is most important useEffect don't change it
 
     const conversationHandle = () => {
-        console.log("inbox")
+        // console.log("inbox")
         currentConversation.setConversationAndFriend(conversation, user)
         router.replace(`/?chat=${conversation.id}`)
     }
@@ -66,7 +66,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
 
                         <img className='w-14 h-14 rounded-full object-cover border-[1px]'
                             alt="not found"
-                            src={user?.image || "/images/user.png"} />
+                            src={user?.image || "/user.png"} />
                     </div>
                 </ListItemPrefix>
                 <div>
