@@ -20,7 +20,7 @@ const UserCard: FC<UserCardProps> = ({
     return (
         <>
             <div onClick={onclick}>
-                <div className='cursor-pointer flex justify-between items-center py-3 px-2 rounded-xl hover:bg-gray-100'>
+                <div className='sm:cursor-pointer flex justify-between items-center py-3 px-2 rounded-xl hover:bg-gray-100'>
                     <div className='flex justify-between items-center'>
                         <div className='mx-2'>
                             <img className='w-14 h-14 rounded-full object-cover border-[1px]'

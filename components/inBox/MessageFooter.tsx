@@ -11,12 +11,10 @@ import useReplyMessage from '@/hooks/message/useReply';
 import uuid4 from 'uuid4';
 import useUser from '@/hooks/states/useUser';
 import { Conversation } from '@/interfaces/Conversation';
-import { CreateMessage, CreateMessageData } from '@/services/firebase/message';
+import { CreateMessage } from '@/services/firebase/message';
 import { setLastMessageConversation, setLastMessageGroupConversation } from '@/services/firebase/Conversation';
 import useConversation from '@/hooks/states/useConversation';
-import { GetUserData } from '@/services/firebase/UserDoc';
-import { User } from '@/interfaces/User';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 interface InputProps {
     conversation: Conversation
@@ -27,9 +25,7 @@ export const MessageFooter: React.FC<InputProps> = ({
     conversation,
     messageUserId
 }) => {
-    const currentUser = useUser()
-    const conversationID = useSearchParams().get("chat") as string
-
+    const asPath = usePathname()
     const currentConversation = useConversation()
     const replyState = useReplyMessage()
     const [input, setInput] = useState<Messages>({
@@ -41,11 +37,11 @@ export const MessageFooter: React.FC<InputProps> = ({
         messageUserId: messageUserId, // user id
         createdAt: undefined,
         updateAt: undefined,
-        conversationId: conversationID,// conversation id
+        conversationId: asPath.replace("/", ""),// conversation id
         seen: [],
     })
     const handleSend = async () => {
-        CreateMessage({ ...input, conversationId: conversationID, reply: replyState.state }, conversation.MessageDataId)
+        CreateMessage({ ...input, conversationId: asPath.replace("/", ""), reply: replyState.state }, conversation.MessageDataId)
         setInput({ ...initialMessage, messageUserId: messageUserId, id: uuid4() })
         replyState.setReply(initialReply)
 
@@ -53,7 +49,7 @@ export const MessageFooter: React.FC<InputProps> = ({
             lastMessage: input.message,
             UserId: messageUserId,
             friendId: currentConversation.friend.id,
-            conversationId: conversationID
+            conversationId: asPath.replace("/", "")
         }
         if (!currentConversation.conversationData.isGroup) {
             setLastMessageConversation(data)
@@ -83,18 +79,22 @@ export const MessageFooter: React.FC<InputProps> = ({
             <div className='bg-white p-3 pt-1 w-full'>
                 <div className='rounded-3xl border-[1px]'>
                     {/* Action Show */}
-                    <div className='w-full flex gap-3 m-1 mt-0 items-center'>
+                    <div className='w-full flex gap-3 m-1 mt-0 items-center overflow-x-auto' id='style-2'>
                         {/* file */}
-                        {input.img.map((item: any, index: any) =>
-                            <div key={index}>
-                                <div onClick={() => { handleDeleteImage(item.id) }}
-                                    className='flex justify-end cursor-pointer'>
-                                    <RxCrossCircled size={20} />
-                                </div>
-                                <img className='w-16 h-16 rounded-2xl object-cover'
+                        {input.img.map((item: any, i: any) =>
+                            <>
+                                <img className='rounded-2xl object-cover w-16 h-16 my-2'
                                     alt="not found"
                                     src={URL.createObjectURL(item)} />
-                            </div>)}
+                                <div className='sm:cursor-pointer relative top-[-25px] right-[30px] w-0'>
+                                    <RxCrossCircled className=' bg-white rounded-full' size={20} onClick={() => { handleDeleteImage(item.id) }} />
+                                </div>
+                            </>
+                        )}
+                        {input.img.length > 0 && <label htmlFor='myImage'
+                            className='flex justify-center items-center w-16 h-16'>
+                            <HiOutlinePhotograph size={60} className='sm:cursor-pointer rounded-2xl' />
+                        </label>}
                         {/* reply message */}
                         {replyState.state.messageId &&
                             <div className='flex m-3 justify-between w-full'>
@@ -107,18 +107,10 @@ export const MessageFooter: React.FC<InputProps> = ({
                                             src={i} />)}
                                 </div>
                                 <div onClick={() => { replyState.setReply(initialReply) }}
-                                    className='flex justify-end cursor-pointer'>
+                                    className='flex justify-end sm:cursor-pointer'>
                                     <RxCrossCircled size={25} />
                                 </div>
-                            </div>
-                        }
-                        {/*  ////////////*/}
-                        {input.img.length > 0 && <label htmlFor='myImage'
-                            className='cursor-pointer w-16
-                             h-16 bg-gray-100 rounded-2xl
-                             flex justify-center items-center'>
-                            <HiOutlinePhotograph size={40} />
-                        </label>}
+                            </div>}
                     </div>
 
                     <div className='flex items-center px-4'>
@@ -137,12 +129,12 @@ export const MessageFooter: React.FC<InputProps> = ({
                         {/* right side items */}
 
                         {input.message?.length > 0 || input.img?.length > 0 ? <button
-                            className='font-semibold text-blue-500 hover:text-black cursor-pointer'
+                            className='font-semibold text-blue-500 hover:text-black sm:cursor-pointer'
                             onClick={handleSend}>Send</button> :
                             <div className='flex gap-3'>
                                 <BsMic size={25} />
                                 <label htmlFor='myImage'
-                                    className='cursor-pointer'>
+                                    className='sm:cursor-pointer'>
                                     <HiOutlinePhotograph size={25} />
                                 </label>
                                 <AiOutlineHeart size={25} />

@@ -38,8 +38,9 @@ const MessageBody: React.FC<MessageBodyProps> = ({
   }
 
   useEffect(() => {
-    // fetch messages
-    const unSubscribe = onSnapshot(
+   if(currentConversation.conversationData.id){
+     // fetch messages
+     const unSubscribe = onSnapshot(
       doc(db, "UserMessage", conversation.MessageDataId),
       { includeMetadataChanges: true },
       (doc) => {
@@ -47,11 +48,10 @@ const MessageBody: React.FC<MessageBodyProps> = ({
       });
     // fetch user from state
     return () => unSubscribe()
-  }, [conversation.MessageDataId])
+   }
+  }, [conversation.MessageDataId, currentConversation])
 
-  // console.log(messageData)
   useEffect(() => {
-    // console.log("scrolling") // TODO: remove this
     if (messageData?.messages.length > 0) {
       scrollToBottom()// TODO: remove this
     }

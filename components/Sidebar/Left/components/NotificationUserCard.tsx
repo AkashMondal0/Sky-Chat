@@ -42,7 +42,7 @@ const NotificationUserCard: React.FC<UserCardProps> = ({
     return (
         <>
             <div>
-                <div className='cursor-pointer flex justify-between items-center py-3 px-2 rounded-xl hover:bg-gray-100'>
+                <div className='sm:cursor-pointer flex justify-between items-center py-3 px-2 rounded-xl hover:bg-gray-100'>
                     <div className='flex justify-between items-center'>
                         <ListItemPrefix>
                             <img className='w-14 h-14 rounded-full object-cover border-[1px]'

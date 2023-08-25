@@ -51,13 +51,12 @@ const MyConversationList: React.FC<MyUserList> = ({
     const NotificationCount = currentUser.state.FriendRequest?.filter((item) => item.keyValue == "RECEIVER").length
     // console.log(currentUser.state.Conversations)
     return (
-        <>{!currentUser.state?.id ?  <div className='w-full h-24 my-2 rounded-2xl bg-gray-300 mb-1'></div>
-        :<div>
+       <div>
             <div className='h-[100px] sticky top-0 z-40 px-4 bg-white my-4'>
                 <div className='justify-between items-center flex pt-1'>
                     <Typography variant="h4">{currentUser.state.name}</Typography>
                     <div className='flex items-center gap-3'>
-                        <LuEdit size={24} className='cursor-pointer' onClick={() => { onTabChange("searchUserList") }} />
+                        <LuEdit size={24} className='sm:cursor-pointer' onClick={() => { onTabChange("searchUserList") }} />
                         <Menu placement="left-end">
                             <MenuHandler>
                                 <div><HiOutlineDotsVertical size={24} /></div>
@@ -97,7 +96,7 @@ const MyConversationList: React.FC<MyUserList> = ({
                     var dateB = new Date(b.lastMessageDate).getTime();
                     return dateA > dateB ? 1 : -1;
                 })?.reverse()?.filter((item) => {
-                    if (item?.friendData.name == "" || item?.group?.groupName == "") {
+                    if (item?.friendData.name == "" && item?.group?.groupName == "") {
                         return item
                     } else if (item.friendData.name?.toLowerCase().includes(input.toLowerCase())
                         || item.group?.groupName?.toLowerCase().includes(input.toLowerCase())) {
@@ -113,8 +112,7 @@ const MyConversationList: React.FC<MyUserList> = ({
                         conversation={item} friendId={friendId} />
                 })}
             </div>
-        </div>}
-        </>
+        </div>
     )
 }
 

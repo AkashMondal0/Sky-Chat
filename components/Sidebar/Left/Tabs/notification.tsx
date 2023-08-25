@@ -21,10 +21,10 @@ const Notification: React.FC<notification> = ({
 
     return <>
         <div className='flex items-center gap-2 m-4'>
-            <BiArrowBack className='cursor-pointer' size={30} onClick={() => { onTabChange("myUserList") }} />
+            <BiArrowBack className='sm:cursor-pointer' size={30} onClick={() => { onTabChange("myUserList") }} />
             <Typography variant="h4">Notification</Typography>
         </div>
-        <div className='text-sm cursor-pointer p-4 items-center flex h-4 mt-2 justify-between' onClick={() => { onTabChange("requestUserList") }}>
+        <div className='text-sm sm:cursor-pointer p-4 items-center flex h-4 mt-2 justify-between' onClick={() => { onTabChange("requestUserList") }}>
             <Typography variant="h6">Message Requests</Typography>
             <Typography variant="h6">Pending List</Typography>
         </div>

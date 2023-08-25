@@ -1,52 +1,26 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
-import React from "react"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import routesName from "@/routes"
-import { User } from "@/interfaces/User"
-import { GetToken } from "@/functions/localData"
-import Home from "@/components/inBox"
-import { doc, onSnapshot } from "firebase/firestore"
-import { db } from "@/services/firebase/config"
-import useUser from "@/hooks/states/useUser"
-// import useAuthLoading from "@/hooks/authLoading"
-import PageLoading from "./pageLoading"
+import LeftSideBar from '@/components/Sidebar/Left';
+import { FC } from 'react';
 
-type loading = true | false
+interface HomeProps { }
+const Home: FC<HomeProps> = () => {
+    return (
+        <>
+            <div className='md:flex w-full justify-center items-center min-h-screen hidden'>
+            <div className=''>
+            <div>
+                <img className='w-60 h-60' src='/mylogo.jpg' />
+                <div className='flex my-5 justify-center items-end text-3xl font-semibold'>Sky Chat</div>
+            </div>
+            <div className='flex justify-center items-end font-semibold text-gray-600'>BY SKY INC</div>
+            <div className='flex justify-center items-end font-semibold text-gray-600'>Akash</div>
+        </div>
+            </div>
+            <div className='md:hidden flex w-full justify-between'>
+                <LeftSideBar />
+            </div>
+        </>
+    );
+};
 
-
-export default function Index() {
-  const [loading, setLoading] = useState<loading>(true)
-  const currentUser = useUser()
-  const router = useRouter()
-
-  useEffect(() => {
-    const token = GetToken()
-    if (token) {
-      try {
-        const unSubscribe = onSnapshot(
-          doc(db, "users", token),
-          { includeMetadataChanges: true },
-          (doc) => {
-            currentUser.setUser(doc.data() as User)
-            // AuthLoading.stopLoading()
-            setLoading(false)
-          })
-        return () => {
-          unSubscribe()
-        }
-      } catch (e) {
-        console.log("error", e)
-      }
-    } else {
-      router.replace(routesName.auth)
-    }
-  }, [router])
-
-  return (
-    <div>
-      {loading ? <PageLoading /> : <Home />}
-    </div>
-  )
-}
+export default Home;

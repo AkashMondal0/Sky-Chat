@@ -63,7 +63,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
 
         {!isSender ? <></> : <div className={`flex gap-2 mx-2 ${isHover === id && isSender ? "" : "opacity-0"}`}>
           <TbDots size={20} />
-          <GoReply className='text-black cursor-pointer' size={20} onClick={replyHandle} />
+          <GoReply className='text-black sm:cursor-pointer' size={20} onClick={replyHandle} />
           <CiFaceSmile size={20} />
         </div>}
         {/* hover */}
@@ -117,7 +117,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
           })}
         </div>
         {isHover === id && !isSender && <div className='flex gap-2 mx-2'>
-          <GoReply className='text-black cursor-pointer' size={20} onClick={replyHandle} />
+          <GoReply className='text-black sm:cursor-pointer' size={20} onClick={replyHandle} />
           <CiFaceSmile size={20} />
         </div>}
       </div>

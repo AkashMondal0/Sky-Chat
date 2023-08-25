@@ -65,7 +65,7 @@ const SearchUserList: React.FC<SearchUserList> = ({
 
   return <>
     <div className='flex items-center gap-2 m-4'>
-      <BiArrowBack className='cursor-pointer' size={30} onClick={() => { onTabChange("myUserList") }} />
+      <BiArrowBack className='sm:cursor-pointer' size={30} onClick={() => { onTabChange("myUserList") }} />
       <Typography variant="h4">Search</Typography>
     </div>
 

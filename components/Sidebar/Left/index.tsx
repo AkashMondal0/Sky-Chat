@@ -20,7 +20,8 @@ const LeftSideBar: React.FC<LeftSideBar> = ({
   }
 
   return (
-    <>{currentUser.state?.id && <div className='w-full'>
+    <>
+    <div className='w-full'>
       <div className={`${steps !== "myUserList" && "hidden"}`}>
         <MyConversationList onTabChange={onTabChange} />
       </div>
@@ -33,7 +34,8 @@ const LeftSideBar: React.FC<LeftSideBar> = ({
       <div className={`${steps !== "notification" && "hidden"}`}>
         <Notification onTabChange={onTabChange} />
       </div>
-    </div>}</>
+    </div>
+    </>
   )
 }
 

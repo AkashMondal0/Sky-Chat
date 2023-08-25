@@ -70,13 +70,13 @@ const RightSideBar: React.FC<RightSideBar> = ({
                 })}
             </div>
             <div className='m-5'>
-                <Typography variant="h6" className="font-semibold text-base my-4 cursor-pointer">
+                <Typography variant="h6" className="font-semibold text-base my-4 sm:cursor-pointer">
                     Add Participants
                 </Typography>
-                <Typography variant="h6" color="red" className="font-semibold text-base my-4 cursor-pointer">
+                <Typography variant="h6" color="red" className="font-semibold text-base my-4 sm:cursor-pointer">
                     Exit Group
                 </Typography>
-                <Typography variant="h6" color="red" className="font-semibold text-base my-4 cursor-pointer">
+                <Typography variant="h6" color="red" className="font-semibold text-base my-4 sm:cursor-pointer">
                     Report Group
                 </Typography>
             </div>
@@ -89,7 +89,7 @@ const RightSideBar: React.FC<RightSideBar> = ({
             <div className='p-3 flex items-center gap-5 sticky top-0 z-50 px-4 py-4 bg-white'>
                 <Typography variant="h5">Details</Typography>
             </div>
-            <div className='cursor-pointer flex p-4 border-t-[1px] border-b-[1px] border-gray-300 my-5 items-center hover:bg-gray-100'>
+            <div className='sm:cursor-pointer flex p-4 border-t-[1px] border-b-[1px] border-gray-300 my-5 items-center hover:bg-gray-100'>
                 <ListItemPrefix>
                     <img className='w-14 h-14 rounded-full object-cover border-[1px] border-black'
                         alt="not found"
@@ -105,13 +105,13 @@ const RightSideBar: React.FC<RightSideBar> = ({
                 </div>
             </div>
             <div className='m-5'>
-                <Typography variant="h6" color="red" className="font-semibold text-base my-4 cursor-pointer">
+                <Typography variant="h6" color="red" className="font-semibold text-base my-4 sm:cursor-pointer">
                     Report
                 </Typography>
-                <Typography variant="h6" color="red" className="font-semibold text-base my-4 cursor-pointer">
+                <Typography variant="h6" color="red" className="font-semibold text-base my-4 sm:cursor-pointer">
                     Block
                 </Typography>
-                <Typography variant="h6" color="red" className="font-semibold text-base my-4 cursor-pointer">
+                <Typography variant="h6" color="red" className="font-semibold text-base my-4 sm:cursor-pointer">
                     Delete
                 </Typography>
             </div>

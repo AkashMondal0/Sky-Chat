@@ -7,7 +7,7 @@ interface LoadingBoxProps {
 const LoadingBox: React.FC<LoadingBoxProps> = ({ className }) => {
   return <>
     <div className={className}>
-      <div className='cursor-pointer flex justify-between items-center py-3 px-2 rounded-xl hover:bg-gray-100'>
+      <div className='sm:cursor-pointer flex justify-between items-center py-3 px-2 rounded-xl hover:bg-gray-100'>
         <div className='flex justify-between items-center'>
           <div className='mx-2'>
             <div className='w-14 h-14 bg-gray-300 rounded-full'></div>
@@ -27,7 +27,7 @@ const LoadingBox: React.FC<LoadingBoxProps> = ({ className }) => {
 
 const CreateGroupBox: React.FC<LoadingBoxProps> = ({ className }) => {
   return <div className={className}>
-    <div className='cursor-pointer flex justify-between items-center py-3 px-2 rounded-xl hover:bg-gray-100'>
+    <div className='sm:cursor-pointer flex justify-between items-center py-3 px-2 rounded-xl hover:bg-gray-100'>
       <div className='flex justify-between items-center'>
         <div className='mx-2'>
           <div>

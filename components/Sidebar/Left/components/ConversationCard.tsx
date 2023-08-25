@@ -11,7 +11,7 @@ import {
     Card,
     Typography,
 } from "@/app/Material"
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import useConversation from '@/hooks/states/useConversation';
 import { Conversation } from '@/interfaces/Conversation';
 import { db } from '@/services/firebase/config'
@@ -30,9 +30,9 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
 }) => {
     const router = useRouter()
     const currentConversation = useConversation()
-    const conversationID = useSearchParams().get("chat") as string
     const [user, setUser] = useState<User>(initialUser)
     const currentUser = useUser()
+    const asPath = usePathname()
 
     useEffect(() => {
         const unSubscribeUser = onSnapshot(
@@ -40,7 +40,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
             { includeMetadataChanges: true },
             (doc) => {
                 const friendData = doc.data() as User
-                if (friendData.Conversations.find((i) => i.id === conversationID)) {
+                if (friendData.Conversations.find((i) => i.id === asPath.replace("/", ""))) {
                     currentConversation.setFriend(friendData)
                 }
                 // console.log("set friend list")
@@ -53,7 +53,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
     const conversationHandle = () => {
         // console.log("inbox")
         currentConversation.setConversationAndFriend(conversation, user)
-        router.replace(`/?chat=${conversation.id}`)
+        router.replace(`/${conversation.id}`)
     }
 
     return (

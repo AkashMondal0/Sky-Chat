@@ -21,11 +21,11 @@ const GroupCard: FC<GroupCardProps> = ({
 
     const conversationHandle = () => {
         currentConversation.setConversationData(conversation)
-        router.replace(`/?chat=${conversation.id}`)
+        router.replace(`/${conversation.id}`)
     }
     return (
         <>
-            <div onClick={conversationHandle} className='cursor-pointer
+            <div onClick={conversationHandle} className='sm:cursor-pointer
              flex justify-between items-center py-3 px-2 rounded-xl hover:bg-gray-100'>
                 <div className='flex justify-between items-center'>
                     <div className='mx-2'>

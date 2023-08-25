@@ -39,7 +39,7 @@ const MessageHeader: React.FC<MessageHeader> = ({
     border-[1px] border-l-[0px] 
     bg-white
     flex justify-between py-3'>
-      <div className='flex items-center p-2 cursor-pointer'>
+      <div className='flex items-center p-2 sm:cursor-pointer'>
         <BiArrowBack className='mr-2 md:hidden' size={28} onClick={() => {
           router.replace(routesName.home)
           currentConversation.reset()
@@ -59,7 +59,7 @@ const MessageHeader: React.FC<MessageHeader> = ({
           </Typography>
         </div>
       </div>
-      <div className='flex items-center cursor-pointer pr-2'>
+      <div className='flex items-center sm:cursor-pointer pr-2'>
         <ul className='flex gap-4'>
           <li>
             <BsTelephone size={24} />

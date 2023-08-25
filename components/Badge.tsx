@@ -18,7 +18,7 @@ const Badge: React.FC<BadgeProps> = ({
     disabled
 }) => {
     return (
-        <div className={`text-sm cursor-pointer`} onClick={onclick}>
+        <div className={`text-sm sm:cursor-pointer`} onClick={onclick}>
             {!disabled && <p className='w-5 h-5 bg-red-400 rounded-full text-center text-white ml-auto relative top-2 left-2'>
                 {content}
             </p>}

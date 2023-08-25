@@ -120,11 +120,11 @@ const AuthForm = () => {
                     </span>}
                 </div>
                 {
-                  isAvatar ? <div onClick={() => setIsAvatar(undefined)} className='cursor-pointer border-[1px] border-red-300
+                  isAvatar ? <div onClick={() => setIsAvatar(undefined)} className='sm:cursor-pointer border-[1px] border-red-300
                   px-4 py-2 rounded-full font-semibold text-red-400'>
                     Remove
                   </div> :
-                    <label htmlFor='myImage' className='cursor-pointer font-semibold
+                    <label htmlFor='myImage' className='sm:cursor-pointer font-semibold
                     border-[1px] px-5 py-2 rounded-full hover:bg-gray-300 bg-gray-200'>
                       Upload
                     </label>
@@ -207,7 +207,7 @@ const AuthForm = () => {
             </div>
             <div
               onClick={toggleVariant}
-              className="underline cursor-pointer"
+              className="underline sm:cursor-pointer"
             >
               {variant === 'LOGIN' ? 'Create an account' : 'Login'}
             </div>
