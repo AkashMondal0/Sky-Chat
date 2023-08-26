@@ -14,7 +14,7 @@ import dynamic from 'next/dynamic'
 import { LoadingBox } from '../loadingBox'
 import { AiOutlineSearch } from 'react-icons/ai'
 
-const UserCard = dynamic(() => import('../Sidebar/Left/components/UserCard',), {
+const UserCard = dynamic(() => import('../../app/(home)/components/cards/UserCard',), {
     loading: () => <LoadingBox className='my-2' />,
     ssr: false
 })

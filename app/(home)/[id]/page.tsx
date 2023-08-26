@@ -1,13 +1,14 @@
 "use client";
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react'
-import MessageHeader from '../../../components/inBox/MessageHeader'
-import MessageBody from '../../../components/inBox/MessageBody'
+import MessageHeader from './components/MessageHeader'
+import MessageBody from './components/MessageBody'
 import { Conversation } from '@/interfaces/Conversation'
-import { MessageFooter } from '../../../components/inBox/MessageFooter'
+import { MessageFooter } from './components/MessageFooter'
 import { UpdateUserStatus } from '@/services/firebase/UserDoc'
 import useConversation from '@/hooks/states/useConversation'
 import useUser from '@/hooks/states/useUser'
+import Error from './error';
 
 interface HomeProps {
   params: {
@@ -48,6 +49,8 @@ const Home: React.FC<HomeProps> = ({
   //     UpdateUserStatus(currentUser.state.id, true)
   //   }
   // }, [])
+
+  if (!currentUser.state.Conversations.find((i) => i.id === id)) return <Error/>
 
   return (
     <>

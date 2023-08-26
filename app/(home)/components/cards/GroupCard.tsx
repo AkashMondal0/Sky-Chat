@@ -2,8 +2,8 @@
 import { Typography } from '@/app/Material';
 import useConversation from '@/hooks/states/useConversation';
 import { Conversation } from '@/interfaces/Conversation';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { FC, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { FC } from 'react';
 
 interface GroupCardProps {
     conversation: Conversation
@@ -21,7 +21,7 @@ const GroupCard: FC<GroupCardProps> = ({
 
     const conversationHandle = () => {
         currentConversation.setConversationData(conversation)
-        router.replace(`/${conversation.id}`)
+        router.push(`/${conversation.id}`)
     }
     return (
         <>

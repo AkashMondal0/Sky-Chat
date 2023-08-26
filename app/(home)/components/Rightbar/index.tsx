@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect } from 'react'
-import SideContainer from '../SideContainer'
+import SideContainer from '../../../../context/SideContainer'
 import { Avatar, ListItem, ListItemPrefix, Typography } from '@/app/Material'
 import useConversation from '@/hooks/states/useConversation'
 import useUser from '@/hooks/states/useUser'
@@ -10,7 +10,7 @@ import { AiOutlineSearch } from 'react-icons/ai'
 
 
 
-const RequestUserCard = dynamic(() => import('../Left/components/RequestUserCard',), {
+const RequestUserCard = dynamic(() => import('../cards/RequestUserCard',), {
     loading: () => <LoadingBox className='h-20 w-full rounded-2xl my-2' />,
     ssr: false
 })

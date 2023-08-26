@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import MessageCard from './components/MessageCard'
+import MessageCard from './MessageCard'
 import { UserState } from '@/interfaces/User'
 import { timeFormat, dateFormat } from '@/functions/dateTimeFormat'
 import { Conversation } from '@/interfaces/Conversation'
@@ -9,7 +9,7 @@ import { MessageData } from '@/interfaces/Message'
 import useConversation from '@/hooks/states/useConversation'
 import { MessageFooter } from './MessageFooter'
 import MessageHeader from './MessageHeader'
-import Avatar from '../Avatar'
+import Avatar from '../../../../components/Avatar'
 import { Typography } from '@/app/Material'
 
 

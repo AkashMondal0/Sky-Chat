@@ -1,5 +1,5 @@
 'use client'
-import LeftSideBar from '@/components/Sidebar/Left';
+import LeftSideBar from '@/app/(home)/components/Tabs';
 import { FC } from 'react';
 
 interface HomeProps { }

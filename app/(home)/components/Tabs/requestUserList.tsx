@@ -1,5 +1,5 @@
 import React from 'react'
-import { steps } from '..'
+import { steps } from '.'
 import { BiArrowBack } from 'react-icons/bi'
 import { Typography } from '@/app/Material'
 import { BtnInstagram } from '@/components/Button/Button'
@@ -9,7 +9,7 @@ import useUser from '@/hooks/states/useUser'
 import dynamic from 'next/dynamic'
 import {LoadingBox} from '@/components/loadingBox'
 
-const RequestUserCard = dynamic(() => import('../components/RequestUserCard',), {
+const RequestUserCard = dynamic(() => import('../cards/RequestUserCard',), {
     loading: () => <LoadingBox className='h-20 w-full rounded-2xl my-2' />,
     ssr: false
 })

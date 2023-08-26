@@ -1,7 +1,7 @@
 'use client';
-import LeftSideBar from "@/components/Sidebar/Left";
-import RightSideBar from "@/components/Sidebar/Right";
-import SideContainer from "@/components/Sidebar/SideContainer";
+import LeftSideBar from "@/app/(home)/components/Tabs";
+import RightSideBar from "@/app/(home)/components/Rightbar";
+import SideContainer from "@/context/SideContainer";
 import { GetToken } from "@/functions/localData";
 import useUser from "@/hooks/states/useUser";
 import useRightSideBar from "@/hooks/useRightSideBar";

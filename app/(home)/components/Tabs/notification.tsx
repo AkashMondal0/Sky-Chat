@@ -1,13 +1,13 @@
 import { User, UserState } from '@/interfaces/User'
 import React from 'react'
-import { steps } from '..'
+import { steps } from '.'
 import { BiArrowBack } from 'react-icons/bi'
 import { Typography } from '@/app/Material'
 import useUser from '@/hooks/states/useUser'
 import dynamic from 'next/dynamic'
 import {LoadingBox} from '@/components/loadingBox'
 // import UserCardNotification from '../components/NotificationUserCard'
-const UserCardNotification = dynamic(() => import('../components/NotificationUserCard',), {
+const UserCardNotification = dynamic(() => import('../cards/NotificationUserCard',), {
     loading: () => <LoadingBox className='h-20 w-full rounded-2xl my-2' />,
     ssr: false
 })

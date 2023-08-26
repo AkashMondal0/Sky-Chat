@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react'
 import { Menu, MenuHandler, MenuItem, MenuList, Typography } from '@/app/Material'
 import { LuEdit } from 'react-icons/lu'
-import { steps } from '..'
+import { steps } from '.'
 import { initialUser } from '@/interfaces/User'
 import useUser from '@/hooks/states/useUser'
 import { useRouter } from 'next/navigation'
@@ -17,11 +17,11 @@ import { LoadingBox } from '@/components/loadingBox'
 import useRightSideBar from '@/hooks/useRightSideBar'
 
 
-const ConversationCard = dynamic(() => import('../components/ConversationCard',), {
+const ConversationCard = dynamic(() => import('../cards/ConversationCard',), {
     loading: () => <LoadingBox className='my-2' />,
     ssr: false
 })
-const GroupCard = dynamic(() => import('../components/GroupCard',), {
+const GroupCard = dynamic(() => import('../cards/GroupCard',), {
     loading: () => <LoadingBox className='my-2' />,
     ssr: false
 })

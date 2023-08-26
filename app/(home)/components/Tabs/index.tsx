@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import MyConversationList from './Tabs/myConversationList'
-import SearchUserList from './Tabs/searchUserList'
-import RequestUserList from './Tabs/requestUserList'
-import Notification from './Tabs/notification'
+import MyConversationList from './myConversationList'
+import SearchUserList from './searchUserList'
+import RequestUserList from './requestUserList'
+import Notification from './notification'
 import useUser from '@/hooks/states/useUser'
 export type steps = "myUserList" | "requestUserList" | "searchUserList" | "notification" | "groupConversation"
 
@@ -21,7 +21,7 @@ const LeftSideBar: React.FC<LeftSideBar> = ({
 
   return (
     <>
-    <div className='w-full'>
+    <div className='w-full md:w-96'>
       <div className={`${steps !== "myUserList" && "hidden"}`}>
         <MyConversationList onTabChange={onTabChange} />
       </div>

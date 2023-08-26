@@ -53,7 +53,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
     const conversationHandle = () => {
         // console.log("inbox")
         currentConversation.setConversationAndFriend(conversation, user)
-        router.replace(`/${conversation.id}`)
+        router.push(`/${conversation.id}`)
     }
 
     return (

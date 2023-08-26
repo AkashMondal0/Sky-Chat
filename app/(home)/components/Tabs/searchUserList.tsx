@@ -7,7 +7,7 @@ import {
   Avatar,
   Typography,
 } from "@/app/Material"
-import { steps } from '..'
+import { steps } from '.'
 import { BiArrowBack } from 'react-icons/bi'
 import { User } from '@/interfaces/User'
 import { BtnInstagram } from '@/components/Button/Button'
@@ -18,7 +18,7 @@ import { db } from '@/services/firebase/config'
 import { CreateGroupBox, LoadingBox } from '@/components/loadingBox'
 import dynamic from 'next/dynamic'
 import useGroupController from '@/hooks/modal.controller/GroupModal'
-const UserCard = dynamic(() => import('../components/UserCard',), {
+const UserCard = dynamic(() => import('../cards/UserCard',), {
   loading: () => <LoadingBox className='my-2' />,
   ssr: false
 })
