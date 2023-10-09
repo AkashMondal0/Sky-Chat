@@ -40,7 +40,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
             { includeMetadataChanges: true },
             (doc) => {
                 const friendData = doc.data() as User
-                if (friendData.Conversations.find((i) => i.id === asPath.replace("/", ""))) {
+                if (friendData?.Conversations.find((i) => i.id === asPath.replace("/", ""))) {
                     currentConversation.setFriend(friendData)
                 }
                 // console.log("set friend list")
